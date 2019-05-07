@@ -9,3 +9,6 @@ To deploy, rsync this (excluding .git) to
 ```
 rsync -a  --exclude='.git/' /root/git/bc_accre_desktop/ /etc/ood/config/apps/bc_desktop/
 ```
+
+Note that changes to the view template have to be manually
+copied to `/var/www/ood/apps/sys/bc_desktop/view.html.erb` (at least in OOD 1.3)
