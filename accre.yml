@@ -24,6 +24,16 @@ attributes:
   bc_num_cores:
     label: "Number of CPU Cores"
     value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
+      - [ "Sandy Bridge", "sandybridge" ]
+      - [ "Westmere", "westmere" ]
   vnc_resolution:
      required: true
      widget: "resolution_field"
@@ -39,5 +49,6 @@ form:
   - node_type
   - bc_account
   - bc_queue
+  - cpuarch
   - vnc_resolution
 submit: "submit/my_submit.yml.erb"

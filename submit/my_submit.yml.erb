@@ -9,4 +9,6 @@ script:
     - "--partition=production"
     - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
     - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
-#    - "--constraint=[westmere|haswell|sandybridge]"
+    <% if cpuarch != "any" %>
+    - "--constraint=<%= cpuarch %>"
+    <% end %>
