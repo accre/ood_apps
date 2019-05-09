@@ -1,0 +1,27 @@
+---
+cluster: "accre"
+form:
+  - bc_account
+  - bc_num_slots
+  - bc_num_hours
+  - bc_num_cores
+  - bc_mem
+  - version
+  - bc_email_on_started
+attributes:
+  bc_account: null
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  bc_mem:
+    label: "Maximum Memory (GB)"
+    value: 4
+  bc_num_cores:
+    label: "Number of CPU Cores"
+    value: 1
+  version:
+    widget: select
+    label: "Version of R to load"
+    options:
+      - [ "RStudio server 3.4.3 (evaluation)", "R3.4.3"]

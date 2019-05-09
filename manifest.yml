@@ -1,0 +1,10 @@
+---
+name: RStudio Server (Evaluation)
+category: Interactive Apps
+subcategory: Servers
+role: batch_connect
+description: |
+  This app will launch RStudio Server, an IDE for R, on a production compute node.
+  Note that this app is currently available for evaluation purposes only. Please
+  let us know if it is compatible with your workflow or if it is missing the
+  capability to interface to your setup by opening a helpdesk ticket.
