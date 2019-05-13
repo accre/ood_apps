@@ -24,4 +24,5 @@ attributes:
     widget: select
     label: "Version of R to load"
     options:
-      - [ "RStudio server 3.4.3 (evaluation)", "R3.4.3"]
+      - [ "RStudio server 3.4.3 (evaluation)", "r3.4.3"]
+      - [ "RStudio server 3.5.3 (evaluation)", "r3.5.3"]

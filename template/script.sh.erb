@@ -8,7 +8,16 @@ setup_env () {
 
 #export SINGULARITY_BINDPATH="/usr/local,/etc/profile.d/lmod.sh,/usr/share/lmod,/accre,/usr/lib64"
 export SINGULARITY_BINDPATH="/usr/local,/etc/profile.d/lmod.sh,/usr/share/lmod,/usr/lib64"
-export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.4.3.simg"
+
+accre_rversion=<%= context.version %>
+if [[ "$accre_rversion" == "r3.4.3" ]]
+then
+  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.4.3.simg"
+elif [[ "$accre_rversion" == "r3.5.3" ]]
+then
+  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.5.3.simg"
+fi
+
 #PATH="$PATH:/path/to/R:/path/to/rstudio/rserver"
  
   # SINGULARITY_BINDPATH is being used to bind all RStudio's requirements from
