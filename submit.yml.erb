@@ -7,6 +7,11 @@ script:
   native:
     - "-N"
     - "<%= bc_num_slots.blank? ? 1 : bc_num_slots.to_i %>"
+    <% if use_cgw.to_i == 1 %>
+    - "--partition=cgw-<%= cgw %>"
+    - "--nodelist=<%= cgw %>"
+    <% else %>
     - "--partition=production"
+    <% end %>
     - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
     - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
