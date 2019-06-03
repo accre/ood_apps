@@ -41,7 +41,8 @@ attributes:
      value: "1024x768"
   cgw:
     label: "Custom Gateway Node"
-    value: "N/A"
+    value: ""
+    help: "Leave blank unless using a custom gateway node"
   use_cgw:
     widget: check_box
     checked_value: 1
