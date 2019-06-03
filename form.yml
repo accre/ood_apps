@@ -29,7 +29,7 @@ attributes:
       - [ "RStudio server 3.5.3 (evaluation)", "r3.5.3"]
   cgw:
     label: "Custom Gateway Node"
-    value: "N/A"
+    value: ""
     help: "Leave blank unless using a custom gateway node"
   use_cgw:
     widget: check_box
