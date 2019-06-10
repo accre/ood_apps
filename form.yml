@@ -7,8 +7,8 @@ form:
   - bc_num_cores
   - bc_mem
   - version
-  - cgw
   - use_cgw
+  - cgw
 attributes:
   bc_account: null
   bc_queue: null
@@ -27,10 +27,6 @@ attributes:
     options:
       - [ "RStudio server 3.4.3 (evaluation)", "r3.4.3"]
       - [ "RStudio server 3.5.3 (evaluation)", "r3.5.3"]
-  cgw:
-    label: "Custom Gateway Node"
-    value: ""
-    help: "Leave blank unless using a custom gateway node"
   use_cgw:
     widget: check_box
     checked_value: 1
@@ -44,3 +40,7 @@ attributes:
       custom gateway, please open a helpdesk ticket. If this box is
       checked, then you must enter the name of your custom gateway
       above. 
+  cgw:
+    label: "Custom Gateway Node"
+    value: ""
+    help: "Leave blank unless using a custom gateway node"
