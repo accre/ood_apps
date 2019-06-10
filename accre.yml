@@ -39,10 +39,6 @@ attributes:
      widget: "resolution_field"
      label: "Desktop Screen Resolution (px)"
      value: "1024x768"
-  cgw:
-    label: "Custom Gateway Node"
-    value: ""
-    help: "Leave blank unless using a custom gateway node"
   use_cgw:
     widget: check_box
     checked_value: 1
@@ -55,7 +51,11 @@ attributes:
       feature. If you wish to have OnDemand enabled on your group's
       custom gateway, please open a helpdesk ticket. If this box is
       checked, then you must enter the name of your custom gateway
-      above.
+      below.
+  cgw:
+    label: "Custom Gateway Node"
+    value: ""
+    help: "Leave blank unless using a custom gateway node"
 form:
   - bc_vnc_idle
   - desktop
@@ -68,6 +68,6 @@ form:
   - bc_queue
   - cpuarch
   - vnc_resolution
-  - cgw
   - use_cgw
+  - cgw
 submit: "submit/my_submit.yml.erb"
