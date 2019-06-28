@@ -15,17 +15,11 @@ module purge
 # Unset the python path
 unset PYTHONPATH
 
-<%- if context.use_venv.to_i == 1 -%>
-
-module restore <%= context.custom_mods %>
-
-<%- else -%>
-
-# Load the pre-selected  modules
+# Load the Lmod environment
 accre_cvmod=<%= context.version %>
 if [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python2" ]]
 then
-    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 IRkernel/0.8.15-Python-2.7.14 \
+    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 CUDA/9.0.176 IRkernel/0.8.15-Python-2.7.14 \
                 Biopython/1.70-Python-2.7.14 \
                 Boost/1.65.1-Python-2.7.14 \
                 h5py/2.7.1-Python-2.7.14 \
@@ -38,7 +32,7 @@ then
                 octave_kernel/0.28.4-Python-2.7.14
 elif [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python3" ]]
 then
-    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 IPython/5.8.0-Python-3.6.3 \
+    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 CUDA/9.0.176 IPython/5.8.0-Python-3.6.3 \
                 Biopython/1.70-Python-3.6.3 \
                 Boost/1.65.1-Python-3.6.3 \
                 h5py/2.7.1-Python-3.6.3 \
@@ -53,7 +47,7 @@ then
                 octave_kernel/0.28.4-Python-3.6.3
 elif [[ "$accre_cvmod" == "Intel/2017.4.196/Python2" ]]
 then
-    module load Intel/2017.4.196 IntelMPI/2017.3.196 IRkernel/0.8.15-Python-2.7.14 \
+    module load Intel/2017.4.196 IntelMPI/2017.3.196 CUDA/9.0.176 IRkernel/0.8.15-Python-2.7.14 \
                 Biopython/1.70-Python-2.7.14 \
                 Boost/1.65.1-Python-2.7.14 \
                 h5py/2.7.1-Python-2.7.14 \
@@ -65,7 +59,7 @@ then
                 octave_kernel/0.28.4-Python-2.7.14
 elif [[ "$accre_cvmod" == "Intel/2017.4.196/Python3" ]]
 then
-    module load Intel/2017.4.196 IntelMPI/2017.3.196 IPython/5.8.0-Python-3.6.3 \
+    module load Intel/2017.4.196 IntelMPI/2017.3.196 CUDA/9.0.176 IPython/5.8.0-Python-3.6.3 \
                 Biopython/1.70-Python-3.6.3 \
                 Boost/1.65.1-Python-3.6.3 \
                 h5py/2.7.1-Python-3.6.3 \
@@ -77,8 +71,6 @@ then
                 matplotlib/2.1.0-Python-3.6.3 \
                 numpy/1.13.1-Python-3.6.3 \
                 octave_kernel/0.28.4-Python-3.6.3
-else
-    module load $accre_cvmod
 fi
 <%- end -%>
 
@@ -91,11 +83,13 @@ echo "TIMING - Starting jupyter at: $(date)"
 # Launch the Jupyter Notebook Server
 set -x
 
-<%- if not context.venv.strip.empty? -%>
+<%- if context.use_venv.to_i == 1 -%>
 if python --version 2>&1 | grep Anaconda ; then
   source activate <%= context.venv %>
 else
   source <%= context.venv %>/bin/activate
+  # give the venv priority over Lmod python packages
+  export PYTHONPATH=$(python -c 'import sys; print(sys.path)[-1]'):${PYTHONPATH}
 fi
 
 <%- end -%>

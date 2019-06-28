@@ -29,16 +29,16 @@ attributes:
     value: "${HOME}"
   version:
     widget: select
-    label: "Python, R, and/or Octave version for a pre-selected environment"
+    label: "Python, R, and/or Octave version"
     help: |
       Select the version of Python and possibly Octave or R that you want to load based
       on either an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
       distribution.
     options:
-      - [ "Python/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python3"]
-      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python2"]
-      - [ "Python/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python3"]
-      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python2"]
+      - [ "Python/3.6.3 + Octave/4.2.2 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python3"]
+      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python2"]
+      - [ "Python/3.6.3 + Octave/4.2.2 (Intel/2017.4.196)", "Intel/2017.4.196/Python3"]
+      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (Intel/2017.4.196)", "Intel/2017.4.196/Python2"]
       - [ "Python 3.6.3 / Anaconda 5.0.1", "Anaconda3/5.0.1"]
       - [ "Python 3.6.1 / Anaconda 4.4.0", "Anaconda3/4.4.0"]
       - [ "Python 2.7.14 / Anaconda 5.0.1", "Anaconda2/5.0.1"]
@@ -47,28 +47,19 @@ attributes:
     widget: check_box
     checked_value: 1
     unchecked_value: 0
-    label: "Use a Customized Environment"
+    label: "Use a Virtual Environment"
     help: |
-      Check this box if you wish to load a customized environment.
-      Note that you must have jupyter available based on the Lmod modules
-      and/or virtual environment that you choose to load.
-  custom_mods:
-    widget: "text_field"
-    label: "Lmod Module Collection"
-    help: |
-      Leave blank unless using a customized environment. If using a customized
-      environment, you must save the modules you want to use in a
-      [module collection]: https://www.vanderbilt.edu/accre/documentation/lmod-guide/#modules-collections
-      and specify the module collection name here.
-    value: ""
+      Check this box if you wish to load a conda or python environment.
   venv:
     widget: "text_field"
     label: "Python or Conda Virtual Environment"
     help: |
       Leave blank unless using a python or conda virtual environment. For
       a python virtual environment, you must specify the absolute path.
-      Your virtual environment should have been created with the same
-      set of modules as the module collection specified above.
+      For a python virtual environment, any packages built in the environment
+      will take precedence over those from the Lmod modules. Any virtual
+      environment used should have been built from the same Python or Anaconda
+      Lmod module selected above.
     value: ""
 
 form:
@@ -83,5 +74,4 @@ form:
   - notebook_dir
   - version
   - use_venv
-  - custom_mods
   - venv
