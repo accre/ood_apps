@@ -1,0 +1,87 @@
+# Batch Connect app configuration file
+#
+---
+
+cluster: "accre"
+
+attributes:
+  bc_account:
+    label: "GPU Enabled Slurm Account"
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  bc_mem: null
+  bc_num_cores: null
+  num_gpus:
+    value: 1
+    label: "Number of requested GPU resources"
+  gpu_arch:
+    label: "GPU Architecture"
+    widget: select
+    options:
+      - ["Maxwell", "maxwell"]
+      - ["Pascal", "pascal"]
+  notebook_dir:
+    label: "Working Directory" 
+    help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
+    widget: "text_field"
+    value: "${HOME}"
+  version:
+    widget: select
+    label: "Python, R, and/or Octave version for a pre-selected environment"
+    help: |
+      Select the version of Python and possibly Octave or R that you want to load based
+      on either an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
+      distribution.
+    options:
+      - [ "Python/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python3"]
+      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python2"]
+      - [ "Python/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python3"]
+      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python2"]
+      - [ "Python 3.6.3 / Anaconda 5.0.1", "Anaconda3/5.0.1"]
+      - [ "Python 3.6.1 / Anaconda 4.4.0", "Anaconda3/4.4.0"]
+      - [ "Python 2.7.14 / Anaconda 5.0.1", "Anaconda2/5.0.1"]
+      - [ "Python 2.7.13 / Anaconda 4.4.0", "Anaconda2/4.4.0"]
+  use_venv:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use a Customized Environment"
+    help: |
+      Check this box if you wish to load a customized environment.
+      Note that you must have jupyter available based on the Lmod modules
+      and/or virtual environment that you choose to load.
+  custom_mods:
+    widget: "text_field"
+    label: "Lmod Module Collection"
+    help: |
+      Leave blank unless using a customized environment. If using a customized
+      environment, you must save the modules you want to use in a
+      [module collection]: https://www.vanderbilt.edu/accre/documentation/lmod-guide/#modules-collections
+      and specify the module collection name here.
+    value: ""
+  venv:
+    widget: "text_field"
+    label: "Python or Conda Virtual Environment"
+    help: |
+      Leave blank unless using a python or conda virtual environment. For
+      a python virtual environment, you must specify the absolute path.
+      Your virtual environment should have been created with the same
+      set of modules as the module collection specified above.
+    value: ""
+
+form:
+  - bc_account
+  - bc_queue
+  - bc_num_hours
+  - bc_mem
+  - bc_num_cores
+  - bc_num_slots
+  - num_gpus
+  - gpu_arch
+  - notebook_dir
+  - version
+  - use_venv
+  - custom_mods
+  - venv

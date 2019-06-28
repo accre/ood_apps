@@ -1,0 +1,22 @@
+---
+name: Jupyter GPU Notebook (Evaluation)
+category: Interactive Apps
+subcategory: Servers
+role: batch_connect
+description: |
+  This app will launch a Jupyter Notebook server on a production compute node
+  using either a pre-selected environment or a customized environment.
+
+  For a pre-selected environment, the Jupyter Notebook can be loaded either
+  from an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
+  python distribution. Such notebooks launched
+  using the Anaconda distributions will only have the Python kernel and can
+  optionally use a conda environment. Notebooks launched with the GCC or Intel
+  compiler toolchains will also have Octave and R (Python 2 only) kernels
+  available. The Tensorflow library is available with the GCC toolchain.
+
+  For a customized environment you must select the Lmod modules that you
+  wish to have loaded and optionally a python or conda virtual environment
+  to use. In this case the capabilities of your notebook will depend on the
+  modules you choose to load and possibly the packages installed in your
+  virtual environment.
