@@ -23,22 +23,22 @@ attributes:
       - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
   notebook_dir:
-    label: "Working Directory" 
+    label: "Working Directory"
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
     widget: "text_field"
     value: "${HOME}"
   version:
     widget: select
-    label: "Python, R, and/or Octave version"
+    label: "Python version"
     help: |
-      Select the version of Python and possibly Octave or R that you want to load based
+      Select the version of Python that you want to load based
       on either an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
       distribution.
     options:
       - [ "Python/3.6.3 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python3"]
-      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python2"]
-      - [ "Python/3.6.3 + Octave/4.2.2 (Intel/2017.4.196)", "Intel/2017.4.196/Python3"]
-      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (Intel/2017.4.196)", "Intel/2017.4.196/Python2"]
+      - [ "Python/2.7.14 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python2"]
+      - [ "Python/3.6.3 (Intel/2017.4.196)", "Intel/2017.4.196/Python3"]
+      - [ "Python/2.7.14 (Intel/2017.4.196)", "Intel/2017.4.196/Python2"]
       - [ "Python 3.6.3 / Anaconda 5.0.1", "Anaconda3/5.0.1"]
       - [ "Python 3.6.1 / Anaconda 4.4.0", "Anaconda3/4.4.0"]
       - [ "Python 2.7.14 / Anaconda 5.0.1", "Anaconda2/5.0.1"]

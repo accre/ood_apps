@@ -19,54 +19,48 @@ unset PYTHONPATH
 accre_cvmod=<%= context.version %>
 if [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python2" ]]
 then
-    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 CUDA/9.0.176 IRkernel/0.8.15-Python-2.7.14 \
-                Biopython/1.70-Python-2.7.14 \
-                Boost/1.65.1-Python-2.7.14 \
+    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 CUDA/9.0.176 IPython/5.8.0-Python-2.7.14 \
                 h5py/2.7.1-Python-2.7.14 \
                 mpi4py/1.3.1-Python-2.7.14 \
                 scikit-learn/0.19.1-Python-2.7.14 \
                 scipy/0.19.1-Python-2.7.14 \
                 Seaborn/0.9.0-Python-2.7.14 \
                 TensorFlow/1.8.0-Python-2.7.14 \
-                R-bundle-Bioconductor/3.6 \
-                octave_kernel/0.28.4-Python-2.7.14
+                pandas/0.18.1-Python-2.7.14 \
+                matplotlib/2.1.0-Python-2.7.14 \
+                numpy/1.13.1-Python-2.7.14
 elif [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python3" ]]
 then
     module load GCC/6.4.0-2.28 OpenMPI/2.1.1 CUDA/9.0.176 IPython/5.8.0-Python-3.6.3 \
-                Biopython/1.70-Python-3.6.3 \
-                Boost/1.65.1-Python-3.6.3 \
                 h5py/2.7.1-Python-3.6.3 \
+                mpi4py/1.3.1-Python-3.6.3 \
                 scikit-learn/0.19.1-Python-3.6.3 \
                 scipy/0.19.1-Python-3.6.3 \
+                Seaborn/0.9.0-Python-3.6.3 \
                 TensorFlow/1.8.0-Python-3.6.3 \
+                pandas/0.18.1-Python-3.6.3 \
                 matplotlib/2.1.0-Python-3.6.3 \
-                numpy/1.13.1-Python-3.6.3 \
+                numpy/1.13.1-Python-3.6.3
 elif [[ "$accre_cvmod" == "Intel/2017.4.196/Python2" ]]
 then
-    module load Intel/2017.4.196 IntelMPI/2017.3.196 CUDA/9.0.176 IRkernel/0.8.15-Python-2.7.14 \
-                Biopython/1.70-Python-2.7.14 \
-                Boost/1.65.1-Python-2.7.14 \
-                h5py/2.7.1-Python-2.7.14 \
+    module load Intel/2017.4.196 IntelMPI/2017.3.196 CUDA/9.0.176 IPython/5.8.0-Python-2.7.14 \
                 mpi4py/1.3.1-Python-2.7.14 \
                 scikit-learn/0.19.1-Python-2.7.14 \
                 scipy/0.19.1-Python-2.7.14 \
                 Seaborn/0.9.0-Python-2.7.14 \
-                R-bundle-Bioconductor/3.6 \
-                octave_kernel/0.28.4-Python-2.7.14
+                pandas/0.18.1-Python-2.7.14 \
+                matplotlib/2.1.0-Python-2.7.14 \
+                numpy/1.13.1-Python-2.7.14
 elif [[ "$accre_cvmod" == "Intel/2017.4.196/Python3" ]]
 then
     module load Intel/2017.4.196 IntelMPI/2017.3.196 CUDA/9.0.176 IPython/5.8.0-Python-3.6.3 \
-                Biopython/1.70-Python-3.6.3 \
-                Boost/1.65.1-Python-3.6.3 \
-                h5py/2.7.1-Python-3.6.3 \
                 mpi4py/1.3.1-Python-3.6.3 \
                 scikit-learn/0.19.1-Python-3.6.3 \
                 scipy/0.19.1-Python-3.6.3 \
                 Seaborn/0.9.0-Python-3.6.3 \
                 pandas/0.18.1-Python-3.6.3 \
                 matplotlib/2.1.0-Python-3.6.3 \
-                numpy/1.13.1-Python-3.6.3 \
-                octave_kernel/0.28.4-Python-3.6.3
+                numpy/1.13.1-Python-3.6.3
 else
     module load $accre_cvmod
 fi
@@ -92,4 +86,4 @@ fi
 <%- end -%>
 
 unset XDG_RUNTIME_DIR
-jupyter notebook --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=<%= context.notebook_dir %> 
+jupyter notebook --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=<%= context.notebook_dir %>

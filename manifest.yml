@@ -1,5 +1,5 @@
 ---
-name: Jupyter GPU Notebook (Evaluation)
+name: Jupyter Notebook (GPU)
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
@@ -8,8 +8,4 @@ description: |
 
   The Jupyter Notebook can be loaded either
   from an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
-  python distribution. Such notebooks launched
-  using the Anaconda distributions will only have the Python kernel and can
-  optionally use a conda environment. Notebooks launched with the GCC or Intel
-  compiler toolchains will also have Octave and R (Python 2 only) kernels
-  available. The Tensorflow library is available with the GCC toolchain.
+  python distribution. The Tensorflow library is available with the GCC toolchain.
