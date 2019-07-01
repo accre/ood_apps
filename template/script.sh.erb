@@ -80,7 +80,7 @@ if python --version 2>&1 | grep Anaconda ; then
 else
   source <%= context.venv %>/bin/activate
   # give the venv priority over Lmod python packages
-  export PYTHONPATH=$(python -c 'import sys; print(sys.path)[-1]'):${PYTHONPATH}
+  export PYTHONPATH=$(python -c 'import sys; print(sys.path[-1])'):${PYTHONPATH}
 fi
 
 <%- end -%>
