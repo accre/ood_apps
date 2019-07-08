@@ -16,6 +16,9 @@ then
 elif [[ "$accre_rversion" == "r3.5.3" ]]
 then
   export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.5.3.simg"
+elif [[ "$accre_rversion" == "r3.6.0" ]]
+then
+  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.6.0git.simg"
 fi
 
 #PATH="$PATH:/path/to/R:/path/to/rstudio/rserver"
