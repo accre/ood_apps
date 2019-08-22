@@ -23,6 +23,7 @@ attributes:
     options:
       - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
+      - ["Turing", "turing"]
   vnc_resolution:
      required: true
      widget: "resolution_field"

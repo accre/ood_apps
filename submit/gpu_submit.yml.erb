@@ -15,5 +15,9 @@ script:
     - "--mem=<%= 29 * num_gpus.to_i %>G" 
     - "--cpus-per-task=<%= 3 * num_gpus.to_i %>"
 <% end %>
+<% if gpu_arch == "turing" -%>
+    - "--mem=<%= 90 * num_gpus.to_i %>G" 
+    - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
+<% end %>
     - "--account=<%= bc_account.strip %>"
     - "--gres=gpu:<%= num_gpus.to_i %>"
