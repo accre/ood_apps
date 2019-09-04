@@ -28,6 +28,7 @@ attributes:
       - [ "RStudio server 3.4.3 (evaluation)", "r3.4.3"]
       - [ "RStudio server 3.5.3 (evaluation)", "r3.5.3"]
       - [ "RStudio server 3.6.0 + git (evaluation)", "r3.6.0"]
+      - [ "RStudio server 3.6.1 + git + java (evaluation)", "r3.6.1"]
   use_cgw:
     widget: check_box
     checked_value: 1
