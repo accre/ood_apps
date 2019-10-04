@@ -6,6 +6,7 @@ form:
   - bc_num_hours
   - bc_num_cores
   - bc_mem
+  - cpuarch
   - version
   - use_cgw
   - cgw
@@ -21,14 +22,24 @@ attributes:
   bc_num_cores:
     label: "Number of CPU Cores"
     value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
+      - [ "Sandy Bridge", "sandybridge" ]
+      - [ "Westmere", "westmere" ]
   version:
     widget: select
-    label: "Version of R to load"
+    label: "Lmod Toolchain and Version of R to load"
     options:
-      - [ "RStudio server 3.4.3 (evaluation)", "r3.4.3"]
-      - [ "RStudio server 3.5.3 (evaluation)", "r3.5.3"]
-      - [ "RStudio server 3.6.0 + git (evaluation)", "r3.6.0"]
-      - [ "RStudio server 3.6.1 + git + java (evaluation)", "r3.6.1"]
+      - [ "GCC/8.2.0 R/3.6.0 (candidate)", "r.3.6.0.v1"]
+      - [ "RStudio server 3.4.3 (early evaluation)", "r3.4.3test"]
+      - [ "RStudio server 3.5.3 (early evaluation)", "r3.5.3test"]
+      - [ "RStudio server 3.6.0 + git (early evaluation)", "r3.6.0test"]
   use_cgw:
     widget: check_box
     checked_value: 1
