@@ -5,7 +5,7 @@ setup_env () {
   module purge
 
 accre_rversion=<%= context.version %>
-if [[ "$accre_rversion" == "r3.4.3test" ]]
+if [[ "$accre_rversion" == "r3.6.0.v1" ]]
 then
   export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/accre.internal.rstudio.3.6.0.v1.simg"
 elif [[ "$accre_rversion" == "r3.4.3test" ]]
