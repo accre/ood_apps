@@ -36,7 +36,7 @@ attributes:
     widget: select
     label: "Lmod Toolchain and Version of R to load"
     options:
-      - [ "GCC/8.2.0 R/3.6.0 (candidate)", "r.3.6.0.v1"]
+      - [ "GCC/8.2.0 R/3.6.0 (candidate)", "r3.6.0.v1"]
       - [ "RStudio server 3.4.3 (early evaluation)", "r3.4.3test"]
       - [ "RStudio server 3.5.3 (early evaluation)", "r3.5.3test"]
       - [ "RStudio server 3.6.0 + git (early evaluation)", "r3.6.0test"]
