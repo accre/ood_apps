@@ -2,47 +2,36 @@
 cluster: "accre"
 form:
   - bc_account
-  - bc_num_slots
+  - bc_queue
   - bc_num_hours
-  - bc_num_cores
   - bc_mem
+  - bc_num_cores
+  - bc_num_slots
+  - num_gpus
+  - gpu_arch
   - version
-  - use_cgw
-  - cgw
 attributes:
-  bc_account: null
+  bc_account:
+    label: "GPU Enabled Slurm Account"
   bc_queue: null
   bc_num_slots: null
   bc_num_hours:
     value: 48
-  bc_mem:
-    label: "Maximum Memory (GB)"
-    value: 4
-  bc_num_cores:
-    label: "Number of CPU Cores"
+  bc_mem: null
+  bc_num_cores: null
+  num_gpus:
     value: 1
+    label: "Number of requested GPU resources"
+  gpu_arch:
+    label: "GPU Architecture"
+    widget: select
+    options:
+      - ["Maxwell", "maxwell"]
+      - ["Pascal", "pascal"]
+      - ["Turing", "turing"]
   version:
     widget: select
     label: "Version of R to load"
     options:
-      - [ "RStudio server 3.4.3 (evaluation)", "r3.4.3"]
-      - [ "RStudio server 3.5.3 (evaluation)", "r3.5.3"]
-      - [ "RStudio server 3.6.0 + git (evaluation)", "r3.6.0"]
-      - [ "RStudio server 3.6.1 + git + java (evaluation)", "r3.6.1"]
-  use_cgw:
-    widget: check_box
-    checked_value: 1
-    unchecked_value: 0
-    label: "Use a Custom Gateway Node"
-    help: |
-      Check this box if you wish to run your job on a custom gateway
-      node instead of a standard compute node. You must be a member of
-      a group that has an OnDemand enabled custom gateway to use this
-      feature. If you wish to have OnDemand enabled on your group's
-      custom gateway, please open a helpdesk ticket. If this box is
-      checked, then you must enter the name of your custom gateway
-      above. 
-  cgw:
-    label: "Custom Gateway Node"
-    value: ""
-    help: "Leave blank unless using a custom gateway node"
+    options:
+      - [ "GCC/8.2.0 CUDA/10.1.105 R/3.6.0 (candidate)", "r3.6.0.gpu.v1"]

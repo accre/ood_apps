@@ -4,30 +4,11 @@
 setup_env () {
   module purge
 
-  # The rserver container module should set these environment variables:
-
-#export SINGULARITY_BINDPATH="/usr/local,/etc/profile.d/lmod.sh,/usr/share/lmod,/accre,/usr/lib64"
-export SINGULARITY_BINDPATH="/usr/local,/etc/profile.d/lmod.sh,/usr/share/lmod,/usr/lib64"
-
 accre_rversion=<%= context.version %>
-if [[ "$accre_rversion" == "r3.4.3" ]]
+if [[ "$accre_rversion" == "r3.6.0.gpu.v1" ]]
 then
-  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.4.3.simg"
-elif [[ "$accre_rversion" == "r3.5.3" ]]
-then
-  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.5.3.simg"
-elif [[ "$accre_rversion" == "r3.6.0" ]]
-then
-  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.6.0git.simg"
-elif [[ "$accre_rversion" == "r3.6.1" ]]
-then
-  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.6.1.accre.simg"
+  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/accre.internal.rstudio.gpu.3.6.0.v1.simg"
 fi
-
-#PATH="$PATH:/path/to/R:/path/to/rstudio/rserver"
- 
-  # SINGULARITY_BINDPATH is being used to bind all RStudio's requirements from
-  # the host into the guest, and so those values may vary between sites.
 
 }
 setup_env
@@ -69,7 +50,7 @@ set -x
 # Launch the RStudio Server
 echo "Starting up rserver..."
 
-singularity run -B "$TMPDIR:/tmp" "$RSTUDIO_SERVER_IMAGE" \
+singularity run --nv -B /accre,/cvmfs "$RSTUDIO_SERVER_IMAGE" \
  --www-port "${port}" \
  --auth-none 0 \
  --auth-pam-helper-path "${RSTUDIO_AUTH}" \
