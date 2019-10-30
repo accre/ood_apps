@@ -15,9 +15,18 @@ module purge
 # Unset the python path
 unset PYTHONPATH
 
-# Load the Lmod environment
+# Load the pre-selected or custom modules
+unset accre_jupyter_mc
+<%- if context.use_mc.to_i == 1 -%>
+accre_jupyter_mc=<%= context.mc %>
+<%- end -%>
+
 accre_cvmod=<%= context.version %>
-if [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python2" ]]
+
+if [ -n "${accre_jupyter_mc}" ]
+then 
+    module restore ${accre_jupyter_mc}
+elif [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python2" ]]
 then
     module load GCC/6.4.0-2.28 OpenMPI/2.1.1 CUDA/9.0.176 IPython/5.8.0-Python-2.7.14 \
                 h5py/2.7.1-Python-2.7.14 \
