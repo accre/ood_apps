@@ -37,12 +37,13 @@ attributes:
       distribution.
     options:
       - [ "Python/3.7.2 (GCC/8.2.0)", "GCC/8.2.0/Python3"]
+      - [ "Python/3.7.2 (Intel/2019.1.144)", "Intel/2019.1.144/Python3"]
       - [ "Python/3.6.3 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python3"]
-      - [ "Python/2.7.14 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python2"]
       - [ "Python/3.6.3 (Intel/2017.4.196)", "Intel/2017.4.196/Python3"]
-      - [ "Python/2.7.14 (Intel/2017.4.196)", "Intel/2017.4.196/Python2"]
       - [ "Python 3.6.3 / Anaconda 5.0.1", "Anaconda3/5.0.1"]
       - [ "Python 3.6.1 / Anaconda 4.4.0", "Anaconda3/4.4.0"]
+      - [ "Python/2.7.14 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python2"]
+      - [ "Python/2.7.14 (Intel/2017.4.196)", "Intel/2017.4.196/Python2"]
       - [ "Python 2.7.14 / Anaconda 5.0.1", "Anaconda2/5.0.1"]
       - [ "Python 2.7.13 / Anaconda 4.4.0", "Anaconda2/4.4.0"]
   use_venv:

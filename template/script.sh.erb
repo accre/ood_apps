@@ -31,6 +31,11 @@ then
     module load GCC/8.2.0 CUDA/10.1.105 OpenMPI/3.1.4 IPython/7.7.0-Python-3.7.2 \
                 SciPy-bundle/2019.03 \
                 matplotlib/3.0.3-Python-3.7.2
+elif [[ "$accre_cvmod" == "Intel/2019.1.144/Python3" ]]
+then
+    module load Intel/2019.1.144 CUDA/10.1.105 IntelMPI/2018.4.274 IPython/7.7.0-Python-3.7.2 \
+                SciPy-bundle/2019.03 \
+                matplotlib/3.0.3-Python-3.7.2
 elif [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python2" ]]
 then
     module load GCC/6.4.0-2.28 OpenMPI/2.1.1 CUDA/9.0.176 IPython/5.8.0-Python-2.7.14 \
