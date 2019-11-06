@@ -34,7 +34,8 @@ attributes:
     help: |
       Select the version of Python that you want to load based
       on either an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
-      distribution.
+      distribution. Note that versions previous to 3.7.2 may not work on the
+      Turing architecture nodes.
     options:
       - [ "Python/3.7.2 (GCC/8.2.0)", "GCC/8.2.0/Python3"]
       - [ "Python/3.7.2 (Intel/2019.1.144)", "Intel/2019.1.144/Python3"]
