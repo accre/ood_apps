@@ -5,21 +5,9 @@ setup_env () {
   module purge
 
 accre_rversion=<%= context.version %>
-if [[ "$accre_rversion" == "r3.6.0.v1" ]]
+if [[ "$accre_rversion" == "r3.6.0.v2" ]]
 then
-  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/accre.internal.rstudio.3.6.0.v1.simg"
-elif [[ "$accre_rversion" == "r3.4.3test" ]]
-then
-  export SINGULARITY_BINDPATH="/usr/local,/etc/profile.d/lmod.sh,/usr/share/lmod,/usr/lib64"
-  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.4.3.simg"
-elif [[ "$accre_rversion" == "r3.5.3test" ]]
-then
-  export SINGULARITY_BINDPATH="/usr/local,/etc/profile.d/lmod.sh,/usr/share/lmod,/usr/lib64"
-  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.5.3.simg"
-elif [[ "$accre_rversion" == "r3.6.0test" ]]
-then
-  export SINGULARITY_BINDPATH="/usr/local,/etc/profile.d/lmod.sh,/usr/share/lmod,/usr/lib64"
-  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/nickjer-singularity-rstudio-master-3.6.0git.simg"
+  export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.3.6.0.v2.sif"
 fi
 
 
@@ -56,16 +44,15 @@ chmod 700 "${RSESSION_WRAPPER_FILE}"
 # Set working directory to home directory
 cd "${HOME}"
 
-# Output debug info
-module list
-
 set -x
 # Launch the RStudio Server
-echo "Starting up rserver..."
+echo "Starting up rserver at $(date) ..."
 
-singularity run -B /accre,/cvmfs "$RSTUDIO_SERVER_IMAGE" \
+singularity run -B /accre,/cvmfs,/dors,/data,/scratch,/labs,/run/user,${ACCRE_RUNTIME_DIR}:/tmp "$RSTUDIO_SERVER_IMAGE" \
  --www-port "${port}" \
  --auth-none 0 \
  --auth-pam-helper-path "${RSTUDIO_AUTH}" \
  --auth-encrypt-password 0 \
  --rsession-path "${RSESSION_WRAPPER_FILE}"
+
+echo "Finished rserver at $(date), exit code $?"
