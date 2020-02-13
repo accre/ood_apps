@@ -1,10 +1,10 @@
 ---
-name: RStudio Server GPU (Evaluation)
+name: RStudio Server (GPU) (Beta)
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
 description: |
   This app will launch RStudio Server, an IDE for R, on a GPU accelerated compute node.
-  Note that this app is currently available for evaluation purposes only. Please
-  let us know if it is compatible with your workflow or if it is missing the
-  capability to interface to your setup by opening a helpdesk ticket.
+  Note that this app is still in beta release and may have outstanding known
+  issues. Please let us know if you think you are experiencing a problem
+  by opening a helpdesk ticket.
