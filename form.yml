@@ -33,4 +33,4 @@ attributes:
     widget: select
     label: "Version of R to load"
     options:
-      - [ "GCC/8.2.0 CUDA/10.1.105 R/3.6.0 (container v2)", "r3.6.0.gpu.v2"]
+      - [ "GCC/8.2.0 CUDA/10.1.105 R/3.6.0 (container v3)", "r3.6.0.gpu.v3"]

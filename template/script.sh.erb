@@ -8,9 +8,9 @@ accre_rversion=<%= context.version %>
 if [[ "$accre_rversion" == "r3.6.0.gpu.v1" ]]
 then
   export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/accre.internal.rstudio.gpu.3.6.0.v1.simg"
-elif [[ "$accre_rversion" == "r3.6.0.gpu.v2" ]]
+elif [[ "$accre_rversion" == "r3.6.0.gpu.v3" ]]
 then
-  export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.gpu.3.6.0.v2.sif"
+  export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.gpu.3.6.0.v3.sif"
 fi
 
 }
