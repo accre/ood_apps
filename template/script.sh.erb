@@ -5,9 +5,9 @@ setup_env () {
   module purge
 
 accre_rversion=<%= context.version %>
-if [[ "$accre_rversion" == "r3.6.0.v2" ]]
+if [[ "$accre_rversion" == "r3.6.0.v3" ]]
 then
-  export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.3.6.0.v2.sif"
+  export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.3.6.0.v3.sif"
 elif [[ "$accre_rversion" == "r3.6.0.eval" ]]
 then
   export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/nickjer-singularity-rstudio-master-3.6.0git.simg"
