@@ -13,7 +13,9 @@ description: |
 cluster: "accre"
 attributes:
   desktop: "xfce"
-  bc_account: null
+  bc_account:
+    label: "ACCRE Slurm Group"
+    help: "Leave blank to use your default slurm group"
   bc_queue: null
   bc_num_slots: null
   bc_num_hours:
@@ -64,10 +66,10 @@ form:
   - bc_num_cores
   - bc_num_slots
   - node_type
-  - bc_account
   - bc_queue
   - cpuarch
   - vnc_resolution
+  - bc_account
   - use_cgw
   - cgw
 submit: "submit/my_submit.yml.erb"
