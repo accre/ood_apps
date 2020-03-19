@@ -1,17 +1,19 @@
 ---
 cluster: "accre"
 form:
-  - bc_account
   - bc_num_slots
   - bc_num_hours
   - bc_num_cores
   - bc_mem
   - cpuarch
+  - bc_account
   - version
   - use_cgw
   - cgw
 attributes:
-  bc_account: null
+  bc_account:
+    label: "ACCRE Slurm Group"
+    help: "Leave blank to use your default slurm group"
   bc_queue: null
   bc_num_slots: null
   bc_num_hours:
