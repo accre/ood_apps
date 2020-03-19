@@ -11,6 +11,9 @@ script:
     - "--partition=cgw-<%= cgw %>"
     - "--account=cgw_<%= cgw.tr("-", "_") %>"
     - "--nodelist=<%= cgw %>"
+    <% elsif ! bc_account.strip.empty? %>
+    - "--account=<$= bc_account.strip %>"
+    - "--partition=production"
     <% else %>
     - "--partition=production"
     <% end %>
