@@ -17,8 +17,13 @@ script:
     <% else %>
     - "--partition=production"
     <% end %>
+    <% if use_cgw.to_i == 1 && cgw == "dougherty1" %>
+    - "--mem=90G"
+    - "--cpus-per-task=8"
+    <% else %>
     - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
     - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
+    <% end %>
     <% if cpuarch != "any" %>
     - "--constraint=<%= cpuarch %>"
     <% end %>
