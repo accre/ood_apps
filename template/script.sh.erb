@@ -100,7 +100,8 @@ echo "TIMING - Starting jupyter at: $(date)"
 set -x
 
 <%- if context.use_venv.to_i == 1 -%>
-if python --version 2>&1 | grep Anaconda ; then
+# Check if this is conda or standard python
+if python --version 2>&1 | grep -q Anaconda || which python 2>&1 | grep -q /accre/arch/easybuild/software/BinDist/Anaconda ; then
   source activate <%= context.venv %>
 else
   source <%= context.venv %>/bin/activate
