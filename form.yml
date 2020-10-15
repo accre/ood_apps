@@ -8,6 +8,7 @@ form:
   - cpuarch
   - bc_account
   - version
+  - exclusive
   - use_cgw
   - cgw
 attributes:
@@ -57,3 +58,21 @@ attributes:
     label: "Custom Gateway Node"
     value: ""
     help: "Leave blank unless using a custom gateway node"
+  exclusive:
+    widget: select
+    label: "Exclusive node reservation"
+    help: |
+      Select an option other than "Not Exclusive" in order to exclusively
+      reserve a sever in its entirety. This will give you access to all CPU
+      cores and memory available on the server, and your job will not be
+      subject to termination if it tries to exceed its memory quota, although
+      system-level out of memory errors may occur. The number of cores and
+      memory will vary depending on the node allocated. To specifically reserve
+      119GB or 246GB of memory, select one of those options. Note that a
+      whole node reservation may require a longer wait in the queue so please
+      make your request well ahead of the time you plan on using it.
+    options:
+      - [ "Not Exclusive", "no" ]
+      - [ "Any Node", "any" ]
+      - [ "119GB Memory", "119g" ]
+      - [ "246GB Memory", "246g" ]
