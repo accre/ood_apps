@@ -19,9 +19,18 @@ script:
     <% if use_cgw.to_i == 1 && cgw == "dougherty1" %>
     - "--mem=90G"
     - "--cpus-per-task=8"
-    <% else %>
+    <% elsif exclusive == "no" %>
     - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
     - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
+    <% else %>
+    - "--exclusive"
+      <% if exclusive == "119g" %>
+    - "--mem=119G"
+      <% elsif exclusive == "246g" %>
+    - "--mem=246G"
+      <% else %>
+    - "--mem=0"
+      <%end %>
     <% end %>
     <% if cpuarch != "any" %>
     - "--constraint=<%= cpuarch %>"

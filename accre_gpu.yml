@@ -17,6 +17,9 @@ attributes:
   num_gpus:
     value: 1
     label: "Number of requested GPU resources"
+    help: |
+        Note that requesting 4 GPU resources will give you an
+        exclusive reservation on the server.
   gpu_arch:
     label: "GPU Architecture"
     widget: select
