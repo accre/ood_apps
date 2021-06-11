@@ -49,7 +49,7 @@ attributes:
       - [ "Python 3.6.1 / Anaconda 4.4.0", "Anaconda3/4.4.0"]
       - [ "Python/2.7.14 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python2"]
       - [ "Python/2.7.14 (Intel/2017.4.196)", "Intel/2017.4.196/Python2"]
-      - [ "Python 2.1.16 / Anaconda 2019.10" "Anaconda2/2019.10"]
+      - [ "Python 2.1.16 / Anaconda 2019.10", "Anaconda2/2019.10"]
       - [ "Python 2.7.14 / Anaconda 5.0.1", "Anaconda2/5.0.1"]
       - [ "Python 2.7.13 / Anaconda 4.4.0", "Anaconda2/4.4.0"]
   use_venv:
