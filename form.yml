@@ -39,6 +39,7 @@ attributes:
     widget: select
     label: "Lmod Toolchain and Version of R to load"
     options:
+      - [ "GCC/10.2.0 R/4.0.5 (container v1)", "r4.0.5.v1"]
       - [ "GCC/8.2.0 R/3.6.0 (container v3)", "r3.6.0.v3"]
       - [ "Ubuntu 16.04 R 3.6.0 (evaluation)", "r3.6.0.eval"]
   use_cgw:
