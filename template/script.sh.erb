@@ -11,6 +11,9 @@ then
 elif [[ "$accre_rversion" == "r3.6.0.eval" ]]
 then
   export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/nickjer-singularity-rstudio-master-3.6.0git.simg"
+elif [[ "$accre_rversion" == "r4.0.5.v1" ]]
+then
+  export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.4.0.5.v1.sif"
 fi
 
 
