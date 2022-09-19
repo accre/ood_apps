@@ -1,0 +1,11 @@
+---
+batch_connect:
+  template: vnc
+  geometry: <%= vnc_resolution.blank? ? "1024x768" : vnc_resolution.strip %>
+script:
+  native:
+    - "-N"
+    - "<%= bc_num_slots.blank? ? 1 : bc_num_slots.to_i %>"
+    - "--reservation=boothviz"
+    - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
+    - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
