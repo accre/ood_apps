@@ -1,0 +1,10 @@
+---
+name: RStudio Server (GPU) (Beta)
+category: Interactive Apps
+subcategory: Servers
+role: batch_connect
+description: |
+  This app will launch RStudio Server, an IDE for R, on a GPU accelerated compute node.
+  Note that this app is still in beta release and may have outstanding known
+  issues. Please let us know if you think you are experiencing a problem
+  by opening a helpdesk ticket.

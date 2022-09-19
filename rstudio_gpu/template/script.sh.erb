@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# Load the required environment
+setup_env () {
+  module purge
+
+accre_rversion=<%= context.version %>
+if [[ "$accre_rversion" == "r3.6.0.gpu.v1" ]]
+then
+  export RSTUDIO_SERVER_IMAGE="/scratch/singularity-images/accre.internal.rstudio.gpu.3.6.0.v1.simg"
+elif [[ "$accre_rversion" == "r3.6.0.gpu.v3" ]]
+then
+  export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.gpu.3.6.0.v3.sif"
+fi
+
+}
+setup_env
+
+#
+# Start RStudio Server
+#
+
+# PAM auth helper used by RStudio
+export RSTUDIO_AUTH="${PWD}/bin/auth"
+
+# Generate an `rsession` wrapper script
+export RSESSION_WRAPPER_FILE="${PWD}/rsession.sh"
+(
+umask 077
+sed 's/^ \{2\}//' > "${RSESSION_WRAPPER_FILE}" << EOL
+  #!/usr/bin/env bash
+
+  # Log all output from this script
+  export RSESSION_LOG_FILE="${RSTUDIO_SINGULARITY_HOST_MNT}${PWD}/rsession.log"
+
+  exec &>>"\${RSESSION_LOG_FILE}"
+
+  # Launch the original command
+  echo "Launching rsession..."
+  set -x
+  exec rsession --r-libs-user "${R_LIBS_USER}" "\${@}"
+EOL
+)
+chmod 700 "${RSESSION_WRAPPER_FILE}"
+
+# Set working directory to home directory
+cd "${HOME}"
+
+set -x
+# Launch the RStudio Server
+echo "Starting up rserver at $(date) ..."
+
+singularity run --nv -B /accre,/cvmfs,/dors,/data,/scratch,/labs,/run/user,${ACCRE_RUNTIME_DIR}:/tmp "$RSTUDIO_SERVER_IMAGE" \
+ --www-port "${port}" \
+ --auth-none 0 \
+ --auth-pam-helper-path "${RSTUDIO_AUTH}" \
+ --auth-encrypt-password 0 \
+ --rsession-path "${RSESSION_WRAPPER_FILE}"
+
+echo "Finished rserver at $(date), exit code $?"

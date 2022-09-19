@@ -1,0 +1,39 @@
+---
+cluster: "accre"
+form:
+  - bc_account
+  - bc_queue
+  - bc_num_hours
+  - bc_mem
+  - bc_num_cores
+  - bc_num_slots
+  - num_gpus
+  - gpu_arch
+  - version
+attributes:
+  bc_account:
+    label: "GPU Enabled Slurm Account"
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  bc_mem: null
+  bc_num_cores: null
+  num_gpus:
+    value: 1
+    label: "Number of requested GPU resources"
+    help: |
+        Note that requesting 4 GPU resources will give you an
+        exclusive reservation on the server.
+  gpu_arch:
+    label: "GPU Architecture"
+    widget: select
+    options:
+      - ["Maxwell", "maxwell"]
+      - ["Pascal", "pascal"]
+      - ["Turing", "turing"]
+  version:
+    widget: select
+    label: "Version of R to load"
+    options:
+      - [ "GCC/8.2.0 CUDA/10.1.105 R/3.6.0 (container v3)", "r3.6.0.gpu.v3"]
