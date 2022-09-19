@@ -1,0 +1,155 @@
+# Batch Connect app configuration file
+#
+---
+
+cluster: "accre"
+
+attributes:
+  # TODO: Check and remove this line below
+  modules: "Anaconda3"
+
+  # Any extra command line arguments to feed to the `jupyter notebook ...`
+  # command that launches the Jupyter notebook within the batch job
+  extra_jupyter_args: ""
+  bc_account:
+    label: "ACCRE Slurm Group"
+    help: "Leave blank to use your default slurm group"
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  bc_mem:
+    label: "Maximum Memory (GB)"
+    value: 4
+  bc_num_cores:
+    label: "Number of CPU Cores"
+    value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
+      - [ "Sandy Bridge", "sandybridge" ]
+      - [ "Westmere", "westmere" ]
+  notebook_dir:
+    label: "Working Directory" 
+    help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
+    widget: "text_field"
+    value: "${HOME}"
+  version:
+    widget: select
+    label: "Python version"
+    help: |
+      Select the version of Python that you want to load based
+      on either an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
+      distribution.
+    options:
+      - [ "Python/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python3"]
+      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python2"]
+      - [ "Python/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python3"]
+      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python2"]
+      - [ "Python 3.9.12 / Anaconda 2022.05", "Anaconda3/2022.05"]
+      - [ "Python 3.9.7 / Anaconda 2021.11", "Anaconda3/2021.11"]
+      - [ "Python 3.8.8 / Anaconda 2021.05", "Anaconda3/2021.05"]
+      - [ "Python 3.7.4 / Anaconda 2019.10", "Anaconda3/2019.10"]
+      - [ "Python 3.6.3 / Anaconda 5.0.1", "Anaconda3/5.0.1"]
+      - [ "Python 3.6.1 / Anaconda 4.4.0", "Anaconda3/4.4.0"]
+      - [ "Python 2.7.16 / Anaconda 2019.10", "Anaconda2/2019.10"]
+      - [ "Python 2.7.14 / Anaconda 5.0.1", "Anaconda2/5.0.1"]
+      - [ "Python 2.7.13 / Anaconda 4.4.0", "Anaconda2/4.4.0"]
+  use_venv:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Virtual Environment"
+    help: |
+      Check this box if you wish to load a python or conda virtual environment.
+  venv:
+    widget: "text_field"
+    label: "Python or Conda Virtual Environment"
+    help: |
+      Leave blank unless using a python or conda virtual environment. For
+      a python virtual environment, you must specify the absolute path.
+      For a python virtual environment, any packages built in the environment
+      will take precedence over those from the Lmod modules. Any virtual
+      environment used should have been built from the same Python or Anaconda
+      Lmod module selected above.
+    value: ""
+  use_mc:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use Custom Module Collection"
+    help: |
+      Check this box if you wish to load a module collection instead of using
+      Lmod modules specified by the python version menu above.
+  mc:
+    widget: "text_field"
+    label: "Custom Module Collection"
+    help: |
+      Leave blank unless using your own Lmod module collection instead of a
+      preselected set of modules determined by the "Python version" menu above.
+      Note that if you are using your own collection of modules, this collection
+      must result in a valid jupyter executable in your path or the app will
+      not function. If set, this field should be the name of your collection
+      specified in the "module save" command. If a custom module collection is
+      used, then the "Python version" selection will have no effect.
+    value: ""
+  use_cgw:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use a Custom Gateway Node"
+    help: |
+      Check this box if you wish to run your job on a custom gateway
+      node instead of a standard compute node. You must be a member of
+      a group that has an OnDemand enabled custom gateway to use this
+      feature. If you wish to have OnDemand enabled on your group's
+      custom gateway, please open a helpdesk ticket. If this box is
+      checked, then you must enter the name of your custom gateway
+      below. 
+  cgw:
+    label: "Custom Gateway Node"
+    value: "N/A"
+    help: "Leave blank unless using a custom gateway node"
+  exclusive:
+    widget: select
+    label: "Exclusive node reservation"
+    help: |
+      Select an option other than "Not Exclusive" in order to exclusively
+      reserve a sever in its entirety. This will give you access to all CPU
+      cores and memory available on the server, and your job will not be
+      subject to termination if it tries to exceed its memory quota, although
+      system-level out of memory errors may occur. The number of cores and
+      memory will vary depending on the node allocated. To specifically reserve
+      119GB or 246GB of memory, select one of those options. Note that a
+      whole node reservation may require a longer wait in the queue so please
+      make your request well ahead of the time you plan on using it.
+    options:
+      - [ "Not Exclusive", "no" ]
+      - [ "Any Node", "any" ]
+      - [ "119GB Memory", "119g" ]
+      - [ "246GB Memory", "246g" ]
+
+form:
+  - modules
+  - extra_jupyter_args
+  - bc_queue
+  - bc_num_hours
+  - bc_mem
+  - bc_num_cores
+  - bc_num_slots
+  - cpuarch
+  - notebook_dir
+  - version
+  - bc_account
+  - use_venv
+  - venv
+  - use_mc
+  - mc
+  - exclusive
+  - use_cgw
+  - cgw

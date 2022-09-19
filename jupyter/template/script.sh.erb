@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+
+# Benchmark info
+echo "TIMING - Starting main script at: $(date)"
+
+# Set working directory to home directory
+cd "${HOME}"
+
+# Purge the module environment to avoid conflicts
+module purge
+# Unset the python path
+unset PYTHONPATH
+
+# Load the pre-selected or custom modules
+unset accre_jupyter_mc
+<%- if context.use_mc.to_i == 1 -%>
+accre_jupyter_mc=<%= context.mc %>
+<%- end -%>
+
+accre_cvmod=<%= context.version %>
+
+if [ -n "${accre_jupyter_mc}" ]
+then 
+    module restore ${accre_jupyter_mc}
+elif [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python2" ]]
+then
+    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 IRkernel/0.8.15-Python-2.7.14 \
+                Biopython/1.70-Python-2.7.14 \
+                Boost/1.65.1-Python-2.7.14 \
+                h5py/2.7.1-Python-2.7.14 \
+                mpi4py/1.3.1-Python-2.7.14 \
+                scikit-learn/0.19.1-Python-2.7.14 \
+                scipy/0.19.1-Python-2.7.14 \
+                Seaborn/0.9.0-Python-2.7.14 \
+                TensorFlow/1.8.0-Python-2.7.14 \
+                R-bundle-Bioconductor/3.6 \
+                octave_kernel/0.28.4-Python-2.7.14
+elif [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python3" ]]
+then
+    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 IPython/5.8.0-Python-3.6.3 \
+                Biopython/1.70-Python-3.6.3 \
+                Boost/1.65.1-Python-3.6.3 \
+                h5py/2.7.1-Python-3.6.3 \
+                mpi4py/1.3.1-Python-3.6.3 \
+                scikit-learn/0.19.1-Python-3.6.3 \
+                scipy/0.19.1-Python-3.6.3 \
+                Seaborn/0.9.0-Python-3.6.3 \
+                TensorFlow/1.8.0-Python-3.6.3 \
+                pandas/0.18.1-Python-3.6.3 \
+                matplotlib/2.1.0-Python-3.6.3 \
+                numpy/1.13.1-Python-3.6.3 \
+                octave_kernel/0.28.4-Python-3.6.3
+elif [[ "$accre_cvmod" == "Intel/2017.4.196/Python2" ]]
+then
+    module load Intel/2017.4.196 IntelMPI/2017.3.196 IRkernel/0.8.15-Python-2.7.14 \
+                Biopython/1.70-Python-2.7.14 \
+                Boost/1.65.1-Python-2.7.14 \
+                h5py/2.7.1-Python-2.7.14 \
+                mpi4py/1.3.1-Python-2.7.14 \
+                scikit-learn/0.19.1-Python-2.7.14 \
+                scipy/0.19.1-Python-2.7.14 \
+                Seaborn/0.9.0-Python-2.7.14 \
+                R-bundle-Bioconductor/3.6 \
+                octave_kernel/0.28.4-Python-2.7.14
+elif [[ "$accre_cvmod" == "Intel/2017.4.196/Python3" ]]
+then
+    module load Intel/2017.4.196 IntelMPI/2017.3.196 IPython/5.8.0-Python-3.6.3 \
+                Biopython/1.70-Python-3.6.3 \
+                Boost/1.65.1-Python-3.6.3 \
+                h5py/2.7.1-Python-3.6.3 \
+                mpi4py/1.3.1-Python-3.6.3 \
+                scikit-learn/0.19.1-Python-3.6.3 \
+                scipy/0.19.1-Python-3.6.3 \
+                Seaborn/0.9.0-Python-3.6.3 \
+                pandas/0.18.1-Python-3.6.3 \
+                matplotlib/2.1.0-Python-3.6.3 \
+                numpy/1.13.1-Python-3.6.3 \
+                octave_kernel/0.28.4-Python-3.6.3
+else
+    module load $accre_cvmod
+fi
+
+# List loaded modules
+module list
+
+# Benchmark info
+echo "TIMING - Starting jupyter at: $(date)"
+
+# Launch the Jupyter Notebook Server
+set -x
+
+<%- if context.use_venv.to_i == 1 -%>
+# Check if this is conda or standard python
+if python --version 2>&1 | grep -q Anaconda || which python 2>&1 | grep -q /accre/arch/easybuild/software/BinDist/Anaconda ; then
+  source activate <%= context.venv %>
+else
+  source <%= context.venv %>/bin/activate
+  echo "give the venv priority over Lmod python packages"
+  export PYTHONPATH=$(python -c 'import sys; print(sys.path[-1])'):${PYTHONPATH}
+fi
+
+<%- end -%>
+
+unset XDG_RUNTIME_DIR
+jupyter notebook --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=<%= context.notebook_dir %> <%= context.extra_jupyter_args %>
