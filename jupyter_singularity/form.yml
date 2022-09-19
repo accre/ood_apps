@@ -89,6 +89,7 @@ form:
   - bc_num_cores
   - bc_num_slots
   - cpuarch
+  - sg
   - notebook_dir
   - bc_account
   - exclusive
