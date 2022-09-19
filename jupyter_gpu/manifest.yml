@@ -1,0 +1,11 @@
+---
+name: Jupyter Notebook (GPU)
+category: Interactive Apps
+subcategory: Servers
+role: batch_connect
+description: |
+  This app will launch a Jupyter Notebook server on a production GPU node.
+
+  The Jupyter Notebook can be loaded either
+  from an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
+  python distribution. The Tensorflow library is available with the GCC toolchain.
