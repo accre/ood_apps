@@ -1,0 +1,29 @@
+---
+batch_connect:
+  template: vnc
+  geometry: <%= vnc_resolution.blank? ? "1024x768" : vnc_resolution.strip %>
+script:
+  native:
+    - "-N"
+    - "<%= bc_num_slots.blank? ? 1 : bc_num_slots.to_i %>"
+    - "--partition=<%=gpu_arch.strip %>"
+<% if gpu_arch == "pascal" -%>
+    - "--mem=<%= 60 * num_gpus.to_i %>G" 
+    - "--cpus-per-task=<%= 2 * num_gpus.to_i %>"
+<% end %>
+<% if gpu_arch == "maxwell" -%>
+    - "--mem=<%= 29 * num_gpus.to_i %>G" 
+    - "--cpus-per-task=<%= 3 * num_gpus.to_i %>"
+<% end %>
+<% if gpu_arch == "turing" -%>
+    - "--mem=<%= 90 * num_gpus.to_i %>G" 
+    - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
+<% end %>
+    - "--account=<%= bc_account.strip %>"
+    - "--gres=gpu:<%= num_gpus.to_i %>"
+<% if (bc_account.strip == "accre_guests_acc") && (bc_num_hours.to_i > 4) -%>
+    - "--time=04:00:00"
+<% end %>
+<% if num_gpus.to_i == 4 %>
+    - "--exclusive"
+<% end %>
