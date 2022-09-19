@@ -1,0 +1,16 @@
+---
+name: Singularity Jupyter Notebook
+category: Interactive Apps
+subcategory: Servers
+role: batch_connect
+description: |
+  This app will launch a Jupyter Notebook server on a production 
+  compute node using a user-provided Singularity Container.
+
+  The container provided must be able to execute "jupyter notebook"
+  in order for this app to function. Note that ${HOME}/.local will
+  be bind-mounted to a temporary directory so that user installed
+  kernels outside of the container will not interfere with those
+  installed inside the container. As a result of this, deleting
+  notebooks may not be possible from the jupyter interface with
+  this app.

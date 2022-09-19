@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Benchmark info
+echo "TIMING - Starting main script at: $(date)"
+
+# Set working directory to home directory
+cd "${HOME}"
+
+# Purge the module environment to avoid conflicts
+module purge
+# Unset the python path
+unset PYTHONPATH
+
+accre_notebook_dir=<%= context.notebook_dir %>
+if [ -z ${accre_notebook_dir} ]; then
+    accre_notebook_dir=${home}
+fi
+
+# Benchmark info
+echo "TIMING - Starting jupyter at: $(date)"
+
+# Launch the Jupyter Notebook Server
+set -x
+unset XDG_RUNTIME_DIR
+mkdir -p ${HOME}/.local
+mkdir -p ${ACCRE_RUNTIME_DIR}/.local
+singularity exec -B ${ACCRE_RUNTIME_DIR}/.local:${HOME}/.local <%= context.sg %> jupyter notebook --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=${accre_notebook_dir} <%= context.extra_jupyter_args %>
