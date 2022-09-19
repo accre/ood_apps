@@ -1,5 +1,5 @@
 ---
-name: Singularity Jupyter Notebook
+name: Singularity Jupyter Notebook (GPU) (Beta)
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
