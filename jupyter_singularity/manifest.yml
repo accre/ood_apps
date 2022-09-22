@@ -1,5 +1,5 @@
 ---
-name: Singularity Jupyter Notebook (Beta)
+name: Singularity Jupyter Notebook (Alpha)
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
