@@ -8,6 +8,7 @@ description: |
   GPU node using a user-provided Singularity Container.
 
   The container provided must be able to execute "jupyter notebook"
+  or "jupyter lab"
   in order for this app to function. Note that ${HOME}/.local will
   be bind-mounted to a temporary directory so that user installed
   kernels outside of the container will not interfere with those

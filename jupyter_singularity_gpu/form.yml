@@ -34,6 +34,17 @@ attributes:
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
     widget: "text_field"
     value: "${HOME}"
+  jupyter_command:
+    widget: select
+    label: "Jupyter Server Command"
+    help: |
+      Select either jupyter notebook to use the older user interface or
+      jupyter lab to use the next-generation user interface that includes
+      notebooks. Note that your container must be able to execute the
+      selected command.
+    options:
+      - [ "jupyter notebook", "notebook" ]
+      - [ "jupyter lab", "lab" ]
   sg:
     widget: "text_field"
     label: "Singularity Container Path"
@@ -56,3 +67,4 @@ form:
   - gpu_arch
   - sg
   - notebook_dir
+  - jupyter_command
