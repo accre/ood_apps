@@ -16,6 +16,9 @@ script:
     - "--cpus-per-task=<%= 3 * num_gpus.to_i %>"
 <% end %>
 <% if gpu_arch == "turing" -%>
+    <% if csbtmp_checkbox == "true" -%>
+        - "--constraint=csbtmp"
+    <% end %>
     - "--mem=<%= 90 * num_gpus.to_i %>G" 
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
 <% end %>

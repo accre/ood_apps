@@ -27,6 +27,12 @@ attributes:
       - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
+      - ["Ampere-A6000x4", "a6000x4"]
+      - ["Ampere-A4000x4", "a4000x4"]
+      - ["Ampere-A4000x8", "a4000x8"]
+  csbtmp_checkbox:
+    label: "/csbtmp"
+    widget: check_box
   vnc_resolution:
      required: true
      widget: "resolution_field"
@@ -45,4 +51,5 @@ form:
   - num_gpus
   - gpu_arch
   - vnc_resolution
+  - csbtmp_checkbox
 submit: "submit/gpu_submit.yml.erb"
