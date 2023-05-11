@@ -33,6 +33,8 @@ attributes:
   csbtmp_checkbox:
     label: "/csbtmp"
     widget: check_box
+    help: |
+        Applicable to Turing partition ONLY
   vnc_resolution:
      required: true
      widget: "resolution_field"
