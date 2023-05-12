@@ -39,6 +39,6 @@ script:
 <% if (bc_account.strip == "accre_guests_acc") && (bc_num_hours.to_i > 4) -%>
     - "--time=04:00:00"
 <% end %>
-<% if (num_gpus.to_i == 8 && gpu_arch == "Ampere-A4000x8") || (num_gpus.to_i == 4 && gpu_arch != "Ampere-A4000x8") %>
+<% if (num_gpus.to_i == 8 && gpu_arch == "a4000x8") || (num_gpus.to_i == 4 && gpu_arch != "a4000x8") %>
     - "--exclusive"
 <% end %>
