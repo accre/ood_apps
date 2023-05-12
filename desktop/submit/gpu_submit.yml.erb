@@ -16,22 +16,22 @@ script:
     - "--cpus-per-task=<%= 3 * num_gpus.to_i %>"
 <% end %>
 <% if gpu_arch == "turing" -%>
-    <% if csbtmp_checkbox == "true" -%>
+    <% if csbtmp_checkbox == true -%>
         - "--constraint=csbtmp"
     <% end %>
     - "--mem=<%= 90 * num_gpus.to_i %>G" 
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
 <% end %>
-<% if gpu_arch == "Ampere-A6000x4" -%>
+<% if gpu_arch == "a6000x4" -%>
     - "--mem=<%= 120 * num_gpus.to_i %>G"
     - "--cpus-per-task=<%= 16 * num_gpus.to_i %>"
 <% end %>
-<% if gpu_arch == "Ampere-A4000x4" -%>
+<% if gpu_arch == "a4000x4" -%>
     - "--mem=<%= 90 * num_gpus.to_i %>G"
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
 <% end %>
-<% if gpu_arch == "Ampere-A4000x8" -%>
-    - "--mem=<%= 32 * num_gpus.to_i %>G"
+<% if gpu_arch == "a4000x8" -%>
+    - "--mem=<%= 30 * num_gpus.to_i %>G"
     - "--cpus-per-task=<%= 4 * num_gpus.to_i %>"
 <% end %>
     - "--account=<%= bc_account.strip %>"
