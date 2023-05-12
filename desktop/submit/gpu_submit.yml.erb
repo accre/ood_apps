@@ -31,7 +31,7 @@ script:
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
 <% end %>
 <% if gpu_arch == "Ampere-A4000x8" -%>
-    - "--mem=<%= 60 * num_gpus.to_i %>G"
+    - "--mem=<%= 32 * num_gpus.to_i %>G"
     - "--cpus-per-task=<%= 4 * num_gpus.to_i %>"
 <% end %>
     - "--account=<%= bc_account.strip %>"
