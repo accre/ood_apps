@@ -22,6 +22,22 @@ accre_cvmod=<%= context.version %>
 if [ -n "${accre_jupyter_mc}" ]
 then 
     module restore ${accre_jupyter_mc}
+elif [[ "$accre_cvmod" == "GCC/10.2.0/Python3" ]]
+then
+    module load GCC/10.2.0 OpenMPI/4.0.5 IPython/7.18.1 \
+                Boost/1.74.0 \
+                scikit-learn/0.23.2 \
+                SciPy-bundle/2020.11 \
+                matplotlib/3.3.3 
+elif [[ "$accre_cvmod" == "GCC/8.2.0/Python3" ]]
+then
+    module load GCC/8.2.0 OpenMPI/3.1.4 IPython/7.7.0-Python-3.7.2 \
+                Biopython/1.74 \
+                Boost/1.70.0 \
+                scikit-learn/0.20.3 \
+                SciPy-bundle/2019.03 \
+                Seaborn/0.9.0-Python-3.7.2 \
+                matplotlib/3.0.3-Python-3.7.2 
 elif [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python2" ]]
 then
     module load GCC/6.4.0-2.28 OpenMPI/2.1.1 IRkernel/0.8.15-Python-2.7.14 \
