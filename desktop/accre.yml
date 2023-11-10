@@ -36,6 +36,7 @@ attributes:
       - [ "Haswell", "haswell" ]
       - [ "Sandy Bridge", "sandybridge" ]
       - [ "Westmere", "westmere" ]
+      - [ "Zen", "zen" ]
   vnc_resolution:
      required: true
      widget: "resolution_field"
