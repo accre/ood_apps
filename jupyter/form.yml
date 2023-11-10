@@ -34,6 +34,7 @@ attributes:
       - [ "Haswell", "haswell" ]
       - [ "Sandy Bridge", "sandybridge" ]
       - [ "Westmere", "westmere" ]
+      - [ "Zen", "zen" ]
   notebook_dir:
     label: "Working Directory" 
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
