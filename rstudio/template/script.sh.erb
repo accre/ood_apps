@@ -4,6 +4,9 @@
 setup_env () {
   module purge
 
+<%- if context.use_custom_container.to_i == 1 -%>
+RSTUDIO_SERVER_IMAGE=<%= context.custom_container %>
+<%- else -%>
 accre_rversion=<%= context.version %>
 if [[ "$accre_rversion" == "r3.6.0.v3" ]]
 then
@@ -15,7 +18,7 @@ elif [[ "$accre_rversion" == "r4.0.5.v1" ]]
 then
   export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.4.0.5.v1.sif"
 fi
-
+<%- end -%>
 
 }
 setup_env
