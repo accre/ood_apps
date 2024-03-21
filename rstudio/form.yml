@@ -11,6 +11,8 @@ form:
   - exclusive
   - use_cgw
   - cgw
+  - use_custom_container
+  - custom_container
 attributes:
   bc_account:
     label: "ACCRE Slurm Group"
@@ -78,3 +80,20 @@ attributes:
       - [ "Any Node", "any" ]
       - [ "119GB Memory", "119g" ]
       - [ "246GB Memory", "246g" ]
+  use_custom_container:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use your own custom Container"
+    help: |
+      Check this box if you wish to run your job using a custom singularity
+      container that you provide rather than one available in the list above.
+      Your container must contain or have access to a working R environment
+      and RStudio installation and the resssion executable must be in the user path.
+  custom_container:
+    label: "Custom Container"
+    value: ""
+    help: |
+      Leave blank unless using a custom Singularity container. If using a custom
+      singularity container, enter the absolute path to your container
+      file which must be accessible by the ACCRE compute nodes.
