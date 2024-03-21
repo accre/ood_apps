@@ -11,6 +11,9 @@ then
 elif [[ "$accre_rversion" == "r3.6.0.gpu.v3" ]]
 then
   export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.gpu.3.6.0.v3.sif"
+elif [[ "$accre_rversion" == "r4.2.1.gpu.v1" ]]
+then
+  export RSTUDIO_SERVER_IMAGE="/accre/common/singularity/accre.internal.rstudio.gpu.4.2.1.v1.sif"
 fi
 
 }
