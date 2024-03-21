@@ -29,11 +29,12 @@ attributes:
     label: "GPU Architecture"
     widget: select
     options:
-      - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
+      - ["A6000x4", "a6000x4"]
   version:
     widget: select
     label: "Version of R to load"
     options:
+      - [ "GCC/11.3.0 CUDA/11.7 R/4.2.1 (container v1)", "r4.2.1.gpu.v1"]
       - [ "GCC/8.2.0 CUDA/10.1.105 R/3.6.0 (container v3)", "r3.6.0.gpu.v3"]
