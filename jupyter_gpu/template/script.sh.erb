@@ -28,7 +28,8 @@ then
     module restore ${accre_jupyter_mc}
 elif [[ "$accre_cvmod" == "GCC/11.3.0/Python3" ]]
 then
-    module load GCC/11.3.0 OpenMPI/4.1.4 CUDA/11.7.0 IPython/8.5.0 Boost/1.79.0 SciPy-bundle/2022.05 matplotlib/3.5.2  texlive/20230313
+    module load GCC/11.3.0 OpenMPI/4.1.4 CUDA/11.7.0 IPython/8.5.0 JupyterHub/3.0.0 \
+          Boost/1.79.0 SciPy-bundle/2022.05 matplotlib/3.5.2 texlive/20230313 
 elif [[ "$accre_cvmod" == "GCC/10.2.0/Python3" ]]
 then
     module load GCC/10.2.0 CUDA/11.1.1 OpenMPI/4.0.5 IPython/7.18.1 SciPy-bundle/2020.11 
