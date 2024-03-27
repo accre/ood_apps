@@ -48,12 +48,14 @@ attributes:
       on either an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
       distribution.
     options:
+      - [ "Python/3.10.4 (GCC)", "GCC/11.3.0/Python3"]
       - [ "Python/3.8.6 (GCC)", "GCC/10.2.0/Python3"]
       - [ "Python/3.7.2 (GCC)", "GCC/8.2.0/Python3"]
       - [ "Python/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python3"]
       - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python2"]
       - [ "Python/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python3"]
       - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python2"]
+      - [ "Python 3.10.9 / Anaconda 2023.03", "Anaconda3/2023.03-1"]
       - [ "Python 3.9.12 / Anaconda 2022.05", "Anaconda3/2022.05"]
       - [ "Python 3.9.7 / Anaconda 2021.11", "Anaconda3/2021.11"]
       - [ "Python 3.8.8 / Anaconda 2021.05", "Anaconda3/2021.05"]

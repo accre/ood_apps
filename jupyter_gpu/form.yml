@@ -23,7 +23,7 @@ attributes:
     label: "GPU Architecture"
     widget: select
     options:
-      - ["Maxwell", "maxwell"]
+      - ["A6000x4", "a6000x4"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
   notebook_dir:
@@ -40,6 +40,7 @@ attributes:
       distribution. Note that versions previous to 3.7.2 may not work on the
       Turing architecture nodes.
     options:
+      - [ "Python/3.10.4 (GCC)", "GCC/11.3.0/Python3"]
       - [ "Python/3.8.6 (GCC/10.2.0)", "GCC/10.2.0/Python3"]
       - [ "Python/3.7.2 (GCC/8.2.0)", "GCC/8.2.0/Python3"]
       - [ "Python/3.7.2 (Intel/2019.1.144)", "Intel/2019.1.144/Python3"]
