@@ -11,6 +11,8 @@ form:
   - exclusive
   - use_cgw
   - cgw
+  - use_reservation
+  - reservation
 attributes:
   bc_account:
     label: "ACCRE Slurm Group"
@@ -60,6 +62,16 @@ attributes:
     label: "Custom Gateway Node"
     value: ""
     help: "Leave blank unless using a custom gateway node"
+  use_reservation:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use a slurm reservation"
+    help: "Check this box if you wish to use a slurm reservation"
+  reservation:
+    label: "Slurm Reservation Name"
+    value: ""
+    help: "Leave blank unless using a slurm reservation"
   exclusive:
     widget: select
     label: "Exclusive node reservation"

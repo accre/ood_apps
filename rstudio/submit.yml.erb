@@ -36,3 +36,6 @@ script:
     <% if cpuarch != "any" %>
     - "--constraint=<%= cpuarch %>"
     <% end %>
+    <% if use_reservation.to_i == 1 %>
+    - "--reservation=<%= reservation.strip %>"
+    <% end %>
