@@ -19,6 +19,10 @@ script:
     - "--mem=<%= 90 * num_gpus.to_i %>G" 
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
 <% end %>
+<% if gpu_arch == "a6000x4" -%>
+    - "--mem=<%= 45 * num_gpus.to_i %>G" 
+    - "--cpus-per-task=<%= 16 * num_gpus.to_i %>"
+<% end %>
     - "--account=<%= bc_account.strip %>"
     - "--gres=gpu:<%= num_gpus.to_i %>"
 <% if (bc_account.strip == "accre_guests_acc") && (bc_num_hours.to_i > 4) -%>
