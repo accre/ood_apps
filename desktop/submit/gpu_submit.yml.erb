@@ -19,7 +19,7 @@ script:
     - "--mem=<%= 90 * num_gpus.to_i %>G" 
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
 <% end %>
-<% if gpu_arch == "a6000x4" -%>
+<% if gpu_arch == "a6000x2" -%>
     - "--mem=<%= 45 * num_gpus.to_i %>G" 
     - "--cpus-per-task=<%= 16 * num_gpus.to_i %>"
 <% end %>
