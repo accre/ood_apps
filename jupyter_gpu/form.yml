@@ -23,6 +23,7 @@ attributes:
     label: "GPU Architecture"
     widget: select
     options:
+      - ["A6000x2", "a6000x2"]
       - ["A6000x4", "a6000x4"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
