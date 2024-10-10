@@ -25,6 +25,7 @@ attributes:
     options:
       - ["A6000x2", "a6000x2"]
       - ["A6000x4", "a6000x4"]
+      - ["DGX", "dgx"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
   notebook_dir:

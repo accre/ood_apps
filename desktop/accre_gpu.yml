@@ -18,8 +18,8 @@ attributes:
     value: 1
     label: "Number of requested GPU resources"
     help: |
-        Note that requesting 4 GPU resources will give you an
-        exclusive reservation on the server.
+        Note that requesting 4 GPU resources (or 8 in dgx partition)
+        will give you an exclusive reservation on the server.
   gpu_arch:
     label: "GPU Architecture"
     widget: select
@@ -28,6 +28,8 @@ attributes:
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
       - ["A6000x2", "a6000x2"]
+      - ["A6000x4", "a6000x4"]
+      - ["DGX", "dgx"]
   vnc_resolution:
      required: true
      widget: "resolution_field"

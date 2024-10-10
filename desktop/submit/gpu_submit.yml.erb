@@ -19,9 +19,17 @@ script:
     - "--mem=<%= 90 * num_gpus.to_i %>G" 
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
 <% end %>
+<% if gpu_arch == "a6000x4" -%>
+    - "--mem=<%= 125 * num_gpus.to_i %>G" 
+    - "--cpus-per-task=<%= 16 * num_gpus.to_i %>"
+<% end %>
 <% if gpu_arch == "a6000x2" -%>
     - "--mem=<%= 58 * num_gpus.to_i %>G" 
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
+<% end %>
+<% if gpu_arch == "dgx" -%>
+    - "--mem=<%= 120 * num_gpus.to_i %>G" 
+    - "--cpus-per-task=<%= 16 * num_gpus.to_i %>"
 <% end %>
     - "--account=<%= bc_account.strip %>"
     - "--gres=gpu:<%= num_gpus.to_i %>"
