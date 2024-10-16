@@ -1,3 +1,7 @@
+<%-
+  default_partition = OodAppkit.clusters[:accre].custom_config[:default_partition]
+-%>
+<%# ^^^ load value from the custom: section of the clusters.d/accre.yml config %>
 ---
 batch_connect:
   template: vnc
@@ -12,9 +16,9 @@ script:
     - "--nodelist=<%= cgw %>"
     <% elsif ! bc_account.strip.empty? %>
     - "--account=<%= bc_account.strip %>"
-    - "--partition=production"    
+    - "--partition=<%= default_partition %>"    
     <% else %>
-    - "--partition=production"
+    - "--partition=<%= default_partition %>"
     <% end %>
     <% if use_cgw.to_i == 1 && cgw == "dougherty1" %>
     - "--mem=90G"
