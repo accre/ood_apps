@@ -12,9 +12,9 @@ script:
     - "--nodelist=<%= cgw %>"
     <% elsif ! bc_account.strip.empty? %>
     - "--account=<%= bc_account.strip %>"
-    - "--partition=production"    
+    - "--partition=batch"
     <% else %>
-    - "--partition=production"
+    - "--partition=batch"
     <% end %>
     <% if use_cgw.to_i == 1 && cgw == "dougherty1" %>
     - "--mem=90G"

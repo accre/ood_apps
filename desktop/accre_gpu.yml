@@ -27,7 +27,10 @@ attributes:
       - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
-      - ["A6000x2", "a6000x2"]
+      - ["A6000", "a6000"]
+      - ["A100", "a100"]
+      - ["DGX-A100-40GB", "dgx40"]
+      - ["DGX-A100-80GB", "dgx80"]
   vnc_resolution:
      required: true
      widget: "resolution_field"
