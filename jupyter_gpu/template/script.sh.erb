@@ -11,7 +11,7 @@ cd "${HOME}"
 #
 
 # Purge the module environment to avoid conflicts
-module purge
+#module purge
 # Unset the python path
 unset PYTHONPATH
 
@@ -23,19 +23,18 @@ accre_jupyter_mc=<%= context.mc %>
 
 accre_cvmod=<%= context.version %>
 
-if [ -n "${accre_jupyter_mc}" ]
-then 
+if [ -n "${accre_jupyter_mc}" ]; then
     module restore ${accre_jupyter_mc}
-elif [[ "$accre_cvmod" == "Python/3.10.2" ]]
+elif [[ "$accre_cvmod" == "Python/3.10.2" ]]; then
     source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.3.12/bin/activate
-elif [[ "$accre_cvmod" == "Python/3.11.5" ]]
-    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.3.13/bin/activate
+elif [[ "$accre_cvmod" == "Python/3.9.6" ]]; then
+    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.2.0/bin/activate
 else
-    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.3.13/bin/activate
+    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.3.12/bin/activate
 fi
 
 # List loaded modules
-module list
+#module list
 
 # Benchmark info
 echo "TIMING - Starting jupyter at: $(date)"
