@@ -23,10 +23,13 @@ attributes:
     label: "GPU Architecture"
     widget: select
     options:
-      - ["A6000x2", "a6000x2"]
-      - ["A6000x4", "a6000x4"]
+      - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
+      - ["A6000", "a6000"]
+      - ["A100", "a100"]
+      - ["DGX-A100-40GB", "dgx40"]
+      - ["DGX-A100-80GB", "dgx80"]
   notebook_dir:
     label: "Working Directory"
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
@@ -41,23 +44,8 @@ attributes:
       distribution. Note that versions previous to 3.7.2 may not work on the
       Turing architecture nodes.
     options:
-      - [ "Python/3.10.4 (GCC)", "GCC/11.3.0/Python3"]
-      - [ "Python/3.8.6 (GCC/10.2.0)", "GCC/10.2.0/Python3"]
-      - [ "Python/3.7.2 (GCC/8.2.0)", "GCC/8.2.0/Python3"]
-      - [ "Python/3.7.2 (Intel/2019.1.144)", "Intel/2019.1.144/Python3"]
-      - [ "Python/3.6.3 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python3"]
-      - [ "Python/3.6.3 (Intel/2017.4.196)", "Intel/2017.4.196/Python3"]
-      - [ "Python 3.9.12 / Anaconda 2022.05", "Anaconda3/2022.05"]
-      - [ "Python 3.9.7 / Anaconda 2021.11", "Anaconda3/2021.11"]
-      - [ "Python 3.8.8 / Anaconda 2021.05", "Anaconda3/2021.05"]
-      - [ "Python 3.7.4 / Anaconda 2019.10", "Anaconda3/2019.10"]
-      - [ "Python 3.6.3 / Anaconda 5.0.1", "Anaconda3/5.0.1"]
-      - [ "Python 3.6.1 / Anaconda 4.4.0", "Anaconda3/4.4.0"]
-      - [ "Python/2.7.14 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python2"]
-      - [ "Python/2.7.14 (Intel/2017.4.196)", "Intel/2017.4.196/Python2"]
-      - [ "Python 2.1.16 / Anaconda 2019.10", "Anaconda2/2019.10"]
-      - [ "Python 2.7.14 / Anaconda 5.0.1", "Anaconda2/5.0.1"]
-      - [ "Python 2.7.13 / Anaconda 4.4.0", "Anaconda2/4.4.0"]
+      - [ "Python/3.11.5", "Python/3.11.5"]
+      - [ "Python/3.10.2", "Python/3.10.2"]
   use_venv:
     widget: check_box
     checked_value: 1

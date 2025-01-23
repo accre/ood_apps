@@ -26,75 +26,12 @@ accre_cvmod=<%= context.version %>
 if [ -n "${accre_jupyter_mc}" ]
 then 
     module restore ${accre_jupyter_mc}
-elif [[ "$accre_cvmod" == "GCC/11.3.0/Python3" ]]
-then
-    module load GCC/11.3.0 OpenMPI/4.1.4 CUDA/11.7.0 IPython/8.5.0 JupyterHub/3.0.0 \
-          Boost/1.79.0 SciPy-bundle/2022.05 matplotlib/3.5.2 texlive/20230313 
-elif [[ "$accre_cvmod" == "GCC/10.2.0/Python3" ]]
-then
-    module load GCC/10.2.0 CUDA/11.1.1 OpenMPI/4.0.5 IPython/7.18.1 SciPy-bundle/2020.11 
-elif [[ "$accre_cvmod" == "GCC/8.2.0/Python3" ]]
-then
-    module load GCC/8.2.0 CUDA/10.1.105 OpenMPI/3.1.4 IPython/7.7.0-Python-3.7.2 \
-                SciPy-bundle/2019.03 \
-                matplotlib/3.0.3-Python-3.7.2
-elif [[ "$accre_cvmod" == "Intel/2019.1.144/Python3" ]]
-then
-    module load Intel/2019.1.144 CUDA/10.1.105 IntelMPI/2018.4.274 IPython/7.7.0-Python-3.7.2 \
-                SciPy-bundle/2019.03 \
-                matplotlib/3.0.3-Python-3.7.2
-elif [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python2" ]]
-then
-    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 CUDA/9.0.176 IPython/5.8.0-Python-2.7.14 \
-                h5py/2.7.1-Python-2.7.14 \
-                mpi4py/1.3.1-Python-2.7.14 \
-                scikit-learn/0.19.1-Python-2.7.14 \
-                scipy/0.19.1-Python-2.7.14 \
-                Seaborn/0.9.0-Python-2.7.14 \
-                PyTorch/0.3.1-Python-2.7.14 \
-                TensorFlow/1.8.0-Python-2.7.14 \
-                Keras/2.2.0-Python-2.7.14 \
-                pandas/0.18.1-Python-2.7.14 \
-                matplotlib/2.1.0-Python-2.7.14 \
-                numpy/1.13.1-Python-2.7.14
-elif [[ "$accre_cvmod" == "GCC/6.4.0-2.28/Python3" ]]
-then
-    module load GCC/6.4.0-2.28 OpenMPI/2.1.1 CUDA/9.0.176 IPython/5.8.0-Python-3.6.3 \
-                h5py/2.7.1-Python-3.6.3 \
-                mpi4py/1.3.1-Python-3.6.3 \
-                scikit-learn/0.19.1-Python-3.6.3 \
-                scipy/0.19.1-Python-3.6.3 \
-                Seaborn/0.9.0-Python-3.6.3 \
-                TensorFlow/1.8.0-Python-3.6.3 \
-                Keras/2.2.0-Python-3.6.3 \
-                PyTorch/0.3.1-Python-3.6.3 \
-                pandas/0.18.1-Python-3.6.3 \
-                matplotlib/2.1.0-Python-3.6.3 \
-                numpy/1.13.1-Python-3.6.3
-elif [[ "$accre_cvmod" == "Intel/2017.4.196/Python2" ]]
-then
-    module load Intel/2017.4.196 IntelMPI/2017.3.196 CUDA/9.0.176 IPython/5.8.0-Python-2.7.14 \
-                mpi4py/1.3.1-Python-2.7.14 \
-                scikit-learn/0.19.1-Python-2.7.14 \
-                scipy/0.19.1-Python-2.7.14 \
-                Seaborn/0.9.0-Python-2.7.14 \
-                PyTorch/0.3.1-Python-2.7.14 \
-                pandas/0.18.1-Python-2.7.14 \
-                matplotlib/2.1.0-Python-2.7.14 \
-                numpy/1.13.1-Python-2.7.14
-elif [[ "$accre_cvmod" == "Intel/2017.4.196/Python3" ]]
-then
-    module load Intel/2017.4.196 IntelMPI/2017.3.196 CUDA/9.0.176 IPython/5.8.0-Python-3.6.3 \
-                mpi4py/1.3.1-Python-3.6.3 \
-                scikit-learn/0.19.1-Python-3.6.3 \
-                scipy/0.19.1-Python-3.6.3 \
-                Seaborn/0.9.0-Python-3.6.3 \
-                PyTorch/0.3.1-Python-3.6.3 \
-                pandas/0.18.1-Python-3.6.3 \
-                matplotlib/2.1.0-Python-3.6.3 \
-                numpy/1.13.1-Python-3.6.3
+elif [[ "$accre_cvmod" == "Python/3.10.2" ]]
+    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.3.12/bin/activate
+elif [[ "$accre_cvmod" == "Python/3.11.5" ]]
+    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.3.13/bin/activate
 else
-    module load $accre_cvmod
+    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.3.13/bin/activate
 fi
 
 # List loaded modules
@@ -108,14 +45,13 @@ set -x
 
 <%- if context.use_venv.to_i == 1 -%>
 # Check if this is conda or standard python
-if python --version 2>&1 | grep -q Anaconda || which python 2>&1 | grep -q /accre/arch/easybuild/software/BinDist/Anaconda ; then
-  source activate <%= context.venv %>
-else
+#if python --version 2>&1 | grep -q Anaconda || which python 2>&1 | grep -q /accre/arch/easybuild/software/BinDist/Anaconda ; then
+#  source activate <%= context.venv %>
+#else
   source <%= context.venv %>/bin/activate
   # give the venv priority over Lmod python packages
   export PYTHONPATH=$(python -c 'import sys; print(sys.path[-1])'):${PYTHONPATH}
-fi
-
+#fi
 <%- end -%>
 
 unset XDG_RUNTIME_DIR
