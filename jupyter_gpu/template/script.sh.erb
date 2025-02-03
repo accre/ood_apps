@@ -6,35 +6,34 @@ echo "TIMING - Starting main script at: $(date)"
 # Set working directory to home directory
 cd "${HOME}"
 
-#
-# Start Jupyter Notebook Server
-#
-
 # Purge the module environment to avoid conflicts
-#module purge
-# Unset the python path
+module purge
 unset PYTHONPATH
+unset accre_jupyter_mc
 
 # Load the pre-selected or custom modules
-unset accre_jupyter_mc
 <%- if context.use_mc.to_i == 1 -%>
-accre_jupyter_mc=<%= context.mc %>
+  module restore <%= context.mc %>
+<%- elsif context.use_venv.to_i == 1 -%>
+# Check if this is conda or standard python
+  if python --version 2>&1 | grep -q Anaconda; then
+    source activate <%= context.venv %>
+  else
+    source <%= context.venv %>/bin/activate
+    echo "give the venv priority over Lmod python packages"
+    export PYTHONPATH=$(python -c 'import sys; print(sys.path[-1])'):${PYTHONPATH}
+  fi
+<%- else -%>
+  module load <%= context.python_lmod_version %>
+  python -m pip create venv ood-jupyter-$SLURM_JOB_ID
+  source ood-jupyter-$SLURM_JOB_ID/bin/activate
+  pip install jupyter
+  # For debugging purposes
+  jupyter --version
 <%- end -%>
 
-accre_cvmod=<%= context.version %>
-
-if [ -n "${accre_jupyter_mc}" ]; then
-    module restore ${accre_jupyter_mc}
-elif [[ "$accre_cvmod" == "Python/3.10.2" ]]; then
-    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.3.12/bin/activate
-elif [[ "$accre_cvmod" == "Python/3.9.6" ]]; then
-    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.2.0/bin/activate
-else
-    source /cvmfs/soft.computecanada.ca/custom/python/envs/jupyterhub_node/v4.3.12/bin/activate
-fi
-
-# List loaded modules
-#module list
+# List loaded modules for debugging purposes
+module list
 
 # Benchmark info
 echo "TIMING - Starting jupyter at: $(date)"
@@ -42,16 +41,7 @@ echo "TIMING - Starting jupyter at: $(date)"
 # Launch the Jupyter Notebook Server
 set -x
 
-<%- if context.use_venv.to_i == 1 -%>
-# Check if this is conda or standard python
-#if python --version 2>&1 | grep -q Anaconda || which python 2>&1 | grep -q /accre/arch/easybuild/software/BinDist/Anaconda ; then
-#  source activate <%= context.venv %>
-#else
-  source <%= context.venv %>/bin/activate
-  # give the venv priority over Lmod python packages
-  export PYTHONPATH=$(python -c 'import sys; print(sys.path[-1])'):${PYTHONPATH}
-#fi
-<%- end -%>
+<%- if 
 
 unset XDG_RUNTIME_DIR
-jupyter notebook --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=<%= context.notebook_dir %>
+jupyter notebook --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=<%= context.notebook_dir %> <%= context.extra_jupyter_args %>

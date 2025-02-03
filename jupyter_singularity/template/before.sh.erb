@@ -27,10 +27,11 @@
 #       The plain text password used to authenticate to the web server with
 
 # Setup ACCRE_RUNTIME_DIR
-source /accre/usr/bin/setup_accre_runtime_dir
+#source /accre/usr/bin/setup_accre_runtime_dir
+setup_accre_software_stack
 
 # Export the module function if it exists
-[[ $(type -t module) == "function" ]] && export -f module
+#[[ $(type -t module) == "function" ]] && export -f module
 
 # Find available port to run server on
 port=$(find_port)

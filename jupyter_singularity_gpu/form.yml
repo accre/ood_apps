@@ -29,6 +29,10 @@ attributes:
       - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
+      - ["A6000", "a6000"]
+      - ["A100", "a100"]
+      - ["DGX-A100-40GB", "dgx40"]
+      - ["DGX-A100-80GB", "dgx80"]
   notebook_dir:
     label: "Working Directory" 
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
