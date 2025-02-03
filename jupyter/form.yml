@@ -5,8 +5,6 @@
 cluster: "accre"
 
 attributes:
-  # TODO: Check and remove this line below
-  modules: "Anaconda3"
 
   # Any extra command line arguments to feed to the `jupyter notebook ...`
   # command that launches the Jupyter notebook within the batch job
@@ -60,7 +58,6 @@ attributes:
       - ["Python/3.7.7"  ,"python/3.7.7" ]
       - ["Python/3.6.10" ,"python/3.6.10"]
       - ["Python/2.7.18" ,"python/2.7.18"]
-    value: "Python/3.12.4"
   use_venv:
     widget: check_box
     checked_value: 1
@@ -142,7 +139,6 @@ attributes:
       - [ "246GB Memory", "246g" ]
 
 form:
-  - modules
   - extra_jupyter_args
   - bc_queue
   - bc_num_hours
@@ -151,7 +147,7 @@ form:
   - bc_num_slots
   - cpuarch
   - notebook_dir
-  - version
+  - python_lmod_version
   - bc_account
   - use_venv
   - venv
