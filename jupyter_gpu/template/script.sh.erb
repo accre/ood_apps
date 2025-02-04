@@ -13,23 +13,27 @@ unset accre_jupyter_mc
 
 # Load the pre-selected or custom modules
 <%- if context.use_mc.to_i == 1 -%>
-  module restore <%= context.mc %>
+module restore <%= context.mc %>
 <%- elsif context.use_venv.to_i == 1 -%>
 # Check if this is conda or standard python
-  if python --version 2>&1 | grep -q Anaconda; then
-    source activate <%= context.venv %>
-  else
-    source <%= context.venv %>/bin/activate
-    echo "give the venv priority over Lmod python packages"
-    export PYTHONPATH=$(python -c 'import sys; print(sys.path[-1])'):${PYTHONPATH}
-  fi
+if python --version 2>&1 | grep -q Anaconda; then
+  source activate <%= context.venv %>
+else
+  source <%= context.venv %>/bin/activate
+  echo "give the venv priority over Lmod python packages"
+  export PYTHONPATH=$(python -c 'import sys; print(sys.path[-1])'):${PYTHONPATH}
+fi
 <%- else -%>
-  module load <%= context.python_lmod_version %>
-  python -m venv create /tmp/ood-jupyter-$SLURM_JOB_ID
-  source /tmp/ood-jupyter-$SLURM_JOB_ID/bin/activate
-  pip install jupyter <%= context.extra_python_packages %>
-  # For debugging purposes
-  jupyter --version
+PY_VER=$(echo <%= context.python_lmod_version %> | cut -d '/' -f2)
+if version_lt "$PY_VER" "3.10.3"; then
+  module load StdEnv/2020
+fi
+module load <%= context.python_lmod_version %>
+python -m venv create /tmp/ood-jupyter-$SLURM_JOB_ID
+source /tmp/ood-jupyter-$SLURM_JOB_ID/bin/activate
+pip install jupyter <%= context.extra_python_packages %>
+# For debugging purposes
+jupyter --version
 <%- end -%>
 
 # List loaded modules for debugging purposes

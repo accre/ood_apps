@@ -47,7 +47,7 @@ attributes:
     options:
       - [ "jupyter notebook", "notebook" ]
       - [ "jupyter lab", "lab" ]
- singularity_command_args:
+  singularity_command_args:
     widget: text_field
     label: "Singularity CMD ARGS"
     value: ""
