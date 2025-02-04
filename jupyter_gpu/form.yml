@@ -110,7 +110,6 @@ attributes:
     value: ""
 form:
   - extra_jupyter_args
-  - extra_python_packages
   - bc_account
   - bc_queue
   - bc_num_hours
@@ -121,6 +120,7 @@ form:
   - gpu_arch
   - notebook_dir
   - python_lmod_version
+  - extra_python_packages
   - use_venv
   - venv
   - use_mc
