@@ -25,7 +25,7 @@ unset accre_jupyter_mc
   fi
 <%- else -%>
   module load <%= context.python_lmod_version %>
-  python -m pip create venv /tmp/ood-jupyter-$SLURM_JOB_ID
+  python -m venv create /tmp/ood-jupyter-$SLURM_JOB_ID
   source /tmp/ood-jupyter-$SLURM_JOB_ID/bin/activate
   pip install jupyter <%= context.extra_python_packages %>
   # For debugging purposes
