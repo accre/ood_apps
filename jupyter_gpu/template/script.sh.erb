@@ -25,9 +25,9 @@ unset accre_jupyter_mc
   fi
 <%- else -%>
   module load <%= context.python_lmod_version %>
-  python -m pip create venv ood-jupyter-$SLURM_JOB_ID
-  source ood-jupyter-$SLURM_JOB_ID/bin/activate
-  pip install jupyter
+  python -m pip create venv /tmp/ood-jupyter-$SLURM_JOB_ID
+  source /tmp/ood-jupyter-$SLURM_JOB_ID/bin/activate
+  pip install jupyter <%= context.extra_python_packages %>
   # For debugging purposes
   jupyter --version
 <%- end -%>
@@ -40,8 +40,6 @@ echo "TIMING - Starting jupyter at: $(date)"
 
 # Launch the Jupyter Notebook Server
 set -x
-
-<%- if 
 
 unset XDG_RUNTIME_DIR
 jupyter notebook --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=<%= context.notebook_dir %> <%= context.extra_jupyter_args %>

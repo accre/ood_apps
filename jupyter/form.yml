@@ -58,12 +58,19 @@ attributes:
       - ["Python/3.7.7"  ,"python/3.7.7" ]
       - ["Python/3.6.10" ,"python/3.6.10"]
       - ["Python/2.7.18" ,"python/2.7.18"]
+  extra_python_packages:
+    widget: text_field
+    label: "Other Python Packages"
+    value: ""
+    help: |
+      Enter a space separated list of extra packages to be installed in your Jupyter Python Environment. For example, numpy scipy
   use_venv:
     widget: check_box
     checked_value: 1
     unchecked_value: 0
     html_options:
-      hide-venv-when-un-checked: true
+      data:
+        hide-venv-when-un-checked: true
     label: "Virtual Environment"
     help: |
       Check this box if you wish to load a python or conda virtual environment.
@@ -83,7 +90,8 @@ attributes:
     checked_value: 1
     unchecked_value: 0
     html_options:
-      hide-mc-when-un-checked: true
+      data:
+        hide-mc-when-un-checked: true
     label: "Use Custom Module Collection"
     help: |
       Check this box if you wish to load a module collection instead of using
@@ -105,7 +113,8 @@ attributes:
     checked_value: 1
     unchecked_value: 0
     html_options:
-      hide-cgw-when-un-checked: true
+      data:
+        hide-cgw-when-un-checked: true
     label: "Use a Custom Gateway Node"
     help: |
       Check this box if you wish to run your job on a custom gateway
@@ -148,6 +157,7 @@ form:
   - cpuarch
   - notebook_dir
   - python_lmod_version
+  - extra_python_packages
   - bc_account
   - use_venv
   - venv
