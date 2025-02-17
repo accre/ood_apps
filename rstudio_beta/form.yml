@@ -1,0 +1,90 @@
+---
+cluster: "accre"
+form:
+  - bc_num_slots
+  - bc_num_hours
+  - bc_num_cores
+  - bc_mem
+  - cpuarch
+  - bc_account
+  - version
+  - exclusive
+  - use_cgw
+  - cgw
+  - use_reservation
+  - reservation
+attributes:
+  bc_account:
+    label: "ACCRE Slurm Group"
+    help: "Leave blank to use your default slurm group"
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  bc_mem:
+    label: "Maximum Memory (GB)"
+    value: 4
+  bc_num_cores:
+    label: "Number of CPU Cores"
+    value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
+      - [ "Sandy Bridge", "sandybridge" ]
+      - [ "Westmere", "westmere" ]
+  version:
+    widget: select
+    label: "Version of R to load"
+    options:
+      - [ "ACCRE Experimental R for x86_64_v2", "experimental_v2"]
+      - [ "ACCRE Experimental R for x86_64_v3", "experimental_v3"]
+  use_cgw:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use a Custom Gateway Node"
+    help: |
+      Check this box if you wish to run your job on a custom gateway
+      node instead of a standard compute node. You must be a member of
+      a group that has an OnDemand enabled custom gateway to use this
+      feature. If you wish to have OnDemand enabled on your group's
+      custom gateway, please open a helpdesk ticket. If this box is
+      checked, then you must enter the name of your custom gateway
+      above. 
+  cgw:
+    label: "Custom Gateway Node"
+    value: ""
+    help: "Leave blank unless using a custom gateway node"
+  use_reservation:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use a slurm reservation"
+    help: "Check this box if you wish to use a slurm reservation"
+  reservation:
+    label: "Slurm Reservation Name"
+    value: ""
+    help: "Leave blank unless using a slurm reservation"
+  exclusive:
+    widget: select
+    label: "Exclusive node reservation"
+    help: |
+      Select an option other than "Not Exclusive" in order to exclusively
+      reserve a sever in its entirety. This will give you access to all CPU
+      cores and memory available on the server, and your job will not be
+      subject to termination if it tries to exceed its memory quota, although
+      system-level out of memory errors may occur. The number of cores and
+      memory will vary depending on the node allocated. To specifically reserve
+      119GB or 246GB of memory, select one of those options. Note that a
+      whole node reservation may require a longer wait in the queue so please
+      make your request well ahead of the time you plan on using it.
+    options:
+      - [ "Not Exclusive", "no" ]
+      - [ "Any Node", "any" ]
+      - [ "119GB Memory", "119g" ]
+      - [ "246GB Memory", "246g" ]
