@@ -44,17 +44,17 @@ sed 's/^ \{2\}//' > "${RSESSION_WRAPPER_FILE}" << EOL
   set -x
 
   # Construct local RStudio Server database.conf file
-  printf 'provider=sqlite\ndirectory=/var/lib/rstudio-server\n' > ${RSESSION_PATH}/etc_rstudio/database.conf
+  printf "provider=sqlite\ndirectory=/var/lib/rstudio-server\n" > ${RSESSION_PATH}/etc_rstudio/database.conf
 
   # Construct local RStudio Server rserver.conf file
   printf 'server-user=%s\nrsession-which-r=/usr/local/bin/R\nrsession-ld-library-path=/usr/local/lib64/R/lib\n' ${USER} > ${RSESSION_PATH}/etc_rstudio/rserver.conf
-  printf 'www-enable-origin-check=0\n' >> ${RSESSION_PATH}/etc_rstudio/rserver.conf
+  printf "www-enable-origin-check=0\n" >> ${RSESSION_PATH}/etc_rstudio/rserver.conf
 
   # Construct local RStudio Server rsession.conf
-  printf 'r-libs-user=~/R/4.4.2/x86_64_v2\n' > ${RSESSION_PATH}/etc_rstudio/rsession.conf
+  printf "r-libs-user=${R_LIBS_USER}\n" > ${RSESSION_PATH}/etc_rstudio/rsession.conf
 
   # Construct local RStudio Server logging.conf (for debugging)
-  printf '[*]\nlog-level=debug\n' > ${RSESSION_PATH}/etc_rstudio/logging.conf
+  printf "[*]\nlog-level=debug\n" > ${RSESSION_PATH}/etc_rstudio/logging.conf
 
   # Launch the original command
   echo "Launching rsession..."
