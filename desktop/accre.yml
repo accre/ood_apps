@@ -3,7 +3,7 @@ title: "ACCRE Desktop"
 description: |
   This app will launch an interactive desktop on an ACCRE compute node. You
   will have full access to the resources this node provide. This is analogous
-  to an interctive batch job. While your desktop may sometimes be available
+  to an interactive batch job. While your desktop may sometimes be available
   within a few seconds, it may spend a few minutes or hours in the scheduler
   queue until resources become available. To ensure that a desktop is ready
   when you need it, we suggest starting the desktop a day in advance, and
