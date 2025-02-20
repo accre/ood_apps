@@ -30,7 +30,7 @@ source /etc/accre/lmod.sh accre_cc
 # Purge the module environment to avoid conflicts just in case
 module purge
 
-<%- if context.scipy_lmod_version == "zzzz-empty" -%>
+<%- if context.scipy_lmod_version == "zzz-empty" -%>
 module load <%= context.python_lmod_version %>
 <%- else -%>
 module load <%= context.python_lmod_version %> <%= context.scipy_lmod_version %>
