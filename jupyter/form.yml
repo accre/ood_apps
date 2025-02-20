@@ -88,7 +88,7 @@ attributes:
       environments are not supported by this application.
   venv:
     widget: "text_field"
-    label: "Python or Conda Virtual Environment"
+    label: "Python Virtual Environment Path"
     help: |
       Leave blank unless using a virtual environment. To find your
       python virtual environment, you must specify the absolute path.
