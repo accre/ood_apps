@@ -31,7 +31,8 @@ PY_VER=$(echo <%= context.python_lmod_version %> | cut -d '/' -f2)
 if version_lt "$PY_VER" "3.10.3"; then
   module load StdEnv/2020
 fi
-module load <%= context.python_lmod_version %> <% context.scipy_lmod_version %>
+source /etc/accre/lmod.sh accre_cc
+module load <%= context.python_lmod_version %> <%= context.scipy_lmod_version %>
 python -m venv ${ACCRE_RUNTIME_DIR}/venv
 source ${ACCRE_RUNTIME_DIR}/venv/bin/activate
 pip install jupyter <%= context.extra_python_packages %>
