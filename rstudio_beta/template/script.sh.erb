@@ -56,6 +56,8 @@ sed 's/^ \{2\}//' > "${RSESSION_WRAPPER_FILE}" << EOL
   # Construct local RStudio Server logging.conf (for debugging)
   printf "[*]\nlog-level=debug\n" > ${RSESSION_PATH}/etc_rstudio/logging.conf
 
+  export TZ="US/Central"
+
   # Launch the original command
   echo "Launching rsession..."
   set -x
