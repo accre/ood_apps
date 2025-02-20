@@ -1,9 +1,11 @@
 ---
-name: RStudio Server (GPU) (Old)
+name: RStudio Server (GPU) (Legacy)
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
 description: |
+  This is a legacy application from the CentOS 7 environment and is provided as-is.
+ 
   This app will launch RStudio Server, an IDE for R, on a GPU accelerated compute node.
   Note that this app is still in beta release and may have outstanding known
   issues. Please let us know if you think you are experiencing a problem
