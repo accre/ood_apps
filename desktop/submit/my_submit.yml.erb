@@ -17,9 +17,5 @@ script:
     - "--partition=batch"
     <% end %>
     <% if cpuarch != "any" %>
-      <% if cpuarch == "zen" %>
-    - "--constraint=zen|zen2|zen3"
-      <% else %>
     - "--constraint=<%= cpuarch %>"
-      <%end %>
     <% end %>
