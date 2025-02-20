@@ -1,0 +1,8 @@
+---
+name: Microsoft VS Code (testing, don't use)
+category: Interactive Apps
+subcategory: Servers
+role: batch_connect
+description: |
+  This app will launch a [VS Code] server on a compute
+  node using [Code Server].   This is testing only right now.

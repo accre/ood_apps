@@ -1,0 +1,4 @@
+The Microsoft VS Code "code-server" plugin for Open OnDemand is based on the 
+code below, with ACCRE-specific changes. - MJB
+
+https://github.com/OSC/bc_osc_codeserver
