@@ -24,4 +24,4 @@ set -x
 unset XDG_RUNTIME_DIR
 mkdir -p ${HOME}/.local
 mkdir -p ${ACCRE_RUNTIME_DIR}/.local
-singularity exec --nv -B ${ACCRE_RUNTIME_DIR}/.local:${HOME}/.local <%= context.sg %> jupyter <%= context.jupyter_command %> --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=${accre_notebook_dir} <%= context.extra_jupyter_args %>
+singularity exec --nv -B ${ACCRE_RUNTIME_DIR}/.local:${HOME}/.local <%= context.singularity_command_args %> <%= context.sg %> jupyter <%= context.jupyter_command %> --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=${accre_notebook_dir} <%= context.extra_jupyter_args %>

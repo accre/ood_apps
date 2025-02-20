@@ -6,28 +6,40 @@ script:
   native:
     - "-N"
     - "<%= bc_num_slots.blank? ? 1 : bc_num_slots.to_i %>"
-    - "--partition=<%=gpu_arch.strip %>"
+<% if gpu_arch == "dgx40" -%>
+    - "--mem=<%= 125 * num_gpus.to_i %>G"
+    - "--cpus-per-task=<%= 32 * num_gpus.to_i %>"
+    - "--gres=gpu:nvidia_a100-sxm4-40gb:<%= num_gpus.to_i %>"
+    - "--partition=interactive"
+<% elsif gpu_arch == "dgx80" -%>
+    - "--mem=<%= 125 * num_gpus.to_i %>G"
+    - "--cpus-per-task=<%= 32 * num_gpus.to_i %>"
+    - "--gres=gpu:nvidia_a100-sxm4-80gb:<%= num_gpus.to_i %>"
+    - "--partition=interactive"
+<% else %>
+    - "--partition=batch_gpu"
+<% end %>
 <% if gpu_arch == "pascal" -%>
-    - "--mem=<%= 60 * num_gpus.to_i %>G" 
+    - "--mem=<%= 60 * num_gpus.to_i %>G"
     - "--cpus-per-task=<%= 2 * num_gpus.to_i %>"
-<% end %>
-<% if gpu_arch == "maxwell" -%>
-    - "--mem=<%= 29 * num_gpus.to_i %>G" 
+# SM: not sure if the GPU type is right, may need updating
+    - "--gres=gpu:nvidia_titan_x:<%= num_gpus.to_i %>"
+<% elsif gpu_arch == "maxwell" -%>
+    - "--mem=<%= 29 * num_gpus.to_i %>G"
     - "--cpus-per-task=<%= 3 * num_gpus.to_i %>"
-<% end %>
-<% if gpu_arch == "turing" -%>
-    - "--mem=<%= 90 * num_gpus.to_i %>G" 
+# SM: not sure if the GPU type is right, may need updating
+    - "--gres=gpu:nvidia_geforce_gtx_titan_x:<%= num_gpus.to_i %>"
+<% elsif gpu_arch == "turing" -%>
+    - "--mem=<%= 90 * num_gpus.to_i %>G"
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
-<% end %>
-<% if gpu_arch == "a6000x2" -%>
-    - "--mem=<%= 58 * num_gpus.to_i %>G" 
-    - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
+    - "--gres=gpu:nvidia_geforce_rtx_2080_ti:<%= num_gpus.to_i %>"
+# SM: This doesn't account for the a6000x2 machines
+<% elsif gpu_arch == "a6000" -%>
+    - "--mem=<%= 125 * num_gpus.to_i %>G"
+    - "--cpus-per-task=<%= 16 * num_gpus.to_i %>"
+    - "--gres=gpu:nvidia_rtx_a6000:<%= num_gpus.to_i %>"
 <% end %>
     - "--account=<%= bc_account.strip %>"
-    - "--gres=gpu:<%= num_gpus.to_i %>"
 <% if (bc_account.strip == "accre_guests_acc") && (bc_num_hours.to_i > 4) -%>
     - "--time=04:00:00"
-<% end %>
-<% if num_gpus.to_i == 4 %>
-    - "--exclusive"
 <% end %>

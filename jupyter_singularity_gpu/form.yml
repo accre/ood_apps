@@ -29,6 +29,10 @@ attributes:
       - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
+      - ["A6000", "a6000"]
+      - ["A100", "a100"]
+      - ["DGX-A100-40GB", "dgx40"]
+      - ["DGX-A100-80GB", "dgx80"]
   notebook_dir:
     label: "Working Directory" 
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
@@ -45,6 +49,12 @@ attributes:
     options:
       - [ "jupyter notebook", "notebook" ]
       - [ "jupyter lab", "lab" ]
+  singularity_command_args:
+    widget: text_field
+    label: "Singularity CMD ARGS"
+    value: ""
+    help: |
+      Enter any flags to the singularity exec command. For example, --bind /home/vuNetID:/home/vuNetID
   sg:
     widget: "text_field"
     label: "Singularity Container Path"
@@ -65,6 +75,7 @@ form:
   - bc_num_slots
   - num_gpus
   - gpu_arch
+  - singularity_command_args
   - sg
   - notebook_dir
   - jupyter_command

@@ -5,6 +5,7 @@
 cluster: "accre"
 
 attributes:
+  extra_jupyter_args: ""
   bc_account:
     label: "GPU Enabled Slurm Account"
   bc_queue: null
@@ -23,45 +24,53 @@ attributes:
     label: "GPU Architecture"
     widget: select
     options:
-      - ["A6000x2", "a6000x2"]
-      - ["A6000x4", "a6000x4"]
+      - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
+      - ["A6000", "a6000"]
+      - ["A100", "a100"]
+      - ["DGX-A100-40GB", "dgx40"]
+      - ["DGX-A100-80GB", "dgx80"]
   notebook_dir:
     label: "Working Directory"
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
     widget: "text_field"
     value: "${HOME}"
-  version:
+  python_lmod_version:
     widget: select
     label: "Python version"
     help: |
       Select the version of Python that you want to load based
       on either an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
-      distribution. Note that versions previous to 3.7.2 may not work on the
-      Turing architecture nodes.
+      distribution.
     options:
-      - [ "Python/3.10.4 (GCC)", "GCC/11.3.0/Python3"]
-      - [ "Python/3.8.6 (GCC/10.2.0)", "GCC/10.2.0/Python3"]
-      - [ "Python/3.7.2 (GCC/8.2.0)", "GCC/8.2.0/Python3"]
-      - [ "Python/3.7.2 (Intel/2019.1.144)", "Intel/2019.1.144/Python3"]
-      - [ "Python/3.6.3 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python3"]
-      - [ "Python/3.6.3 (Intel/2017.4.196)", "Intel/2017.4.196/Python3"]
-      - [ "Python 3.9.12 / Anaconda 2022.05", "Anaconda3/2022.05"]
-      - [ "Python 3.9.7 / Anaconda 2021.11", "Anaconda3/2021.11"]
-      - [ "Python 3.8.8 / Anaconda 2021.05", "Anaconda3/2021.05"]
-      - [ "Python 3.7.4 / Anaconda 2019.10", "Anaconda3/2019.10"]
-      - [ "Python 3.6.3 / Anaconda 5.0.1", "Anaconda3/5.0.1"]
-      - [ "Python 3.6.1 / Anaconda 4.4.0", "Anaconda3/4.4.0"]
-      - [ "Python/2.7.14 (GCC/6.4.0-2.28)", "GCC/6.4.0-2.28/Python2"]
-      - [ "Python/2.7.14 (Intel/2017.4.196)", "Intel/2017.4.196/Python2"]
-      - [ "Python 2.1.16 / Anaconda 2019.10", "Anaconda2/2019.10"]
-      - [ "Python 2.7.14 / Anaconda 5.0.1", "Anaconda2/5.0.1"]
-      - [ "Python 2.7.13 / Anaconda 4.4.0", "Anaconda2/4.4.0"]
+      - ["Python/3.12.4" ,"python/3.12.4"]
+      - ["Python/3.11.5" ,"python/3.11.5"]
+      - ["Python/3.11.2" ,"python/3.11.2"]
+      - ["Python/3.10.13","python/3.10.13"]
+      - ["Python/3.10.2" ,"python/3.10.2"]
+      - ["Python/3.9.6"  ,"python/3.9.6" ]
+      - ["Python/3.8.10" ,"python/3.8.10"]
+      - ["Python/3.8.2"  ,"python/3.8.2" ]
+      - ["Python/3.7.9"  ,"python/3.7.9" ]
+      - ["Python/3.7.7"  ,"python/3.7.7" ]
+      - ["Python/3.6.10" ,"python/3.6.10"]
+      - ["Python/2.7.18" ,"python/2.7.18"]
+
+  extra_python_packages:
+    widget: text_field
+    label: "Other Python Packages"
+    value: ""
+    help: |
+      Enter a space separated list of extra packages to be installed in your Jupyter Python Environment. For example, numpy scipy
+
   use_venv:
     widget: check_box
     checked_value: 1
     unchecked_value: 0
+    html_options:
+      data:
+        hide-venv-when-un-checked: true
     label: "Use a Virtual Environment"
     help: |
       Check this box if you wish to load a conda or python environment.
@@ -80,6 +89,9 @@ attributes:
     widget: check_box
     checked_value: 1
     unchecked_value: 0
+    html_options:
+      data:
+        hide-mc-when-un-checked: true
     label: "Use Custom Module Collection"
     help: |
       Check this box if you wish to load a module collection instead of using
@@ -96,8 +108,8 @@ attributes:
       specified in the "module save" command. If a custom module collection is
       used, then the "Python version" selection will have no effect.
     value: ""
-
 form:
+  - extra_jupyter_args
   - bc_account
   - bc_queue
   - bc_num_hours
@@ -107,7 +119,8 @@ form:
   - num_gpus
   - gpu_arch
   - notebook_dir
-  - version
+  - python_lmod_version
+  - extra_python_packages
   - use_venv
   - venv
   - use_mc

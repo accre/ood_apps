@@ -5,8 +5,6 @@
 cluster: "accre"
 
 attributes:
-  # TODO: Check and remove this line below
-  modules: "Anaconda3"
 
   # Any extra command line arguments to feed to the `jupyter notebook ...`
   # command that launches the Jupyter notebook within the batch job
@@ -40,7 +38,7 @@ attributes:
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
     widget: "text_field"
     value: "${HOME}"
-  version:
+  python_lmod_version:
     widget: select
     label: "Python version"
     help: |
@@ -48,27 +46,31 @@ attributes:
       on either an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
       distribution.
     options:
-      - [ "Python/3.10.4 (GCC)", "GCC/11.3.0/Python3"]
-      - [ "Python/3.8.6 (GCC)", "GCC/10.2.0/Python3"]
-      - [ "Python/3.7.2 (GCC)", "GCC/8.2.0/Python3"]
-      - [ "Python/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python3"]
-      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (GCC)", "GCC/6.4.0-2.28/Python2"]
-      - [ "Python/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python3"]
-      - [ "Python/2.7.14 + R/3.6.3 + Octave/4.2.2 (Intel)", "Intel/2017.4.196/Python2"]
-      - [ "Python 3.10.9 / Anaconda 2023.03", "Anaconda3/2023.03-1"]
-      - [ "Python 3.9.12 / Anaconda 2022.05", "Anaconda3/2022.05"]
-      - [ "Python 3.9.7 / Anaconda 2021.11", "Anaconda3/2021.11"]
-      - [ "Python 3.8.8 / Anaconda 2021.05", "Anaconda3/2021.05"]
-      - [ "Python 3.7.4 / Anaconda 2019.10", "Anaconda3/2019.10"]
-      - [ "Python 3.6.3 / Anaconda 5.0.1", "Anaconda3/5.0.1"]
-      - [ "Python 3.6.1 / Anaconda 4.4.0", "Anaconda3/4.4.0"]
-      - [ "Python 2.7.16 / Anaconda 2019.10", "Anaconda2/2019.10"]
-      - [ "Python 2.7.14 / Anaconda 5.0.1", "Anaconda2/5.0.1"]
-      - [ "Python 2.7.13 / Anaconda 4.4.0", "Anaconda2/4.4.0"]
+      - ["Python/3.12.4" ,"python/3.12.4"]
+      - ["Python/3.11.5" ,"python/3.11.5"]
+      - ["Python/3.11.2" ,"python/3.11.2"]
+      - ["Python/3.10.13","python/3.10.13"]
+      - ["Python/3.10.2" ,"python/3.10.2"]
+      - ["Python/3.9.6"  ,"python/3.9.6" ]
+      - ["Python/3.8.10" ,"python/3.8.10"]
+      - ["Python/3.8.2"  ,"python/3.8.2" ]
+      - ["Python/3.7.9"  ,"python/3.7.9" ]
+      - ["Python/3.7.7"  ,"python/3.7.7" ]
+      - ["Python/3.6.10" ,"python/3.6.10"]
+      - ["Python/2.7.18" ,"python/2.7.18"]
+  extra_python_packages:
+    widget: text_field
+    label: "Other Python Packages"
+    value: ""
+    help: |
+      Enter a space separated list of extra packages to be installed in your Jupyter Python Environment. For example, numpy scipy
   use_venv:
     widget: check_box
     checked_value: 1
     unchecked_value: 0
+    html_options:
+      data:
+        hide-venv-when-un-checked: true
     label: "Virtual Environment"
     help: |
       Check this box if you wish to load a python or conda virtual environment.
@@ -87,6 +89,9 @@ attributes:
     widget: check_box
     checked_value: 1
     unchecked_value: 0
+    html_options:
+      data:
+        hide-mc-when-un-checked: true
     label: "Use Custom Module Collection"
     help: |
       Check this box if you wish to load a module collection instead of using
@@ -107,6 +112,9 @@ attributes:
     widget: check_box
     checked_value: 1
     unchecked_value: 0
+    html_options:
+      data:
+        hide-cgw-when-un-checked: true
     label: "Use a Custom Gateway Node"
     help: |
       Check this box if you wish to run your job on a custom gateway
@@ -140,7 +148,6 @@ attributes:
       - [ "246GB Memory", "246g" ]
 
 form:
-  - modules
   - extra_jupyter_args
   - bc_queue
   - bc_num_hours
@@ -149,7 +156,8 @@ form:
   - bc_num_slots
   - cpuarch
   - notebook_dir
-  - version
+  - python_lmod_version
+  - extra_python_packages
   - bc_account
   - use_venv
   - venv

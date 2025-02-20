@@ -47,6 +47,12 @@ attributes:
     options:
       - [ "jupyter notebook", "notebook" ]
       - [ "jupyter lab", "lab" ]
+  singularity_command_args:
+    widget: text_field
+    label: "Singularity CMD ARGS"
+    value: ""
+    help: |
+      Enter any flags to the singularity exec command. For example, --bind /home/vuNetID:/home/vuNetID
   sg:
     widget: "text_field"
     label: "Singularity Container Path"
@@ -100,6 +106,7 @@ form:
   - bc_num_cores
   - bc_num_slots
   - cpuarch
+  - singularity_command_args
   - sg
   - notebook_dir
   - jupyter_command
