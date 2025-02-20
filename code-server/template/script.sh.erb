@@ -1,0 +1,72 @@
+#!/usr/bin/bash -l
+
+# Configure apppriate modules
+module purge
+module load StdEnv/2023
+module load code-server/<%= context.version %>
+
+# Make the local (permanent) state folder for code-server to save config
+CODE_SERVER_DATAROOT="${HOME}/.local/share/code-server"
+mkdir -p "${CODE_SERVER_DATAROOT}/extensions"
+
+# Where is the ephemeral session folder for this instance of code-server
+export SESSION_PATH="${PWD}"
+
+# Set password for this instance
+#export PASSWORD="${password}"
+printf 'password: %s\n' ${password} >> "${SESSION_PATH}/code-config.yml"
+
+# Print compute node.
+echo "$(date): Running on compute node $(hostname):$port"
+
+<%
+# Set our working directory.
+working_dir = Pathname.new(context.working_dir)
+
+puts "working_dir 1 = #{working_dir}"
+
+# Ensure that code-server always starts up in either a user defined directory or the home directory.
+if ! working_dir.exist?
+    working_dir = Pathname.new(ENV['HOME'])
+elsif working_dir.file?
+    working_dir = working_dir.parent
+end
+
+puts "working_dir 2 = #{working_dir}"
+%>
+
+CPP_FILE="<%= working_dir.to_s %>/.vscode/c_cpp_properties.json"
+
+echo "DEBUG:  CPP_FILE = ${CPP_FILE}"
+
+if [[ -f "${CPP_FILE}" ]]; then
+    CPP_DIR="${TMPDIR:=/tmp/$USER}/cpp-vscode"
+    mkdir -p "${CPP_DIR}"
+    chmod 700 "${CPP_DIR}"
+
+    # if the file is empty, let's initialize it
+    [ -s "${CPP_FILE}" ] || echo '{"configurations": [{ "name": "Linux", "browse": { "databaseFilename": null }}], "version": 4}' > "${CPP_FILE}"
+
+    jq --arg dbfile "${CPP_DIR}/cpp-vscode.db" \
+      '.configurations[0].browse.databaseFilename = $dbfile' \
+      "${CPP_FILE}" > "${CPP_FILE}".new
+
+    mv "${CPP_FILE}".new "${CPP_FILE}"
+  fi
+
+#
+# Start Code Server.
+#
+echo "$(date): Started code-server"
+echo ""
+
+code-server \
+    --auth="password" \
+    --config="${SESSION_PATH}/code-config.yml" \
+    --bind-addr="0.0.0.0:${port}" \
+    --disable-telemetry \
+    --ignore-last-opened \
+    --user-data-dir="${CODE_SERVER_DATAROOT}" \
+    --log debug \
+    --app-name="Microsoft VSCode Server @ ACCRE" \
+    "<%= working_dir.to_s %>"

@@ -1,0 +1,22 @@
+---
+cluster: 
+  - "accre"
+form:
+  - auto_accounts
+  - bc_num_hours
+  - working_dir
+  - version
+
+attributes:
+  version:
+    widget: "select"
+    label: "Codeserver Version"
+    options:
+      - ["4.92.2", "4.92.2"]
+
+  working_dir:
+    widget: "path_selector"
+    label: "Working Directory"
+    data-target-file-type: dirs  # Valid values are: files, dirs, or both
+    readonly: false
+    help: "Select your project directory; defaults to $HOME"

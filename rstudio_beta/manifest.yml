@@ -1,9 +1,0 @@
----
-name: RStudio Server (2025 R, very very Beta)
-category: Interactive Apps
-subcategory: Servers
-role: batch_connect
-description: |
-  This is a beta test for ACCRE's new RStudio.   Uses R 4.4.2 and RStudio Server 2024.12.0-467.
-  Note that this is beta.  Things may break.   Please let us know if they do so
-  we can fix them.
