@@ -28,11 +28,7 @@ script:
   native:
     - "-N"
     - "<%= bc_num_slots.blank? ? 1 : bc_num_slots.to_i %>"
-    <% if use_cgw.to_i == 1 %>
-    - "--partition=cgw-<%= cgw %>"
-    - "--account=cgw_<%= cgw.tr("-", "_") %>"
-    - "--nodelist=<%= cgw %>"
-    <% elsif ! bc_account.strip.empty? %>
+    <% if ! bc_account.strip.empty? %>
     - "--account=<%= bc_account.strip %>"
     - "--partition=batch"
     <% else %>
