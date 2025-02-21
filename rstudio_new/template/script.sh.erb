@@ -6,11 +6,11 @@ setup_env () {
 	accre_rversion=<%= context.version %>
 	if [[ "${accre_rversion}" == "experimental_v2" ]]
 	then
-		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio_2024-12.0-567__R_4.4.2_x86_64_v2.sif"
+		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio_2024-12.1-563__R_4.4.2_x86_64_v2.sif"
 		export R_LIBS_USER="~/R/4.4.2/x86_64_v2"
 	elif [[ "${accre_rversion}" == "experimental_v3" ]]
 	then
-		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio_2024-12.0-567__R_4.4.2_x86_64_v3.sif"
+		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio_2024-12.1-563__R_4.4.2_x86_64_v3.sif"
 		export R_LIBS_USER="~/R/4.4.2/x86_64_v3"
 	fi
 }
@@ -78,7 +78,7 @@ set -x
 echo "Starting up rserver at $(date) ..."
 
 singularity exec \
-   --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/dors,/data,/nobackup,/labs \
+   --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 \
    "${RSTUDIO_SERVER_IMAGE}" /usr/lib/rstudio-server/bin/rserver \
    --auth-encrypt-password 0 \
    --auth-none 0 \
