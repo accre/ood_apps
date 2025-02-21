@@ -46,24 +46,34 @@ attributes:
     options:
       - ["Python/3.12.4" ,"python/3.12.4"]
       - ["Python/3.11.5" ,"python/3.11.5"]
-      - ["Python/3.11.2" ,"python/3.11.2"]
       - ["Python/3.10.13","python/3.10.13"]
-      - ["Python/3.10.2" ,"python/3.10.2"]
-      - ["Python/3.9.6"  ,"python/3.9.6" ]
-      - ["Python/3.8.10" ,"python/3.8.10"]
-      - ["Python/3.8.2"  ,"python/3.8.2" ]
-      - ["Python/3.7.9"  ,"python/3.7.9" ]
-      - ["Python/3.7.7"  ,"python/3.7.7" ]
-      - ["Python/3.6.10" ,"python/3.6.10"]
-      - ["Python/2.7.18" ,"python/2.7.18"]
-
+  scipy_lmod_version:
+    widget: select
+    label: "SciPy-Stack version"
+    help: |
+      Select the version of SciPy-Stack that you want to load, or None if you do not wish to load SciPy-Stack
+    options:
+      - ["SciPy-Stack/2025a" ,"scipy-stack/2025a"]
+      - ["SciPy-Stack/2024b" ,"scipy-stack/2024b"]
+      - ["SciPy-Stack/2024a" ,"scipy-stack/2024a"]
+      - ["SciPy-Stack/2023b" ,"scipy-stack/2023b"]
+      - ["None" ,"zzz-empty"]
   extra_python_packages:
     widget: text_field
     label: "Other Python Packages"
     value: ""
     help: |
-      Enter a space separated list of extra packages to be installed in your Jupyter Python Environment. For example, numpy scipy
-
+      Enter a space separated list of extra packages to be installed in your temporary Python Environment from
+      the <a href='https://docs.alliancecan.ca/wiki/Available_Python_wheels'>Compute Canada Wheelhouse</a>.
+      Note that the required jupyter package will automatically be installed.
+  python_requirements_file:
+    widget: text_field
+    label: "Python Requirements Text File"
+    value: ""
+    help: |
+      If desired, enter the path to a python requirements file with
+      extra packages to be installed in your temporary Python Environment from the
+      <a href='https://docs.alliancecan.ca/wiki/Available_Python_wheels'>Compute Canada Wheelhouse</a>.
   use_venv:
     widget: check_box
     checked_value: 1
@@ -71,42 +81,20 @@ attributes:
     html_options:
       data:
         hide-venv-when-un-checked: true
-    label: "Use a Virtual Environment"
+    label: "Virtual Environment"
     help: |
-      Check this box if you wish to load a conda or python environment.
+      Check this box if you wish to load a python virtual environment. Note that conda
+      environments are not supported by this application.
   venv:
     widget: "text_field"
-    label: "Python or Conda Virtual Environment"
+    label: "Python Virtual Environment Path"
     help: |
-      Leave blank unless using a python or conda virtual environment. For
-      a python virtual environment, you must specify the absolute path.
+      Leave blank unless using a virtual environment. To find your
+      python virtual environment, you must specify the absolute path.
       For a python virtual environment, any packages built in the environment
-      will take precedence over those from the Lmod modules. Any virtual
-      environment used should have been built from the same Python or Anaconda
-      Lmod module selected above.
-    value: ""
-  use_mc:
-    widget: check_box
-    checked_value: 1
-    unchecked_value: 0
-    html_options:
-      data:
-        hide-mc-when-un-checked: true
-    label: "Use Custom Module Collection"
-    help: |
-      Check this box if you wish to load a module collection instead of using
-      Lmod modules specified by the python version menu above.
-  mc:
-    widget: "text_field"
-    label: "Custom Module Collection"
-    help: |
-      Leave blank unless using your own Lmod module collection instead of a
-      preselected set of modules determined by the "Python version" menu above.
-      Note that if you are using your own collection of modules, this collection
-      must result in a valid jupyter executable in your path or the app will
-      not function. If set, this field should be the name of your collection
-      specified in the "module save" command. If a custom module collection is
-      used, then the "Python version" selection will have no effect.
+      Note that your python virtual environment is assumed to be fully
+      independent of the provided Lmod-based software stack and no modules
+      will be loaded. Your environment must include jupyter.
     value: ""
 form:
   - extra_jupyter_args
@@ -120,8 +108,8 @@ form:
   - gpu_arch
   - notebook_dir
   - python_lmod_version
+  - scipy_lmod_version
   - extra_python_packages
+  - python_requirements_file
   - use_venv
   - venv
-  - use_mc
-  - mc

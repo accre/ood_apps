@@ -62,6 +62,3 @@ script:
     - "--gres=gpu:nvidia_rtx_a6000:<%= num_gpus.to_i %>"
 <% end %>
     - "--account=<%= bc_account.strip %>"
-<% if (bc_account.strip == "accre_guests_acc") && (bc_num_hours.to_i > 4) -%>
-    - "--time=04:00:00"
-<% end %>

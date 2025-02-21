@@ -7,40 +7,51 @@ echo "TIMING - Starting main script at: $(date)"
 cd "${HOME}"
 
 # Purge the module environment to avoid conflicts
-module purge
+# module purge
 unset PYTHONPATH
 unset accre_jupyter_mc
 
-# Load the pre-selected or custom modules
-<%- if context.use_mc.to_i == 1 -%>
-module restore <%= context.mc %>
-<%- elsif context.use_venv.to_i == 1 -%>
-# Check if this is conda or standard python
-if python --version 2>&1 | grep -q Anaconda; then
-  source activate <%= context.venv %>
-else
-  source <%= context.venv %>/bin/activate
-  echo "give the venv priority over Lmod python packages"
-  export PYTHONPATH=$(python -c 'import sys; print(sys.path[-1])'):${PYTHONPATH}
-fi
+<%- if context.use_venv.to_i == 1 -%>
+source <%= context.venv %>/bin/activate
 <%- else -%>
-version_lt() {
-  test "$(printf '%s\n' "$@" | sort -V | head -n 1)" == "$1";
-}
-PY_VER=$(echo <%= context.python_lmod_version %> | cut -d '/' -f2)
-if version_lt "$PY_VER" "3.10.3"; then
-  module load StdEnv/2020
-fi
+
+# For potential future use, currently only supporting StdEnv/2023
+#
+#version_lt() {
+#  test "$(printf '%s\n' "$@" | sort -V | head -n 1)" == "$1";
+#}
+#PY_VER=$(echo <%= context.python_lmod_version %> | cut -d '/' -f2)
+#if version_lt "$PY_VER" "3.10.3"; then
+#  module load StdEnv/2020
+#fi
+
+source /etc/accre/lmod.sh accre_cc
+
+# Purge the module environment to avoid conflicts just in case
+module purge
+
+<%- if context.scipy_lmod_version == "zzz-empty" -%>
 module load <%= context.python_lmod_version %>
-python -m venv create /tmp/ood-jupyter-$SLURM_JOB_ID
-source /tmp/ood-jupyter-$SLURM_JOB_ID/bin/activate
-pip install jupyter <%= context.extra_python_packages %>
+<%- else -%>
+module load <%= context.python_lmod_version %> <%= context.scipy_lmod_version %>
+<%- end -%>
+virtualenv --no-download ${ACCRE_RUNTIME_DIR}/venv
+source ${ACCRE_RUNTIME_DIR}/venv/bin/activate
+pip install --no-index --upgrade pip
+pip install jupyter <%= context.extra_python_packages %> --no-index
+
+<%- if ! context.python_requirements_file.strip.empty? -%>
+pip install -r <%= context.python_requirements_file %> --no-index
+<%- end -%>
 # For debugging purposes
+echo "Job Debugging Information"
+echo "========================="
 jupyter --version
+pip freeze
+module list
+echo "========================="
 <%- end -%>
 
-# List loaded modules for debugging purposes
-module list
 
 # Benchmark info
 echo "TIMING - Starting jupyter at: $(date)"
