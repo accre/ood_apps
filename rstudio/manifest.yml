@@ -1,9 +1,12 @@
 ---
-name: RStudio Server (Old)
+name: RStudio Server (Legacy)
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
 description: |
+  Note that this is a legacy app from the old CentOS 7 environment and is provided
+  as-is.
+
   This app will launch RStudio Server, an IDE for R, on a production compute node.
   Note that this app is still in beta release and may have outstanding known
   issues. Please let us know if you think you are experiencing a problem
