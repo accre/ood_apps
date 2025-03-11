@@ -6,6 +6,19 @@ role: batch_connect
 description: |
   This app will launch a Jupyter Notebook server on a production GPU node.
 
-  The Jupyter Notebook can be loaded either
-  from an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
-  python distribution. The Tensorflow library is available with the GCC toolchain.
+  This is currently an experimental application for the Rocky 9 environment.
+
+  By default the python environment and interpreter will be loaded from
+  the latest <a><href='https://help.accre.vanderbilt.edu/index.php?title=R9_Software_Stack'>
+  software stack</a> standard environment provided by the  Digital Research Alliance of Canada
+  (the Alliance aka Compute Canada). Unless your project has specific versioning requirements,
+  we strongly suggest selecting the latest version of Python and Scipy-Stack.
+
+  If you need additional python packages you may add any that you need that are available
+  from the <a href='https://docs.alliancecan.ca/wiki/Available_Python_wheels'>Compute Canada Wheelhouse</a>.
+  You may also provide the path to a python requirements file rather than listing
+  each package separately.
+
+  Alternatively, if you have a python virtual environment that is fully independent
+  from the provided software stack, you may use that instead by selecting the option
+  to bring your own virtual environment.

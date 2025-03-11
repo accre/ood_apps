@@ -28,11 +28,10 @@ attributes:
     help: "Defaults to the first available node with any architecture"
     options:
       - [ "Any", "any" ]
+      - [ "Zen", "zen" ]
+      - [ "Cascade Lake", "cascadelake" ]
       - [ "Skylake", "skylake" ]
       - [ "Haswell", "haswell" ]
-      - [ "Sandy Bridge", "sandybridge" ]
-      - [ "Westmere", "westmere" ]
-      - [ "Zen", "zen" ]
   notebook_dir:
     label: "Working Directory" 
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
@@ -42,28 +41,41 @@ attributes:
     widget: select
     label: "Python version"
     help: |
-      Select the version of Python that you want to load based
-      on either an ACCRE GCC or Intel compiler toolchain or an installed Anaconda
-      distribution.
+      Select the version of Python that you want to load.
     options:
+      # Not all wheels are built for 3.13 yet, fails on cffi (Eric 2025/02)
+      - ["Python/3.13.2" ,"python/3.13.2"]
       - ["Python/3.12.4" ,"python/3.12.4"]
       - ["Python/3.11.5" ,"python/3.11.5"]
-      - ["Python/3.11.2" ,"python/3.11.2"]
       - ["Python/3.10.13","python/3.10.13"]
-      - ["Python/3.10.2" ,"python/3.10.2"]
-      - ["Python/3.9.6"  ,"python/3.9.6" ]
-      - ["Python/3.8.10" ,"python/3.8.10"]
-      - ["Python/3.8.2"  ,"python/3.8.2" ]
-      - ["Python/3.7.9"  ,"python/3.7.9" ]
-      - ["Python/3.7.7"  ,"python/3.7.7" ]
-      - ["Python/3.6.10" ,"python/3.6.10"]
-      - ["Python/2.7.18" ,"python/2.7.18"]
+
+  scipy_lmod_version:
+    widget: select
+    label: "SciPy-Stack version"
+    help: |
+      Select the version of SciPy-Stack that you want to load, or None if you do not wish to load SciPy-Stack
+    options:
+      - ["SciPy-Stack/2025a" ,"scipy-stack/2025a"]
+      - ["SciPy-Stack/2024b" ,"scipy-stack/2024b"]
+      - ["SciPy-Stack/2024a" ,"scipy-stack/2024a"]
+      - ["SciPy-Stack/2023b" ,"scipy-stack/2023b"]
+      - ["None" ,"zzz-empty"]
   extra_python_packages:
     widget: text_field
     label: "Other Python Packages"
     value: ""
     help: |
-      Enter a space separated list of extra packages to be installed in your Jupyter Python Environment. For example, numpy scipy
+      Enter a space separated list of extra packages to be installed in your temporary Python Environment from
+      the <a href='https://docs.alliancecan.ca/wiki/Available_Python_wheels'>Compute Canada Wheelhouse</a>.
+      Note that the required jupyter package will automatically be installed.
+  python_requirements_file:
+    widget: text_field
+    label: "Python Requirements Text File"
+    value: ""
+    help: |
+      If desired, enter the path to a python requirements file with
+      extra packages to be installed in your temporary Python Environment from the
+      <a href='https://docs.alliancecan.ca/wiki/Available_Python_wheels'>Compute Canada Wheelhouse</a>.
   use_venv:
     widget: check_box
     checked_value: 1
@@ -73,79 +85,19 @@ attributes:
         hide-venv-when-un-checked: true
     label: "Virtual Environment"
     help: |
-      Check this box if you wish to load a python or conda virtual environment.
+      Check this box if you wish to load a python virtual environment. Note that conda
+      environments are not supported by this application.
   venv:
     widget: "text_field"
-    label: "Python or Conda Virtual Environment"
+    label: "Python Virtual Environment Path"
     help: |
-      Leave blank unless using a python or conda virtual environment. For
-      a python virtual environment, you must specify the absolute path.
+      Leave blank unless using a virtual environment. To find your
+      python virtual environment, you must specify the absolute path.
       For a python virtual environment, any packages built in the environment
-      will take precedence over those from the Lmod modules. Any virtual
-      environment used should have been built from the same Python or Anaconda
-      Lmod module selected above.
+      Note that your python virtual environment is assumed to be fully
+      independent of the provided Lmod-based software stack and no modules
+      will be loaded. Your environment must include jupyter.
     value: ""
-  use_mc:
-    widget: check_box
-    checked_value: 1
-    unchecked_value: 0
-    html_options:
-      data:
-        hide-mc-when-un-checked: true
-    label: "Use Custom Module Collection"
-    help: |
-      Check this box if you wish to load a module collection instead of using
-      Lmod modules specified by the python version menu above.
-  mc:
-    widget: "text_field"
-    label: "Custom Module Collection"
-    help: |
-      Leave blank unless using your own Lmod module collection instead of a
-      preselected set of modules determined by the "Python version" menu above.
-      Note that if you are using your own collection of modules, this collection
-      must result in a valid jupyter executable in your path or the app will
-      not function. If set, this field should be the name of your collection
-      specified in the "module save" command. If a custom module collection is
-      used, then the "Python version" selection will have no effect.
-    value: ""
-  use_cgw:
-    widget: check_box
-    checked_value: 1
-    unchecked_value: 0
-    html_options:
-      data:
-        hide-cgw-when-un-checked: true
-    label: "Use a Custom Gateway Node"
-    help: |
-      Check this box if you wish to run your job on a custom gateway
-      node instead of a standard compute node. You must be a member of
-      a group that has an OnDemand enabled custom gateway to use this
-      feature. If you wish to have OnDemand enabled on your group's
-      custom gateway, please open a helpdesk ticket. If this box is
-      checked, then you must enter the name of your custom gateway
-      below. 
-  cgw:
-    label: "Custom Gateway Node"
-    value: "N/A"
-    help: "Leave blank unless using a custom gateway node"
-  exclusive:
-    widget: select
-    label: "Exclusive node reservation"
-    help: |
-      Select an option other than "Not Exclusive" in order to exclusively
-      reserve a sever in its entirety. This will give you access to all CPU
-      cores and memory available on the server, and your job will not be
-      subject to termination if it tries to exceed its memory quota, although
-      system-level out of memory errors may occur. The number of cores and
-      memory will vary depending on the node allocated. To specifically reserve
-      119GB or 246GB of memory, select one of those options. Note that a
-      whole node reservation may require a longer wait in the queue so please
-      make your request well ahead of the time you plan on using it.
-    options:
-      - [ "Not Exclusive", "no" ]
-      - [ "Any Node", "any" ]
-      - [ "119GB Memory", "119g" ]
-      - [ "246GB Memory", "246g" ]
 
 form:
   - extra_jupyter_args
@@ -157,12 +109,9 @@ form:
   - cpuarch
   - notebook_dir
   - python_lmod_version
+  - scipy_lmod_version
   - extra_python_packages
+  - python_requirements_file
   - bc_account
   - use_venv
   - venv
-  - use_mc
-  - mc
-  - exclusive
-  - use_cgw
-  - cgw

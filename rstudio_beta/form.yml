@@ -1,0 +1,52 @@
+---
+cluster: "accre"
+form:
+  - bc_num_slots
+  - bc_num_hours
+  - bc_num_cores
+  - bc_mem
+  - cpuarch
+  - bc_account
+  - version
+  - use_reservation
+  - reservation
+attributes:
+  bc_account:
+    label: "ACCRE Slurm Group"
+    help: "Leave blank to use your default slurm group"
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  bc_mem:
+    label: "Maximum Memory (GB)"
+    value: 4
+  bc_num_cores:
+    label: "Number of CPU Cores"
+    value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
+      - [ "Sandy Bridge", "sandybridge" ]
+      - [ "Westmere", "westmere" ]
+  version:
+    widget: select
+    label: "Version of R to load"
+    options:
+      - [ "ACCRE Experimental R for x86_64_v3", "experimental_v3"]
+      - [ "ACCRE Experimental R for x86_64_v2", "experimental_v2"]
+  use_reservation:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use a slurm reservation"
+    help: "Check this box if you wish to use a slurm reservation"
+  reservation:
+    label: "Slurm Reservation Name"
+    value: ""
+    help: "Leave blank unless using a slurm reservation"
