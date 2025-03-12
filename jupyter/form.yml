@@ -44,10 +44,11 @@ attributes:
       Select the version of Python that you want to load.
     options:
       # Not all wheels are built for 3.13 yet, fails on cffi (Eric 2025/02)
-      # - ["Python/3.13.2" ,"python/3.13.2"]
+      - ["Python/3.13.2" ,"python/3.13.2"]
       - ["Python/3.12.4" ,"python/3.12.4"]
       - ["Python/3.11.5" ,"python/3.11.5"]
       - ["Python/3.10.13","python/3.10.13"]
+
   scipy_lmod_version:
     widget: select
     label: "SciPy-Stack version"
