@@ -16,6 +16,16 @@ module --force purge
 unset PYTHONPATH
 unset accre_jupyter_mc
 
+DEBUG "Initializing ACCRE software stack"
+source /etc/accre/lmod.sh accre_cc
+setup_accre_software_stack
+module load StdEnvACCRE/2023
+#module load python/3.11.5 ipykernel/2024b     # Python Jupyter kernel
+#module load scipy-stack/2024b                 # SciPy stack
+#module load r/4.4.0 ir-kernel/4.4             # R Jupyter kernel
+#module load julia/1.10.0 ijulia-kernel/1.10   # Julia Jupyter kernel
+#module load matlab/2023b                      # Matlab
+
 DEBUG "Loading specified Python/SciPy environment"
 <%- if context.scipy_lmod_version == "zzz-empty" -%>
 	module load <%= context.python_lmod_version %>
@@ -27,16 +37,6 @@ DEBUG "Loading specified Python/SciPy environment"
 	DEBUG "Activating personalized Python venv..."
 	source <%= context.venv %>/bin/activate
 <%- else -%>
-
-	DEBUG "Initializing ACCRE software stack"
-	source /etc/accre/lmod.sh accre_cc
-	setup_accre_software_stack
-	module load StdEnvACCRE/2023
-	#module load python/3.11.5 ipykernel/2024b     # Python Jupyter kernel
-	#module load scipy-stack/2024b                 # SciPy stack
-	#module load r/4.4.0 ir-kernel/4.4             # R Jupyter kernel
-	#module load julia/1.10.0 ijulia-kernel/1.10   # Julia Jupyter kernel
-	#module load matlab/2023b                      # Matlab
 
 	DEBUG "Activating Open OnDemand Python venv..."
 	virtualenv --no-download ${ACCRE_RUNTIME_DIR}/venv
