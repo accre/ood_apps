@@ -11,25 +11,10 @@ DEBUG "Job running on ${HOSTNAME}"
 # Set working directory to home directory
 cd "${HOME}"
 
-# Purge the module environment to avoid conflicts
 DEBUG "Purging module environment"
-module purge
+module --force purge
 unset PYTHONPATH
 unset accre_jupyter_mc
-
-# Initialize ACCRE software stack
-DEBUG "Initializing ACCRE software stack"
-source /etc/accre/lmod.sh accre_cc
-setup_accre_software_stack
-
-# Configure ACCRE software stack
-DEBUG "Configuring ACCRE software stack"
-module load StdEnvACCRE/2023
-module load python/3.11.5 ipykernel/2024b     # Python Jupyter kernel
-module load scipy-stack/2024b                 # SciPy stack
-module load r/4.4.0 ir-kernel/4.4             # R Jupyter kernel
-module load julia/1.10.0 ijulia-kernel/1.10   # Julia Jupyter kernel
-module load matlab/2023b                      # Matlab
 
 DEBUG "Loading specified Python/SciPy environment"
 <%- if context.scipy_lmod_version == "zzz-empty" -%>
@@ -38,11 +23,21 @@ DEBUG "Loading specified Python/SciPy environment"
 	module load <%= context.python_lmod_version %> <%= context.scipy_lmod_version %>
 <%- end -%>
 
-DEBUG "Activating Python virtual environment"
 <%- if context.use_venv.to_i == 1 -%>
 	DEBUG "Activating personalized Python venv..."
 	source <%= context.venv %>/bin/activate
 <%- else -%>
+
+	DEBUG "Initializing ACCRE software stack"
+	source /etc/accre/lmod.sh accre_cc
+	setup_accre_software_stack
+	module load StdEnvACCRE/2023
+	#module load python/3.11.5 ipykernel/2024b     # Python Jupyter kernel
+	#module load scipy-stack/2024b                 # SciPy stack
+	#module load r/4.4.0 ir-kernel/4.4             # R Jupyter kernel
+	#module load julia/1.10.0 ijulia-kernel/1.10   # Julia Jupyter kernel
+	#module load matlab/2023b                      # Matlab
+
 	DEBUG "Activating Open OnDemand Python venv..."
 	virtualenv --no-download ${ACCRE_RUNTIME_DIR}/venv
 	source ${ACCRE_RUNTIME_DIR}/venv/bin/activate
@@ -51,8 +46,8 @@ DEBUG "Activating Python virtual environment"
 	pip install --no-index --upgrade pip
 	pip install jupyter <%= context.extra_python_packages %> --no-index
 
-	DEBUG "Installing specified Python requirements.txt file (if any)"
 	<%- if ! context.python_requirements_file.strip.empty? -%>
+		DEBUG "Installing specified Python requirements.txt file..."
 		pip install -r <%= context.python_requirements_file %> --no-index
 	<%- end -%>
 
@@ -62,15 +57,11 @@ DEBUG "Activating Python virtual environment"
 	DEBUG "Info on Python pip-installed modules:"
 	pip freeze
 
-	DEBUG "Inf on lmod-installed packages:"
+	DEBUG "Info on lmod-installed packages:"
 	module list
 <%- end -%>
 
-# Benchmark info
 DEBUG "Starting Jupyter Notebook instance"
-
-# Launch the Jupyter Notebook Server
 set -x
-
 unset XDG_RUNTIME_DIR
 jupyter notebook --config="${CONFIG_FILE}" --ip="0.0.0.0" --no-browser --notebook-dir=<%= context.notebook_dir %> <%= context.extra_jupyter_args %>
