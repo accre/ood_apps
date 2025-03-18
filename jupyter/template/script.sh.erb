@@ -27,16 +27,26 @@ module load StdEnvACCRE/2023
 #module load matlab/2023b                      # Matlab
 
 DEBUG "Loading specified Python/SciPy environment"
-<%- if context.scipy_lmod_version == "zzz-empty" -%>
-	module load <%= context.python_lmod_version %>
-<%- else -%>
-	module load <%= context.python_lmod_version %> <%= context.scipy_lmod_version %>
-<%- end -%>
-
 <%- if context.use_venv.to_i == 1 -%>
 	DEBUG "Activating personalized Python venv..."
 	source <%= context.venv %>/bin/activate
 <%- else -%>
+
+	# For potential future use, currently only supporting StdEnv/2023
+	#
+	#version_lt() {
+	#  test "$(printf '%s\n' "$@" | sort -V | head -n 1)" == "$1";
+	#}
+	#PY_VER=$(echo <%= context.python_lmod_version %> | cut -d '/' -f2)
+	#if version_lt "$PY_VER" "3.10.3"; then
+	#  module load StdEnv/2020
+	#fi
+
+	<%- if context.scipy_lmod_version == "zzz-empty" -%>
+		module load <%= context.python_lmod_version %>
+	<%- else -%>
+		module load <%= context.python_lmod_version %> <%= context.scipy_lmod_version %>
+	<%- end -%>
 
 	DEBUG "Activating Open OnDemand Python venv..."
 	virtualenv --no-download ${ACCRE_RUNTIME_DIR}/venv
