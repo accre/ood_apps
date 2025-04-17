@@ -1,0 +1,131 @@
+# Batch Connect app configuration file
+#
+---
+
+cluster: "accre"
+
+attributes:
+
+  # Any extra command line arguments to feed to the `jupyter notebook ...`
+  # command that launches the Jupyter notebook within the batch job
+  extra_jupyter_args: ""
+  bc_account:
+    label: "ACCRE Slurm Group"
+    help: "Leave blank to use your default slurm group"
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  bc_mem:
+    label: "Maximum Memory (GB)"
+    value: 4
+  bc_num_cores:
+    label: "Number of CPU Cores"
+    value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Zen", "zen" ]
+      - [ "Cascade Lake", "cascadelake" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
+  notebook_dir:
+    label: "Working Directory"
+    help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
+    widget: "text_field"
+    value: "${HOME}"
+    r_lmod_version:
+    widget: select
+    label: "R version"
+    help: |
+      Select the version of R that you want to load.
+    options:
+      - ["R/4.0.0", "StdEnv/2020 r/4.0.0"]
+      - ["R/4.0.2", "StdEnv/2020 r/4.0.2"]
+      - ["R/4.0.5", "StdEnv/2020 r/4.0.5"]
+      - ["R/4.1.0", "StdEnv/2020 r/4.1.0"]
+      - ["R/4.1.2", "StdEnv/2020 r/4.1.2"]
+      - ["R/4.2.1", "StdEnv/2020 r/4.2.1"]
+      - ["R/4.2.2", "StdEnv/2020 r/4.2.2"]
+      - ["R/4.3.1", "StdEnvACCRE/2023 r/4.3.1"]
+      - ["R/4.4.0", "StdEnvACCRE/2023 r/4.4.0"]
+  python_lmod_version:
+    widget: select
+    label: "Python version"
+    help: |
+      Select the version of Python that you want to load.
+    options:
+      # Not all wheels are built for 3.13 yet, fails on cffi (Eric 2025/02)
+      # - ["Python/3.13.2" ,"python/3.13.2"]  # Commented out, doesn't work
+      - ["Python/3.12.4" ,"python/3.12.4"]
+      - ["Python/3.11.5" ,"python/3.11.5"]
+      - ["Python/3.10.13","python/3.10.13"]
+  scipy_lmod_version:
+    widget: select
+    label: "SciPy-Stack version"
+    help: |
+      Select the version of SciPy-Stack that you want to load, or None if you do not wish to load SciPy-Stack
+    options:
+      - ["SciPy-Stack/2025a" ,"scipy-stack/2025a"]
+      - ["SciPy-Stack/2024b" ,"scipy-stack/2024b"]
+      - ["SciPy-Stack/2024a" ,"scipy-stack/2024a"]
+      - ["SciPy-Stack/2023b" ,"scipy-stack/2023b"]
+      - ["None" ,"zzz-empty"]
+  extra_python_packages:
+    widget: text_field
+    label: "Other Python Packages"
+    value: ""
+    help: |
+      Enter a space separated list of extra packages to be installed in your temporary Python Environment from
+      the <a href='https://docs.alliancecan.ca/wiki/Available_Python_wheels'>Compute Canada Wheelhouse</a>.
+      Note that the required jupyter package will automatically be installed.
+  python_requirements_file:
+    widget: text_field
+    label: "Python Requirements Text File"
+    value: ""
+    help: |
+      If desired, enter the path to a python requirements file with
+      extra packages to be installed in your temporary Python Environment from the
+      <a href='https://docs.alliancecan.ca/wiki/Available_Python_wheels'>Compute Canada Wheelhouse</a>.
+  use_venv:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    html_options:
+      data:
+        hide-venv-when-un-checked: true
+    label: "Virtual Environment"
+    help: |
+      Check this box if you wish to load a python virtual environment. Note that conda
+      environments are not supported by this application.
+  venv:
+    widget: "text_field"
+    label: "Python Virtual Environment Path"
+    help: |
+      Leave blank unless using a virtual environment. To find your
+      python virtual environment, you must specify the absolute path.
+      For a python virtual environment, any packages built in the environment
+      Note that your python virtual environment is assumed to be fully
+      independent of the provided Lmod-based software stack and no modules
+      will be loaded. Your environment must include jupyter.
+    value: ""
+
+form:
+  - extra_jupyter_args
+  - bc_queue
+  - bc_num_hours
+  - bc_mem
+  - bc_num_cores
+  - bc_num_slots
+  - cpuarch
+  - notebook_dir
+  - python_lmod_version
+  - scipy_lmod_version
+  - extra_python_packages
+  - python_requirements_file
+  - bc_account
+  - use_venv
+  - venv
