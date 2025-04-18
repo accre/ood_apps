@@ -37,7 +37,7 @@ attributes:
     help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
     widget: "text_field"
     value: "${HOME}"
-    r_lmod_version:
+  r_lmod_version:
     widget: select
     label: "R version"
     help: |
@@ -122,6 +122,7 @@ form:
   - bc_num_slots
   - cpuarch
   - notebook_dir
+  - r_lmod_version
   - python_lmod_version
   - scipy_lmod_version
   - extra_python_packages
