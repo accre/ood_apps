@@ -28,6 +28,11 @@ setup_accre_software_stack
 
 DEBUG "Loading specified R environment"
 module load <%= context.r_lmod_version %>
+DEBUG "Building R kernel for Jupyter..."
+Rscript -e "install.packages('IRkernel', repos = 'https://cloud.r-project.org')"
+Rscript -e "IRkernel::installspec()"
+
+
 
 DEBUG "Loading specified Python/SciPy environment"
 <%- if context.use_venv.to_i == 1 -%>
