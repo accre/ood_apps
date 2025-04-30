@@ -40,7 +40,6 @@ attributes:
     options:
       - [ "ACCRE Singularity R 4.4.2 for x86-64-v3", "R-4.4.2-v3"]
       - [ "ACCRE Singularity R 4.4.2 for x86-64-v2", "R-4.4.2-v2"]
-      - [ "ACCRE Singularity R 4.5.0 for x86-64-v2 (Experimental!)", "R-4.5.0-v2-exp"]
       - [ "ACCRE Singularity R 4.5.0 for x86-64-v3 (Experimental!)", "R-4.5.0-v3-exp"]
       - [ "ACCRE Singularity R 4.5.0 for x86-64-v4 (Experimental!)", "R-4.5.0-v4-exp"]
   use_reservation:
