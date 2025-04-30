@@ -4,14 +4,26 @@
 setup_env () {
 	module purge
 	accre_rversion=<%= context.version %>
-	if [[ "${accre_rversion}" == "experimental_v2" ]]
+	if [[ "${accre_rversion}" == "R-4.4.2-v2" ]]
 	then
 		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio_2024-12.1-563__R_4.4.2_x86_64_v2.sif"
 		export R_LIBS_USER="~/R/4.4.2/x86_64_v2"
-	elif [[ "${accre_rversion}" == "experimental_v3" ]]
+	elif [[ "${accre_rversion}" == "R-4.4.2-v3" ]]
 	then
 		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio_2024-12.1-563__R_4.4.2_x86_64_v3.sif"
 		export R_LIBS_USER="~/R/4.4.2/x86_64_v3"
+	elif [[ "${accre_rversion}" == "R-4.5.0-v2-exp" ]]
+	then
+		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio/4.5.0/R-RStudio-x86-64-v2.sif"
+		export R_LIBS_USER="~/R/4.4.2/x86_64_v2"
+	elif [[ "${accre_rversion}" == "R-4.5.0-v3-exp" ]]
+	then
+		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio/4.5.0/R-RStudio-x86-64-v3.sif"
+		export R_LIBS_USER="~/R/4.4.2/x86_64_v3"
+	elif [[ "${accre_rversion}" == "R-4.5.0-v4-exp" ]]
+	then
+		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio/4.5.0/R-RStudio-x86-64-v4.sif"
+		export R_LIBS_USER="~/R/4.4.2/x86_64_v4"
 	fi
 }
 
