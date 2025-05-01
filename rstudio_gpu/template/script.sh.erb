@@ -53,7 +53,7 @@ set -x
 # Launch the RStudio Server
 echo "Starting up rserver at $(date) ..."
 
-singularity run --nv -B /accre,/cvmfs,/dors,/data,/nobackup,/labs,/run/user,${ACCRE_RUNTIME_DIR}:/tmp "$RSTUDIO_SERVER_IMAGE" \
+singularity run --nv -B /accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51,/run/user,${ACCRE_RUNTIME_DIR}:/tmp "$RSTUDIO_SERVER_IMAGE" \
  --www-port "${port}" \
  --auth-none 0 \
  --auth-pam-helper-path "${RSTUDIO_AUTH}" \
