@@ -1,0 +1,222 @@
+# Batch Connect app configuration file
+#
+---
+
+cluster: "accre"
+
+attributes:
+
+  # Any extra command line arguments to feed to the `jupyter notebook ...`
+  # command that launches the Jupyter notebook within the batch job
+  extra_jupyter_args: ""
+  bc_account:
+    label: "ACCRE Slurm Account"
+    help: |
+      Leave blank to use your default slurm account.
+      To get a list of slurm accounts
+      and resources that your user has access to, connect to a gateway node and
+      run the "slurm_resources" command. Note that your specified account must
+      have access the partition, and possibly qos and gpu resources specified
+      below.
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  partition:
+    widget: select
+    label: "Partition"
+    help: |
+      Batch is the default partition that all users have access to. For access
+      to GPUs select the batch_gpu partition. To get a list of slurm accounts
+      and resources that your user has access to, connect to a gateway node and
+      run the "slurm_resources" command.
+    options:
+      - [
+          'batch (standard nodes, high-throughput)', 'batch',
+          data-hide-gpus-type: true,
+          data-hide-numgpus: true
+        ]
+      - [ 'batch_gpu (GPU accelerated nodes, high-throughput)', 'batch_gpu',
+          data-hide-cpuarch: true,
+          data-hide-bc-mem: true,
+          data-hide-bc-num-cores: true,
+          data-hide-cpuarch: true,
+          data-set-cpuarch: "any"
+        ]
+  bc_mem:
+    label: "Maximum Memory (GB)"
+    value: 4
+  bc_num_cores:
+    label: "Number of CPU Cores"
+    value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Zen", "zen" ]
+      - [ "Cascade Lake", "cascadelake" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
+  gpus_type:
+    widget: select
+    label: "GPU Type"
+    help: |
+      Select your desired GPU type Please see the
+      <a href='https://help.accre.vanderbilt.edu/index.php?title=GPUs_at_ACCRE'>help wiki gpu page</a>
+      for a list of GPU types available and their corresponding slurm GRES type. Make sure that
+      your selected GPU type is available to the slurm account you have chosen. Use the
+      "slurm_resources" command to determine what GPU types are available to your selected account.
+    options:
+      - [ 'Nvidia RTX A6000', 'nvidia_rtx_a6000' ]
+      - [ 'Nvidia RTX A4000', 'nvidia_rtx_a4000' ]
+      - [ 'Nvidia H100', 'nvidia_h100_nvl' ]
+      - [ 'Nvidia A100 (80GB)', 'nvidia_a100_80gb' ]
+      - [ 'Nvidia L40S', 'nvidia_l40s' ]
+      - [ 'Nvidia Quadro RTX 6000', 'quadro_rtx_6000' ]
+      - [ 'Nvidia RTX 2080 Ti', 'nvidia_geforce_rtx_2080_ti' ]
+      - [ 'Nvidia Titan X (or Xp)', 'nvidia_titan_x' ]
+  numgpus:
+    label: "Number of GPUs"
+    value: 1
+    help: |
+      State the number of GPUs required for your job. Note that the system memory and
+      physical CPU cores reserved for your job will be automatically set to a proportion
+      of the resources available on the node per GPU card.
+  notebook_dir:
+    label: "Working Directory" 
+    help: "Directory containing your notebook files. Defaults to your home directory, you must include the absolute path to the directory."
+    widget: "text_field"
+    value: "${HOME}"
+  cc_bundle:
+    widget: select
+    label: "JupyterLab Module Bundle"
+    help: |
+      Select the Module Bundle that you wish to use. For the latest TODO
+    options:
+      - ["ACCREJupyterLab/2025a (latest, no R kernel)" ,"ACCREJupyterLab/2025a"]
+      - ["ACCREJupyterLab/2024b (R kernel supported)" ,"ACCREJupyterLab/2024b"]
+  extra_python_packages:
+    widget: text_field
+    label: "Other Python Packages"
+    value: ""
+    help: |
+      Enter a space separated list of extra packages to be installed in your temporary Python Environment from
+      the <a href='https://docs.alliancecan.ca/wiki/Available_Python_wheels'>Compute Canada Wheelhouse</a>.
+      Note that the required jupyter package will automatically be installed.
+  python_requirements_file:
+    widget: text_field
+    label: "Python Requirements Text File"
+    value: ""
+    help: |
+      If desired, enter the path to a python requirements file with
+      extra packages to be installed in your temporary Python Environment from the
+      <a href='https://docs.alliancecan.ca/wiki/Available_Python_wheels'>Compute Canada Wheelhouse</a>.
+  advanced_options:
+    widget: 'check_box'
+    label: Show Advanced Options
+    help: |
+      Check this box to display advanced options, which is required if you want to
+      use an existing virtual environment, your own module collection, not use the
+      software stack at all, or use an apptainer (singularity) container.
+    html_options:
+      data:
+        hide-use-venv-when-un-checked: true
+        hide-venv-when-un-checked: true
+        hide-reject-stack-when-un-checked: true
+        hide-use-module-collection-when-un-checked: true
+        hide-module-collection-when-un-checked: true
+        hide-use-apptainer-when-un-checked: true
+        hide-apptainer-when-un-checked: true
+  use_module_collection:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Module Collection"
+    help: |
+      Check this box if you wish to load an existing python virtual environment. Note that conda
+      environments are not supported by this application.
+  module_collection:
+    widget: "text_field"
+    label: "Module Collection Name"
+    help: |
+      Leave blank unless using a virtual environment. To find your
+      python virtual environment, you must specify the absolute path.
+      For a python virtual environment, any packages built in the environment
+      Note that your python virtual environment is assumed to be fully
+      independent of the provided Lmod-based software stack and no modules
+      will be loaded. Your environment must include jupyter.
+    value: ""
+  use_venv:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Virtual Environment"
+    help: |
+      Check this box if you wish to load an existing python virtual environment. Note that conda
+      environments are not supported by this application.
+      Note that when you load an existing virtual environment all desired packages must
+      already be installed into your environment. If you use this option then
+  venv:
+    widget: "text_field"
+    label: "Python Virtual Environment Path"
+    help: |
+      Leave blank unless using a virtual environment. To find your
+      python virtual environment, you must specify the absolute path.
+      You must make sure that you load the same modules used when creating this
+      virtual enviornment, which may either be one of the available ACCRE-created
+      bundles, a module collection that you have saved, or no modules at all.
+    value: ""
+  reject_stack:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Do not use Software Stack"
+    help: |
+      Check this box if you are using an existing virtual environment with a python interpreter
+      that is not provided via the Compute Canada software stack. If you check this box
+      the software stack will not be set up and no modules will be loaded.
+  use_apptainer:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use an Apptainer (Singularity) Container"
+    help: |
+      Check this box if you wish to use an apptainer (formerly singularity) container.
+      Your container must be built and configured so that it may run a JupyterLab server
+      with a "jupyter lab" command. Note that if you check this box the software stack
+      will not be loaded, and no virtual environment outside of the container will be
+      created or activated. All other form options related to software stack modules
+      and python virtual environments will be ignored.
+  apptainer:
+    widget: "text_field"
+    label: "Path to Apptainer (Singularity) Container"
+    help: |
+      Leave blank unless using an apptainer (formerly singularity) container. To find your
+      apptainer container, you must specify the absolute path.
+    value: ""
+form:
+  - extra_jupyter_args
+  - bc_queue
+  - bc_num_hours
+  - bc_account
+  - partition
+  - bc_mem
+  - bc_num_cores
+  - bc_num_slots
+  - cpuarch
+  - gpus_type
+  - numgpus
+  - notebook_dir
+  - cc_bundle
+  - extra_python_packages
+  - python_requirements_file
+  - advanced_options
+  - use_module_collection
+  - module_collection
+  - use_venv
+  - venv
+  - reject_stack
+  - use_apptainer
+  - apptainer
