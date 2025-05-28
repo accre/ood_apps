@@ -107,7 +107,8 @@ attributes:
     widget: select
     label: "JupyterLab Module Bundle"
     help: |
-      Select the Module Bundle that you wish to use. For the latest TODO
+      Select the Module Bundle that you wish to use. We recommend that you use the latest
+      bundle available unless you need a specific feature such as R kernel support.
     options:
       - ["ACCREJupyterLab/2025a (latest, no R kernel)" ,"ACCREJupyterLab/2025a"]
       - ["ACCREJupyterLab/2024b (R kernel supported)" ,"ACCREJupyterLab/2024b"]
