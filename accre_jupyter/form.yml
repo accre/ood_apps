@@ -34,15 +34,29 @@ attributes:
       - [
           'batch (standard nodes, high-throughput)', 'batch',
           data-hide-gpus-type: true,
-          data-hide-numgpus: true
+          data-hide-numgpus: true,
+          data-hide-qos: true
         ]
       - [ 'batch_gpu (GPU accelerated nodes, high-throughput)', 'batch_gpu',
           data-hide-cpuarch: true,
           data-hide-bc-mem: true,
           data-hide-bc-num-cores: true,
           data-hide-cpuarch: true,
+          data-hide-qos: true,
           data-set-cpuarch: "any"
         ]
+      - [ 'interactive (standard nodes, low-latency)', 'interactive',
+          data-hide-gpus-type: true,
+          data-hide-numgpus: true
+        ]
+  qos:
+    label: "Quality of Service (QOS)"
+    help: |
+      QOS to associate with this job. Use the "slurm_resources" command to
+      see a list of QOSs available to your user for each slurm account that
+      your user has access to. Note that for the special "debug_int" QOS your
+      specified wall clock time will be ignored and your job limit will
+      be set to 30 minutes.
   bc_mem:
     label: "Maximum Memory (GB)"
     value: 4
@@ -202,6 +216,7 @@ form:
   - bc_num_hours
   - bc_account
   - partition
+  - qos
   - bc_mem
   - bc_num_cores
   - bc_num_slots

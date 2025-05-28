@@ -11,69 +11,56 @@ DEBUG "Job running on ${HOSTNAME}"
 # Set working directory to home directory
 cd "${HOME}"
 
-DEBUG "Purging module environment"
-module --force purge
+DEBUG "Unsetting PYTHONPATH and accre_jupyter_mc"
 unset PYTHONPATH
 unset accre_jupyter_mc
 
-DEBUG "Initializing ACCRE software stack"
-source /etc/accre/lmod.sh accre_cc
-setup_accre_software_stack
-module load StdEnvACCRE/2023
-#module load python/3.11.5 ipykernel/2024b     # Python Jupyter kernel
-#module load scipy-stack/2024b                 # SciPy stack
-#module load r/4.4.0 ir-kernel/4.4             # R Jupyter kernel
-#module load julia/1.10.0 ijulia-kernel/1.10   # Julia Jupyter kernel
-#module load matlab/2023b                      # Matlab
 
-DEBUG "Loading specified Python/SciPy environment"
-<%- if context.use_venv.to_i == 1 -%>
-	DEBUG "Activating personalized Python venv..."
-	source <%= context.venv %>/bin/activate
-<%- else -%>
-
-	# For potential future use, currently only supporting StdEnv/2023
-	#
-	#version_lt() {
-	#  test "$(printf '%s\n' "$@" | sort -V | head -n 1)" == "$1";
-	#}
-	#PY_VER=$(echo <%= context.python_lmod_version %> | cut -d '/' -f2)
-	#if version_lt "$PY_VER" "3.10.3"; then
-	#  module load StdEnv/2020
-	#fi
-
-#	<%- if context.scipy_lmod_version == "zzz-empty" -%>
-#		module load <%= context.python_lmod_version %>
-#	<%- else -%>
-#		module load <%= context.python_lmod_version %> <%= context.scipy_lmod_version %>
-#	<%- end -%>
-#
-module load StdEnvACCRE/2023 python/3.12.4 scipy-stack/2025a r/4.4.0 ir-kernel/4.4 julia/1.10.0 ijulia-kernel/1.10 matlab/2023b
-
-	DEBUG "Activating Open OnDemand Python venv..."
-	virtualenv --no-download ${ACCRE_RUNTIME_DIR}/venv
-	source ${ACCRE_RUNTIME_DIR}/venv/bin/activate
-
-	DEBUG "Installing Jupyter in virtual environment"
-	pip install --no-index --upgrade pip
-	pip install jupyter <%= context.extra_python_packages %> --no-index
-
-	<%- if ! context.python_requirements_file.strip.empty? -%>
-		DEBUG "Installing specified Python requirements.txt file..."
-		pip install -r <%= context.python_requirements_file %> --no-index
-	<%- end -%>
-
-	DEBUG "Info on Jupyter version:"
-	jupyter --version
-
-	DEBUG "Info on Python pip-installed modules:"
-	pip freeze
-
-	DEBUG "Info on lmod-installed packages:"
-	module list
+<%- if not (context.use_venv.to_i == 1 and context.reject_stack.to_i == 1) and context.use_apptainer.to_i == 0 -%>
+  DEBUG "Initializing ACCRE software stack"
+  setup_accre_software_stack
+  module --force purge
+  <%- if context.use_module_collection.to_i == 0 -%>
+    module load <%= context.cc_bundle %>
+  <%- else -%>
+    module restore <%= context.module_collection %>
+  <%- end -%>
+  DEBUG "Info on lmod-installed packages:"
+  module list
 <%- end -%>
 
-DEBUG "Starting JupyterLab instance"
-set -x
-unset XDG_RUNTIME_DIR
-jupyter lab --config="${CONFIG_FILE}" --ip="0.0.0.0" --no-browser --notebook-dir=<%= context.notebook_dir %> <%= context.extra_jupyter_args %>
+<%- if context.use_venv.to_i == 1 and context.use_apptainer.to_i == 0 -%>
+  DEBUG "Activating existing Python venv..."
+  source <%= context.venv %>/bin/activate
+<%- elsif context.use_apptainer.to_i == 0 -%>
+  DEBUG "Creating Temporary Open OnDemand Python venv..."
+  virtualenv --no-download ${ACCRE_RUNTIME_DIR}/venv
+  source ${ACCRE_RUNTIME_DIR}/venv/bin/activate
+
+  DEBUG "Installing Jupyter in virtual environment"
+  pip install --no-index --upgrade pip
+  pip install jupyter <%= context.extra_python_packages %> --no-index
+
+  <%- if ! context.python_requirements_file.strip.empty? -%>
+    DEBUG "Installing specified Python requirements.txt file..."
+    pip install -r <%= context.python_requirements_file %> --no-index
+  <%- end -%>
+  DEBUG "Info on Jupyter version:"
+  jupyter --version
+
+  DEBUG "Info on Python pip-installed modules:"
+  pip freeze
+<%- end -%>
+
+<%- if context.use_apptainer.to_i == 0 -%>
+  DEBUG "Starting JupyterLab instance"
+  set -x
+  unset XDG_RUNTIME_DIR
+  jupyter lab --config="${CONFIG_FILE}" --ip="0.0.0.0" --no-browser --notebook-dir=<%= context.notebook_dir %> <%= context.extra_jupyter_args %>
+<%- else -%>
+  set -x
+  unset XDG_RUNTIME_DIR
+  mkdir -p ${HOME}/.local
+  mkdir -p ${ACCRE_RUNTIME_DIR}/.local
+  apptainer exec -B ${ACCRE_RUNTIME_DIR}/.local:${HOME}/.local,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 <%= context.apptainer %>  jupyter lab --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=${accre_notebook_dir} <%= context.extra_jupyter_args %>
+<%- end -%>
