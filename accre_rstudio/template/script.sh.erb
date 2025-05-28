@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+# Load the required environment
+setup_env () {
+        # Purge the stack if it was loaded by .bashrc or other mechanism
+        if [ -z ${_accre_loaded_software_stack+x} ]; then
+	  module --force purge
+        fi
+	accre_rversion=<%= context.version %>
+	if [[ "${accre_rversion}" == "442-564-v3" ]]
+	then
+		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio_2024-12.1-563__R_4.4.2_x86_64_v2.sif"
+		export R_LIBS_USER="~/R/4.4.2/x86_64_v2"
+	fi
+}
+
+setup_env
+
+export RSESSION_PATH="${RSTUDIO_SINGULARITY_HOST_MNT}${PWD}"
+
+mkdir -p ${RSESSION_PATH}/run
+mkdir -p ${RSESSION_PATH}/var-lib-rstudio-server
+mkdir -p ${RSESSION_PATH}/etc_rstudio
+
+#
+# Start RStudio Server
+#
+
+# PAM auth helper used by RStudio
+export RSTUDIO_AUTH="${RSESSION_PATH}/bin/auth"
+
+# Generate an `rsession` wrapper script
+export RSESSION_WRAPPER_FILE="${RSESSION_PATH}/rsession.sh"
+(
+umask 077
+sed 's/^ \{2\}//' > "${RSESSION_WRAPPER_FILE}" << EOL
+  #!/usr/bin/env bash
+
+  # Log all output from this script
+  export RSESSION_LOG_FILE="${RSESSION_PATH}/rsession.log"
+
+  exec &>>"\${RSESSION_LOG_FILE}"
+  set -x
+
+  # Construct local RStudio Server database.conf file
+  printf "provider=sqlite\ndirectory=/var/lib/rstudio-server\n" > ${RSESSION_PATH}/etc_rstudio/database.conf
+
+  # Construct local RStudio Server rserver.conf file
+  printf 'server-user=%s\nrsession-which-r=/usr/local/bin/R\nrsession-ld-library-path=/usr/local/lib64/R/lib\n' ${USER} > ${RSESSION_PATH}/etc_rstudio/rserver.conf
+  printf "www-enable-origin-check=0\n" >> ${RSESSION_PATH}/etc_rstudio/rserver.conf
+
+  # Construct local RStudio Server rsession.conf
+  printf "r-libs-user=${R_LIBS_USER}\n" > ${RSESSION_PATH}/etc_rstudio/rsession.conf
+
+  # Construct local RStudio Server logging.conf (for debugging)
+  printf "[*]\nlog-level=debug\n" > ${RSESSION_PATH}/etc_rstudio/logging.conf
+
+  export TZ="US/Central"
+
+  # Launch the original command
+  echo "Launching rsession..."
+  set -x
+  exec rsession --r-libs-user "${R_LIBS_USER}" "\${@}"
+EOL
+)
+chmod 700 "${RSESSION_WRAPPER_FILE}"
+
+# Set working directory to home directory
+cd "${HOME}"
+
+python -c 'from uuid import uuid4; print(uuid4())' > "${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
+chmod 0600 "${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
+export SECURE_COOKIE_KEY="${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
+
+set -x
+# Launch the RStudio Server
+echo "Starting up rserver at $(date) ..."
+
+<%- if context.partition == 'batch_gpu' -%>
+apptainer exec \
+   --nv \
+   --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 \
+   "${RSTUDIO_SERVER_IMAGE}" /usr/lib/rstudio-server/bin/rserver \
+   --auth-encrypt-password 0 \
+   --auth-none 0 \
+   --auth-pam-helper-path "${RSTUDIO_AUTH}" \
+   --server-user=${USER} \
+   --www-port "${port}" \
+   --secure-cookie-key-file "${SECURE_COOKIE_KEY}" \
+   --rsession-path "${RSESSION_WRAPPER_FILE}"
+<%- else -%>
+apptainer exec \
+   --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 \
+   "${RSTUDIO_SERVER_IMAGE}" /usr/lib/rstudio-server/bin/rserver \
+   --auth-encrypt-password 0 \
+   --auth-none 0 \
+   --auth-pam-helper-path "${RSTUDIO_AUTH}" \
+   --server-user=${USER} \
+   --www-port "${port}" \
+   --secure-cookie-key-file "${SECURE_COOKIE_KEY}" \
+   --rsession-path "${RSESSION_WRAPPER_FILE}"
+<%- end -%> 
+
+echo "Finished rserver at $(date), exit code $?"
