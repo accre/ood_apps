@@ -1,5 +1,5 @@
 ---
-name: RStudio Server (GPU) (Legacy)
+name: "[legacy] RStudio Server (GPU)"
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect

@@ -62,5 +62,9 @@ unset accre_jupyter_mc
   unset XDG_RUNTIME_DIR
   mkdir -p ${HOME}/.local
   mkdir -p ${ACCRE_RUNTIME_DIR}/.local
-  apptainer exec -B ${ACCRE_RUNTIME_DIR}/.local:${HOME}/.local,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 <%= context.apptainer %>  jupyter lab --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=${accre_notebook_dir} <%= context.extra_jupyter_args %>
+  <%- if context.partition == 'batch_gpu' -%>
+    apptainer exec --nv -B ${ACCRE_RUNTIME_DIR}/.local:${HOME}/.local,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 <%= context.apptainer %>  jupyter lab --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=${accre_notebook_dir} <%= context.extra_jupyter_args %>
+  <%- else -%>
+    apptainer exec -B ${ACCRE_RUNTIME_DIR}/.local:${HOME}/.local,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 <%= context.apptainer %>  jupyter lab --config="${CONFIG_FILE}" --ip="0.0.0.0" --notebook-dir=${accre_notebook_dir} <%= context.extra_jupyter_args %>
+  <%- end -%>
 <%- end -%>
