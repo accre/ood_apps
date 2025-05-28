@@ -16,6 +16,17 @@ script:
       <% if cpuarch != "any" %>
     - "--constraint=<%= cpuarch %>"
       <% end %>
+    <% elsif partition == "interactive" %>
+    - "--partition=interactive"
+    - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
+    - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
+    - "--qos=<%= qos %>"
+      <% if cpuarch != "any" %>
+    - "--constraint=<%= cpuarch %>"
+      <% end %>
+      <% if qos == "debug_int" %>
+    - "--time=00:30:00"
+      <% end %>
     <% elsif partition == "batch_gpu" %>
     - "--partition=batch_gpu"
     - "--gres=gpu:<%= gpus_type %>:<%= numgpus.blank? ? 1 : numgpus.to_i %>"
