@@ -1,5 +1,5 @@
 ---
-name: RStudio Server (New!)
+name: "[legacy] RStudio Server (New!)"
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect

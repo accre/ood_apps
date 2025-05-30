@@ -1,5 +1,5 @@
 ---
-name: Singularity Jupyter Notebook (GPU) (Alpha)
+name: "[legacy] Singularity Jupyter Notebook (GPU) (Alpha)"
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect

@@ -1,0 +1,61 @@
+---
+
+batch_connect:
+  template: "basic"
+  conn_params:
+    - csrf_token
+
+script:
+  native:
+    - "-N"
+    - "<%= bc_num_slots.blank? ? 1 : bc_num_slots.to_i %>"
+    <% if ! bc_account.strip.empty? %>
+    - "--account=<%= bc_account.strip %>"
+    <% end %>
+    <% if partition == "batch" %>
+    - "--partition=batch"
+    - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
+    - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
+      <% if cpuarch != "any" %>
+    - "--constraint=<%= cpuarch %>"
+      <% end %>
+    <% elsif partition == "interactive" %>
+    - "--partition=interactive"
+    - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
+    - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
+    - "--qos=<%= qos %>"
+      <% if cpuarch != "any" %>
+    - "--constraint=<%= cpuarch %>"
+      <% end %>
+      <% if qos == "debug_int" %>
+    - "--time=00:30:00"
+      <% end %>
+    <% elsif partition == "batch_gpu" %>
+    - "--partition=batch_gpu"
+    - "--gres=gpu:<%= gpus_type %>:<%= numgpus.blank? ? 1 : numgpus.to_i %>"
+      <% if gpus_type == "nvidia_rtx_a6000" %>
+    - "--mem=<%= numgpus.to_i * 124 %>G"
+    - "--cpus-per-task=<%= numgpus.to_i * 16 %>"
+      <% elsif gpus_type == "nvidia_rtx_a4000" %>
+    - "--mem=<%= numgpus.to_i * 30 %>G"
+    - "--cpus-per-task=<%= numgpus.to_i * 4 %>"
+      <% elsif gpus_type == "nvidia_h100_nvl" %>
+    - "--mem=<%= numgpus.to_i * 561 %>G"
+    - "--cpus-per-task=<%= numgpus.to_i * 32 %>"
+      <% elsif gpus_type == "nvidia_a100_80gb" %>
+    - "--mem=<%= numgpus.to_i * 374 %>G"
+    - "--cpus-per-task=<%= numgpus.to_i * 32 %>"
+      <% elsif gpus_type == "nvidia_l40s" %>
+    - "--mem=<%= numgpus.to_i * 187 %>G"
+    - "--cpus-per-task=<%= numgpus.to_i * 8 %>"
+      <% elsif gpus_type == "quadro_rtx_6000" %>
+    - "--mem=<%= numgpus.to_i * 92 %>G"
+    - "--cpus-per-task=<%= numgpus.to_i * 6 %>"
+      <% elsif gpus_type == "nvidia_geforce_rtx_2080_ti" %>
+    - "--mem=<%= numgpus.to_i * 92 %>G"
+    - "--cpus-per-task=<%= numgpus.to_i * 6 %>"
+      <% elsif gpus_type == "nvidia_titan_x" %>
+    - "--mem=<%= numgpus.to_i * 60 %>G"
+    - "--cpus-per-task=<%= numgpus.to_i * 2 %>"
+      <% end %>
+    <% end %>

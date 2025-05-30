@@ -1,12 +1,10 @@
 ---
-name: "[legacy] Jupyter Notebook (GPU)"
+name: ACCRE JupyterLab
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
 description: |
-  This app will launch a Jupyter Notebook server on a production GPU node.
-
-  This is currently an experimental application for the Rocky 9 environment.
+  This app will launch a JupyterLab server on the specified partition.
 
   By default the python environment and interpreter will be loaded from
   the latest <a><href='https://help.accre.vanderbilt.edu/index.php?title=R9_Software_Stack'>
@@ -22,3 +20,6 @@ description: |
   Alternatively, if you have a python virtual environment that is fully independent
   from the provided software stack, you may use that instead by selecting the option
   to bring your own virtual environment.
+
+  NOTICE - for access to the DGX hardware, please use the legacy Jupyter Notebook GPU app for now as 
+  we are still working on a permanent resource management structure for this hardware.

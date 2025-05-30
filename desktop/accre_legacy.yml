@@ -1,0 +1,60 @@
+---
+title: "[legacy] ACCRE Desktop"
+description: |
+  NOTICE - This is a legacy application left available temporarily for
+  compatibility with existing workflows. We recommend that you use the
+  new ACCRE Desktop app instead as soon as is practical.
+
+  This app will launch an interactive desktop on an ACCRE compute node. You
+  will have full access to the resources this node provide. This is analogous
+  to an interactive batch job. While your desktop may sometimes be available
+  within a few seconds, it may spend a few minutes or hours in the scheduler
+  queue until resources become available. To ensure that a desktop is ready
+  when you need it, we suggest starting the desktop a day in advance, and
+  requesting up to a weeks worth of hours. An ACCRE desktop will persist
+  between portal sessions until you delete or logout, so you may use the same
+  desktop for several days.
+cluster: "accre"
+attributes:
+  desktop: "xfce"
+  bc_account:
+    label: "ACCRE Slurm Group"
+    help: "Leave blank to use your default slurm group"
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  bc_mem:
+    label: "Maximum Memory (GB)"
+    value: 4
+  bc_num_cores:
+    label: "Number of CPU Cores"
+    value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Zen", "zen" ]
+      - [ "Cascade Lake", "cascadelake" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
+  vnc_resolution:
+     required: true
+     widget: "resolution_field"
+     label: "Desktop Screen Resolution (px)"
+     value: "1024x768"
+form:
+  - bc_vnc_idle
+  - desktop
+  - bc_num_hours
+  - bc_mem
+  - bc_num_cores
+  - bc_num_slots
+  - node_type
+  - bc_queue
+  - cpuarch
+  - vnc_resolution
+  - bc_account
+submit: "submit/my_submit.yml.erb"

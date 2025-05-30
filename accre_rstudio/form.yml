@@ -1,22 +1,19 @@
 ---
-title: "ACCRE Desktop"
-description: |
-  This app will launch an interactive desktop on an ACCRE compute node. You
-  will have full access to the resources this node provide. This is analogous
-  to an interactive batch job. While your desktop may sometimes be available
-  within a few seconds, it may spend a few minutes or hours in the scheduler
-  queue until resources become available. To ensure that a desktop is ready
-  when you need it, we suggest starting the desktop a day in advance, and
-  requesting up to a weeks worth of hours. An ACCRE desktop will persist
-  between portal sessions until you delete or logout, so you may use the same
-  desktop for several days.
-
-  NOTICE - for access to the DGX hardware, please use the legacy ACCRE GPU
-  for now as we are still working on a permanent resource management structure
-  for this hardware.
 cluster: "accre"
+form:
+  - bc_queue
+  - bc_num_hours
+  - version
+  - bc_account
+  - partition
+  - qos
+  - bc_mem
+  - bc_num_cores
+  - bc_num_slots
+  - cpuarch
+  - gpus_type
+  - numgpus
 attributes:
-  desktop: "xfce"
   bc_account:
     label: "ACCRE Slurm Account"
     help: |
@@ -71,6 +68,16 @@ attributes:
   bc_num_cores:
     label: "Number of CPU Cores"
     value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Zen", "zen" ]
+      - [ "Cascade Lake", "cascadelake" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
   gpus_type:
     widget: select
     label: "GPU Type"
@@ -96,35 +103,8 @@ attributes:
       State the number of GPUs required for your job. Note that the system memory and
       physical CPU cores reserved for your job will be automatically set to a proportion
       of the resources available on the node per GPU card.
-  cpuarch:
+  version:
     widget: select
-    label: "CPU Architecture"
-    help: "Defaults to the first available node with any architecture"
+    label: "Version of R to load"
     options:
-      - [ "Any", "any" ]
-      - [ "Zen", "zen" ]
-      - [ "Cascade Lake", "cascadelake" ]
-      - [ "Skylake", "skylake" ]
-      - [ "Haswell", "haswell" ]
-  vnc_resolution:
-     required: true
-     widget: "resolution_field"
-     label: "Desktop Screen Resolution (px)"
-     value: "1024x768"
-form:
-  - bc_vnc_idle
-  - desktop
-  - bc_num_hours
-  - bc_account
-  - partition
-  - qos
-  - bc_mem
-  - bc_num_cores
-  - bc_num_slots
-  - gpus_type
-  - numgpus
-  - node_type
-  - bc_queue
-  - cpuarch
-  - vnc_resolution
-submit: "submit/accre_submit.yml.erb"
+      - [ "R 4.4.2 / RStudio 563 / x86_64-v3", "442-564-v3"]
