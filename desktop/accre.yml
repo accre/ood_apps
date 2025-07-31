@@ -102,10 +102,15 @@ attributes:
     help: "Defaults to the first available node with any architecture"
     options:
       - [ "Any", "any" ]
-      - [ "Zen", "zen" ]
-      - [ "Cascade Lake", "cascadelake" ]
-      - [ "Skylake", "skylake" ]
-      - [ "Haswell", "haswell" ]
+      - [ "Any x86_64-v4 (AVX512 support)", "x86-64v4" ]
+      - [ "Any AMD", "amd" ]
+      - [ "Any Intel", "intel" ]
+      - [ "AMD Zen4", "zen4" ]
+      - [ "AMD Zen3", "zen3" ]
+      - [ "AMD Zen2", "zen2" ]
+      - [ "Intel Cascade Lake", "cascadelake" ]
+      - [ "Intel Skylake", "skylake" ]
+      - [ "Intel Haswell", "haswell" ]
   vnc_resolution:
      required: true
      widget: "resolution_field"
