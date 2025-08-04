@@ -43,7 +43,8 @@ attributes:
           'batch (standard nodes, high-throughput)', 'batch',
           data-hide-gpus-type: true,
           data-hide-numgpus: true,
-          data-hide-qos: true
+          data-hide-qos: true,
+          data-hide-gpus-type-interactive: true
         ]
       - [ 'batch_gpu (GPU accelerated nodes, high-throughput)', 'batch_gpu',
           data-hide-cpuarch: true,
@@ -51,20 +52,25 @@ attributes:
           data-hide-bc-num-cores: true,
           data-hide-cpuarch: true,
           data-hide-qos: true,
-          data-set-cpuarch: "any"
+          data-set-cpuarch: "any",
+          data-hide-gpus-type-interactive: true
         ]
       - [ 'interactive (standard nodes, low-latency)', 'interactive',
           data-hide-gpus-type: true,
-          data-hide-numgpus: true
+          data-hide-numgpus: true,
+          data-hide-gpus-type-interactive: true
+        ]
+      - [ 'interactive_gpu (GPU accelerated nodes, high-throughput)', 'interactive_gpu',
+          data-hide-gpus-type: true
         ]
   qos:
     label: "Quality of Service (QOS)"
     help: |
       QOS to associate with this job. Use the "slurm_resources" command to
       see a list of QOSs available to your user for each slurm account that
-      your user has access to. Note that for the special "debug_int" QOS your
-      specified wall clock time will be ignored and your job limit will
-      be set to 30 minutes.
+      your user has access to. Note that for the special "debug_int" (interactive)
+      and "debug_iacc" QOS(s) your specified wall clock time will be ignored
+      and your job limit will be set to 30 minutes.
   bc_mem:
     label: "Maximum Memory (GB)"
     value: 4
@@ -89,6 +95,22 @@ attributes:
       - [ 'Nvidia Quadro RTX 6000', 'quadro_rtx_6000' ]
       - [ 'Nvidia RTX 2080 Ti', 'nvidia_geforce_rtx_2080_ti' ]
       - [ 'Nvidia Titan X (or Xp)', 'nvidia_titan_x' ]
+  gpus_type_interactive:
+    widget: select
+    label: "GPU Type (Interactive)"
+    help: |
+      Select your desired GPU type for **interactive GPU** jobs.  
+      Please see the
+      <a href='https://help.accre.vanderbilt.edu/index.php?title=GPUs_at_ACCRE'>help wiki GPU page</a>
+      for a list of GPU types available and their corresponding Slurm GRES type.  
+      Make sure that your selected GPU type is available to the Slurm account you have chosen.  
+      Use the `slurm_resources` command to determine what GPU types are available to your selected account.
+    options:
+      - [ 'Nvidia RTX A4000', 'nvidia_rtx_a4000' ]
+      - [ 'Nvidia RTX 2080 Ti', 'nvidia_geforce_rtx_2080_ti' ]
+      - [ 'Nvidia Titan X (or Xp)', 'nvidia_titan_x' ]
+      - [ 'Nvidia A100-SXM4 (40 GB)', 'nvidia_a100-sxm4-40gb' ]
+      - [ 'Nvidia A100-SXM4 (80 GB)', 'nvidia_a100-sxm4-80gb' ]
   numgpus:
     label: "Number of GPUs"
     value: 1
@@ -102,22 +124,16 @@ attributes:
     help: "Defaults to the first available node with any architecture"
     options:
       - [ "Any", "any" ]
-      - [ "Any x86_64-v4 (AVX512 support)", "x86-64v4" ]
-      - [ "Any AMD", "amd" ]
-      - [ "Any Intel", "intel" ]
-      - [ "AMD Zen4", "zen4" ]
-      - [ "AMD Zen3", "zen3" ]
-      - [ "AMD Zen2", "zen2" ]
-      - [ "Intel Cascade Lake", "cascadelake" ]
-      - [ "Intel Skylake", "skylake" ]
-      - [ "Intel Haswell", "haswell" ]
+      - [ "Zen", "zen" ]
+      - [ "Cascade Lake", "cascadelake" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
   vnc_resolution:
      required: true
      widget: "resolution_field"
      label: "Desktop Screen Resolution (px)"
      value: "1024x768"
 form:
-  - bc_vnc_idle
   - desktop
   - bc_num_hours
   - bc_account
@@ -127,8 +143,8 @@ form:
   - bc_num_cores
   - bc_num_slots
   - gpus_type
+  - gpus_type_interactive
   - numgpus
-  - node_type
   - bc_queue
   - cpuarch
   - vnc_resolution
