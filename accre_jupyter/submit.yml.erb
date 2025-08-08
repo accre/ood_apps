@@ -49,6 +49,18 @@ script:
       <% if qos == "debug_int" %>
     - "--time=00:30:00"
       <% end %>
+    <% elsif partition == "interactive_gpu" %>
+    - "--partition=interactive_gpu"
+    - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
+    - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
+    - "--gres=gpu:<%= gpus_type_interactive %>:<%= numgpus.blank? ? 1 : numgpus.to_i %>"
+    - "--qos=<%= qos %>"
+      <% if cpuarch != "any" %>
+    - "--constraint=<%= cpuarch %>"
+      <% end %>
+      <% if qos == "debug_iacc" %>
+    - "--time=00:30:00"
+      <% end %>
     <% elsif partition == "batch_gpu" %>
     - "--partition=batch_gpu"
     - "--gres=gpu:<%= gpus_type %>:<%= numgpus.blank? ? 1 : numgpus.to_i %>"

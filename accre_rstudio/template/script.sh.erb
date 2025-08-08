@@ -76,7 +76,7 @@ set -x
 # Launch the RStudio Server
 echo "Starting up rserver at $(date) ..."
 
-<%- if context.partition == 'batch_gpu' -%>
+<%- if context.partition == 'batch_gpu' || context.partition == 'interactive_gpu' -%>
 apptainer exec \
    --nv \
    --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 \
