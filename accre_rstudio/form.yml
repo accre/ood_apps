@@ -53,13 +53,15 @@ attributes:
           data-set-cpuarch: "any",
           data-hide-gpus-type-interactive: true
         ]
-      - [ 'interactive (standard nodes, low-latency)', 'interactive',
+      - [ 'interactive (standard nodes, ready on-demand)', 'interactive',
           data-hide-gpus-type: true,
           data-hide-numgpus: true,
           data-hide-gpus-type-interactive: true
         ]
-      - [ 'interactive_gpu (GPU accelerated nodes, high-throughput)', 'interactive_gpu',
-          data-hide-gpus-type: true
+      - [ 'interactive_gpu (GPU accelerated nodes, ready on-demand)', 'interactive_gpu',
+          data-hide-gpus-type: true,
+          data-set-cpuarch: "any",
+          data-hide-cpuarch: true
         ]
   qos:
     label: "Quality of Service (QOS)"
