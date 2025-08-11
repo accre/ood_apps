@@ -34,6 +34,7 @@ attributes:
       - [
           'batch (standard nodes, high-throughput)', 'batch',
           data-hide-gpus-type: true,
+          data-hide-gpus-type-interactive: true,
           data-hide-numgpus: true,
           data-hide-qos: true
         ]
@@ -43,20 +44,27 @@ attributes:
           data-hide-bc-num-cores: true,
           data-hide-cpuarch: true,
           data-hide-qos: true,
+          data-hide-gpus-type-interactive: true,
           data-set-cpuarch: "any"
         ]
-      - [ 'interactive (standard nodes, low-latency)', 'interactive',
+      - [ 'interactive (standard nodes, ready on-demand)', 'interactive',
           data-hide-gpus-type: true,
+          data-hide-gpus-type-interactive: true,
           data-hide-numgpus: true
+        ]
+      - [ 'interactive_gpu (GPU accelerated nodes, ready on-demand)', 'interactive_gpu',
+          data-hide-gpus-type: true,
+          data-set-cpuarch: "any",
+          data-hide-cpuarch: true
         ]
   qos:
     label: "Quality of Service (QOS)"
     help: |
       QOS to associate with this job. Use the "slurm_resources" command to
       see a list of QOSs available to your user for each slurm account that
-      your user has access to. Note that for the special "debug_int" QOS your
-      specified wall clock time will be ignored and your job limit will
-      be set to 30 minutes.
+      your user has access to. Note that for the special "debug_int" (interactive)
+      and "debug_iacc" QOS(s) your specified wall clock time will be ignored
+      and your job limit will be set to 30 minutes.
   bc_mem:
     label: "Maximum Memory (GB)"
     value: 4
@@ -96,6 +104,22 @@ attributes:
       - [ 'Nvidia Quadro RTX 6000', 'quadro_rtx_6000' ]
       - [ 'Nvidia RTX 2080 Ti', 'nvidia_geforce_rtx_2080_ti' ]
       - [ 'Nvidia Titan X (or Xp)', 'nvidia_titan_x' ]
+  gpus_type_interactive:
+    widget: select
+    label: "GPU Type (Interactive)"
+    help: |
+      Select your desired GPU type for **interactive GPU** jobs.~~
+      Please see the
+      <a href='https://help.accre.vanderbilt.edu/index.php?title=GPUs_at_ACCRE'>help wiki GPU page</a>
+      for a list of GPU types available and their corresponding Slurm GRES type.
+      Make sure that your selected GPU type is available to the Slurm account you have chosen.
+      Use the `slurm_resources` command to determine what GPU types are available to your selected account.
+    options:
+      - [ 'Nvidia RTX A4000', 'nvidia_rtx_a4000' ]
+      - [ 'Nvidia RTX A6000', 'nvidia_rtx_a6000' ]
+      - [ 'Nvidia RTX 2080 Ti', 'nvidia_geforce_rtx_2080_ti' ]
+      - [ 'Nvidia A100-SXM4 (DGX 40 GB)', 'nvidia_a100-sxm4-40gb' ]
+      - [ 'Nvidia A100-SXM4 (DGX 80 GB)', 'nvidia_a100-sxm4-80gb' ]
   numgpus:
     label: "Number of GPUs"
     value: 1
@@ -228,6 +252,7 @@ form:
   - bc_num_slots
   - cpuarch
   - gpus_type
+  - gpus_type_interactive
   - numgpus
   - notebook_dir
   - cc_bundle
