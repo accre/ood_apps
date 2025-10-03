@@ -6,5 +6,3 @@ role: batch_connect
 description: |
   This app will launch RStudio Server on an ACCRE compute node using an apptainer container.
 
-  NOTICE - for access to the DGX hardware, please use the legacy Rstudio Server GPU App for now
-  as we are still working on a permanent resource management structure for this hardware.
