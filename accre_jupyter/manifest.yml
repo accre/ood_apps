@@ -21,5 +21,3 @@ description: |
   from the provided software stack, you may use that instead by selecting the option
   to bring your own virtual environment.
 
-  NOTICE - for access to the DGX hardware, please use the legacy Jupyter Notebook GPU app for now as 
-  we are still working on a permanent resource management structure for this hardware.

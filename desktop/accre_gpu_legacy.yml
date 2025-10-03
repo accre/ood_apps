@@ -3,10 +3,7 @@ title: "[legacy] ACCRE GPU Desktop"
 description: |
   NOTICE - This is a legacy application left available temporarily for
   compatibility with existing workflows. We recommend that you use the
-  new ACCRE Desktop app instead as soon as is practical. Note that at
-  present this app is still required to access the DGX hardware as we
-  are still setting up a permanent resource access structure for these
-  machines.
+  new ACCRE Desktop app instead as soon as is practical.
   
   This is an experimental feature!!! This app will launch an interactive
   desktop on an ACCRE GPU node. You must have GPU access to use this app.
