@@ -79,7 +79,7 @@ echo "Starting up rserver at $(date) ..."
 <%- if context.partition == 'batch_gpu' || context.partition == 'interactive_gpu' -%>
 apptainer exec \
    --nv \
-   --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 \
+   --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/data,/nobackup,/labs,/panfs \
    "${RSTUDIO_SERVER_IMAGE}" /usr/lib/rstudio-server/bin/rserver \
    --auth-encrypt-password 0 \
    --auth-none 0 \
@@ -90,7 +90,7 @@ apptainer exec \
    --rsession-path "${RSESSION_WRAPPER_FILE}"
 <%- else -%>
 apptainer exec \
-   --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/dors,/data,/nobackup,/labs,/panfs,/gpfs51 \
+   --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/data,/nobackup,/labs,/panfs \
    "${RSTUDIO_SERVER_IMAGE}" /usr/lib/rstudio-server/bin/rserver \
    --auth-encrypt-password 0 \
    --auth-none 0 \
