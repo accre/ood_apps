@@ -108,6 +108,7 @@ attributes:
       - [ 'Nvidia RTX A4000', 'nvidia_rtx_a4000' ]
       - [ 'Nvidia RTX A6000', 'nvidia_rtx_a6000' ]
       - [ 'Nvidia RTX 2080 Ti', 'nvidia_geforce_rtx_2080_ti' ]
+      - [ 'Nvidia RTX 3090', 'nvidia_geforce_rtx_3090' ]
       - [ 'Nvidia A100-SXM4 (DGX 40 GB)', 'nvidia_a100-sxm4-40gb' ]
       - [ 'Nvidia A100-SXM4 (DGX 80 GB)', 'nvidia_a100-sxm4-80gb' ]
   numgpus:
