@@ -24,7 +24,6 @@ attributes:
     label: "GPU Architecture"
     widget: select
     options:
-      - ["Maxwell", "maxwell"]
       - ["Pascal", "pascal"]
       - ["Turing", "turing"]
       - ["A6000", "a6000"]
