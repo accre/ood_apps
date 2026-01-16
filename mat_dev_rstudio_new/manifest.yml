@@ -1,10 +1,9 @@
 ---
-name: "[legacy] RStudio Server (New!)"
+name: "[legacy] RStudio Server (Experimental, do not use!)"
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
 description: |
-  This is ACCRE's new RStudio for 2025.   Uses R 4.4.2 and RStudio Server 2024.12.0-467.
+  This is an experimental instance of RStudio Server which is being debugged.
 
-  This is at present an experimental app and will eventually replace the legacy
-  RStudio app on the portal.
+  DO NOT USE THIS SERVER.   Any data loss from using this server is on the user.
