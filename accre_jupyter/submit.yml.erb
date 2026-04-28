@@ -1,6 +1,22 @@
 # Job submission configuration file
 #
 ---
+<%
+  valid_partitions = %w[batch batch_gpu interactive interactive_gpu]
+  unless valid_partitions.include?(partition.to_s.strip)
+    raise <<~MSG
+      Partition value missing or invalid (received: #{partition.inspect}).
+
+      This is almost always caused by using "Relaunch" on a previous session from
+      "My Interactive Sessions". A known OnDemand issue drops the partition value
+      on Relaunch for apps with advanced form widgets, which produces a job with
+      no --partition / --mem / --cpus-per-task flags and will fail to start.
+
+      Please instead: go to Interactive Apps -> ACCRE JupyterLab, fill out the
+      form fresh, and click Launch.
+    MSG
+  end
+%>
 
 #
 # Configure the content of the job script for the batch job here
