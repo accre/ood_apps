@@ -24,11 +24,6 @@ script:
     - "--cpus-per-task=<%= 2 * num_gpus.to_i %>"
 # SM: not sure if the GPU type is right, may need updating
     - "--gres=gpu:nvidia_titan_x:<%= num_gpus.to_i %>"
-<% elsif gpu_arch == "maxwell" -%>
-    - "--mem=<%= 29 * num_gpus.to_i %>G"
-    - "--cpus-per-task=<%= 3 * num_gpus.to_i %>"
-# SM: not sure if the GPU type is right, may need updating
-    - "--gres=gpu:nvidia_geforce_gtx_titan_x:<%= num_gpus.to_i %>"
 <% elsif gpu_arch == "turing" -%>
     - "--mem=<%= 90 * num_gpus.to_i %>G"
     - "--cpus-per-task=<%= 6 * num_gpus.to_i %>"
