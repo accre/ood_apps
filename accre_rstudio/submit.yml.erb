@@ -70,6 +70,9 @@ script:
       <% elsif gpus_type == "nvidia_h100_nvl" %>
     - "--mem=<%= numgpus.to_i * 561 %>G"
     - "--cpus-per-task=<%= numgpus.to_i * 32 %>"
+      <% elsif gpus_type == "nvidia_h200" %>
+    - "--mem=<%= numgpus.to_i * 280 %>G"
+    - "--cpus-per-task=<%= numgpus.to_i * 28 %>"
       <% elsif gpus_type == "nvidia_a100_80gb" %>
     - "--mem=<%= numgpus.to_i * 374 %>G"
     - "--cpus-per-task=<%= numgpus.to_i * 32 %>"
