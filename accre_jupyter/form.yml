@@ -99,6 +99,7 @@ attributes:
       - [ 'Nvidia RTX A6000', 'nvidia_rtx_a6000' ]
       - [ 'Nvidia RTX A4000', 'nvidia_rtx_a4000' ]
       - [ 'Nvidia H100', 'nvidia_h100_nvl' ]
+      - [ 'Nvidia H200', 'nvidia_h200' ]
       - [ 'Nvidia A100 (80GB)', 'nvidia_a100_80gb' ]
       - [ 'Nvidia L40S', 'nvidia_l40s' ]
       - [ 'Nvidia Quadro RTX 6000', 'quadro_rtx_6000' ]
