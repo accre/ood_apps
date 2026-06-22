@@ -16,43 +16,7 @@ form:
   - reservation
   - use_apptainer
   - apptainer
-  - partition
 attributes:
-  partition:
-    widget: select
-    label: "Partition"
-    help: |
-      Batch is the default partition that all users have access to. For access
-      to GPUs select the batch_gpu partition. To get a list of slurm accounts
-      and resources that your user has access to, connect to a gateway node and
-      run the "slurm_resources" command.
-    options:
-      - [
-          'batch (standard nodes, high-throughput)', 'batch',
-          data-hide-gpus-type: true,
-          data-hide-gpus-type-interactive: true,
-          data-hide-numgpus: true,
-          data-hide-qos: true
-        ]
-      - [ 'batch_gpu (GPU accelerated nodes, high-throughput)', 'batch_gpu',
-          data-hide-cpuarch: true,
-          data-hide-bc-mem: true,
-          data-hide-bc-num-cores: true,
-          data-hide-cpuarch: true,
-          data-hide-qos: true,
-          data-hide-gpus-type-interactive: true,
-          data-set-cpuarch: "any"
-        ]
-      - [ 'interactive (standard nodes, ready on-demand)', 'interactive',
-          data-hide-gpus-type: true,
-          data-hide-gpus-type-interactive: true,
-          data-hide-numgpus: true
-        ]
-      - [ 'interactive_gpu (GPU accelerated nodes, ready on-demand)', 'interactive_gpu',
-          data-hide-gpus-type: true,
-          data-set-cpuarch: "any",
-          data-hide-cpuarch: true
-        ]
   bc_account:
     label: "ACCRE Slurm Group"
     help: "Leave blank to use your default slurm group"
@@ -148,15 +112,6 @@ attributes:
       container.  Your container must be built so that the "rserver" binary is located at
       "/usr/lib/rstudio-server/bin/rserver" within the container, and the "R" binary is
       located at "/usr/local/bin/R".
-    options:
-      - [ 1,
-          data-hide-version: true,
-          data-hide-apptainer: false
-        ]
-      - [ 0,
-          data-hide-version: false,
-          data-hide-apptainer: true
-        ]
   apptainer:
     widget: "text_field"
     label: "Path to Apptainer (Singularity) Container"
