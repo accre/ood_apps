@@ -79,14 +79,5 @@ script:
       <% elsif gpus_type == "nvidia_l40s" %>
     - "--mem=<%= numgpus.to_i * 187 %>G"
     - "--cpus-per-task=<%= numgpus.to_i * 8 %>"
-      <% elsif gpus_type == "quadro_rtx_6000" %>
-    - "--mem=<%= numgpus.to_i * 92 %>G"
-    - "--cpus-per-task=<%= numgpus.to_i * 6 %>"
-      <% elsif gpus_type == "nvidia_geforce_rtx_2080_ti" %>
-    - "--mem=<%= numgpus.to_i * 92 %>G"
-    - "--cpus-per-task=<%= numgpus.to_i * 6 %>"
-      <% elsif gpus_type == "nvidia_titan_x" %>
-    - "--mem=<%= numgpus.to_i * 60 %>G"
-    - "--cpus-per-task=<%= numgpus.to_i * 2 %>"
       <% end %>
     <% end %>
