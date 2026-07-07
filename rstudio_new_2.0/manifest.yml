@@ -1,8 +1,0 @@
----
-name: "ACCRE Singularity RStudio Server 2.0"
-category: Interactive Apps
-subcategory: Servers
-role: batch_connect
-description: |
-  This app will launch a Singularity-based RStudio Server on an ACCRE compute node using an apptainer container.
-
