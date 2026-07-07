@@ -1,0 +1,53 @@
+---
+cluster: "accre"
+form:
+  - bc_num_slots
+  - bc_num_hours
+  - bc_num_cores
+  - bc_mem
+  - cpuarch
+  - bc_account
+  - version
+  - use_reservation
+  - reservation
+attributes:
+  bc_account:
+    label: "ACCRE Slurm Group"
+    help: "Leave blank to use your default slurm group"
+  bc_queue: null
+  bc_num_slots: null
+  bc_num_hours:
+    value: 48
+  bc_mem:
+    label: "Maximum Memory (GB)"
+    value: 4
+  bc_num_cores:
+    label: "Number of CPU Cores"
+    value: 1
+  cpuarch:
+    widget: select
+    label: "CPU Architecture"
+    help: "Defaults to the first available node with any architecture"
+    options:
+      - [ "Any", "any" ]
+      - [ "Zen", "zen" ]
+      - [ "Cascade Lake", "cascadelake" ]
+      - [ "Skylake", "skylake" ]
+      - [ "Haswell", "haswell" ]
+  version:
+    widget: select
+    label: "Version of R to load"
+    options:
+      - [ "ACCRE Singularity R 4.4.2 for x86-64-v3", "R-4.4.2-v3"]
+      - [ "ACCRE Singularity R 4.5.0 for x86-64-v3", "R-4.5.0-v3"]
+      - [ "ACCRE Singularity R 4.5.2 for x86-64-v3", "R-4.5.2-v3"]
+  use_reservation:
+    widget: check_box
+    checked_value: 1
+    unchecked_value: 0
+    label: "Use a slurm reservation"
+    help: "Check this box if you wish to use a slurm reservation"
+  reservation:
+    label: "Slurm Reservation Name"
+    value: ""
+    help: "Leave blank unless using a slurm reservation"
