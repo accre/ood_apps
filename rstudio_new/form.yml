@@ -3,9 +3,9 @@ cluster: "accre"
 form:
   - bc_queue
   - bc_num_hours
-   - version
-   - custom_container
-   - bc_account
+  - version
+  - custom_container
+  - bc_account
   - partition
   - qos
   - bc_mem

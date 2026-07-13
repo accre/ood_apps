@@ -1,5 +1,5 @@
 ---
-name: "ACCRE Singularity RStudio Server 2.0"
+name: "ACCRE Singularity RStudio Server"
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
