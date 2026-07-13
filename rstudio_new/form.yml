@@ -3,8 +3,9 @@ cluster: "accre"
 form:
   - bc_queue
   - bc_num_hours
-  - version
-  - bc_account
+   - version
+   - custom_container
+   - bc_account
   - partition
   - qos
   - bc_mem
@@ -139,3 +140,9 @@ attributes:
       - [ "ACCRE Singularity R 4.5.0 for x86-64-v3", "R-4.5.0-v3"]
       - [ "ACCRE Singularity R 4.5.2 for x86-64-v3", "R-4.5.2-v3"]
       - [ "ACCRE Singularity R 4.6.1 for x86-64-v3", "R-4.6.1-v3"]
+      - [ "Use your own Singularity container", "custom"]
+  custom_container:
+    widget: text_input
+    label: "Path to your Singularity container (.sif)"
+    help: "Enter the full path to your custom .sif Singularity container file"
+    data-show-if: "version" "==" "custom"

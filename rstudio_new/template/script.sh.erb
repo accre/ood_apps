@@ -4,13 +4,17 @@
 setup_env () {
 	module purge
 
-	# accre_rversion is a string similar to "R-4.5.0-v3"
 	accre_rversion=<%= context.version %>
-	r_ver=$(echo "${accre_rversion}" | cut -d "-" -f 2)
-	r_opt=$(echo "${accre_rversion}" | cut -d "-" -f 3)
 
-	export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio/${r_ver}/R-RStudio-x86-64-${r_opt}.sif"
-	export R_LIBS_USER="~/R/${r_ver}/x86_64_${r_opt}"
+	if [ "${accre_rversion}" = "custom" ]; then
+		export RSTUDIO_SERVER_IMAGE="<%= context.custom_container %>"
+		export R_LIBS_USER="~/R/custom"
+	else
+		r_ver=$(echo "${accre_rversion}" | cut -d "-" -f 2)
+		r_opt=$(echo "${accre_rversion}" | cut -d "-" -f 3)
+		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio/${r_ver}/R-RStudio-x86-64-${r_opt}.sif"
+		export R_LIBS_USER="~/R/${r_ver}/x86_64_${r_opt}"
+	fi
 }
 
 setup_env
