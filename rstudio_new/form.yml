@@ -46,7 +46,6 @@ attributes:
           data-hide-qos: true
         ]
       - [ 'batch_gpu (GPU accelerated nodes, high-throughput)', 'batch_gpu',
-          data-hide-cpuarch: true,
           data-hide-bc-mem: true,
           data-hide-bc-num-cores: true,
           data-hide-cpuarch: true,
