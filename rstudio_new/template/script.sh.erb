@@ -7,7 +7,12 @@ setup_env () {
 	accre_rversion=<%= context.version %>
 
 	if [ "${accre_rversion}" = "custom" ]; then
-		export RSTUDIO_SERVER_IMAGE="<%= context.custom_container %>"
+		if [ -z "${context.custom_container}" ]; then
+			echo "ERROR: Custom container path is required when 'custom' version is selected."
+			echo "Please provide a valid path to your Singularity container."
+			exit 1
+		fi
+		export RSTUDIO_SERVER_IMAGE="${context.custom_container}"
 		export R_LIBS_USER="~/R/custom"
 	else
 		r_ver=$(echo "${accre_rversion}" | cut -d "-" -f 2)
@@ -15,15 +20,29 @@ setup_env () {
 		export RSTUDIO_SERVER_IMAGE="/labs/accre_public/singularity/RStudio/${r_ver}/R-RStudio-x86-64-${r_opt}.sif"
 		export R_LIBS_USER="~/R/${r_ver}/x86_64_${r_opt}"
 	fi
+
+	if [ ! -r "${RSTUDIO_SERVER_IMAGE}" ]; then
+		echo "ERROR:  Singularity container ${RSTUDIO_SERVER_IMAGE} not found."
+		exit 1
+	fi
 }
 
 setup_env
 
+if [ -z "${RSTUDIO_SINGULARITY_HOST_MNT:-}" ]; then
+    echo "ERROR: RSTUDIO_SINGULARITY_HOST_MNT is not set."
+    echo "This variable must be provided by the cluster environment."
+    exit 1
+fi
 export RSESSION_PATH="${RSTUDIO_SINGULARITY_HOST_MNT}${PWD}"
 
-mkdir -p ${RSESSION_PATH}/run
-mkdir -p ${RSESSION_PATH}/var-lib-rstudio-server
-mkdir -p ${RSESSION_PATH}/etc_rstudio
+# Note that we intentionally do not erase these folders when complete, as
+# each user job is spawned in a separate directory based on a UUID so there
+# is no risk of collision/overwriting.   Preserving generated files also
+# makes it easier for us to debug when things go wrong.
+mkdir -p "${RSESSION_PATH}/run"
+mkdir -p "${RSESSION_PATH}/var-lib-rstudio-server"
+mkdir -p "${RSESSION_PATH}/etc_rstudio"
 
 #
 # Start RStudio Server
@@ -46,17 +65,20 @@ sed 's/^ \{2\}//' > "${RSESSION_WRAPPER_FILE}" << EOL
   set -x
 
   # Construct local RStudio Server database.conf file
-  printf "provider=sqlite\ndirectory=/var/lib/rstudio-server\n" > ${RSESSION_PATH}/etc_rstudio/database.conf
+  printf "provider=sqlite\ndirectory=/var/lib/rstudio-server\n"  > "${RSESSION_PATH}/etc_rstudio/database.conf"
 
   # Construct local RStudio Server rserver.conf file
-  printf 'server-user=%s\nrsession-which-r=/usr/local/bin/R\nrsession-ld-library-path=/usr/local/lib64/R/lib\n' ${USER} > ${RSESSION_PATH}/etc_rstudio/rserver.conf
-  printf "www-enable-origin-check=0\n" >> ${RSESSION_PATH}/etc_rstudio/rserver.conf
+  printf 'server-user=%s\n' "${USER}"                            >  "${RSESSION_PATH}/etc_rstudio/rserver.conf"
+  printf "rsession-which-r=/usr/local/bin/R\n"                   >> "${RSESSION_PATH}/etc_rstudio/rserver.conf"
+  printf "rsession-ld-library-path=/usr/local/lib64/R/lib\n"     >> "${RSESSION_PATH}/etc_rstudio/rserver.conf"
+  printf "www-enable-origin-check=0\n"                           >> "${RSESSION_PATH}/etc_rstudio/rserver.conf"
 
   # Construct local RStudio Server rsession.conf
-  printf "r-libs-user=${R_LIBS_USER}\n" > ${RSESSION_PATH}/etc_rstudio/rsession.conf
+  printf "r-libs-user=${R_LIBS_USER}\n"                          > "${RSESSION_PATH}/etc_rstudio/rsession.conf"
 
   # Construct local RStudio Server logging.conf (for debugging)
-  printf "[*]\nlog-level=debug\n" > ${RSESSION_PATH}/etc_rstudio/logging.conf
+#  printf "[*]\nlog-level=debug\n"                               > "${RSESSION_PATH}/etc_rstudio/logging.conf"  # Only use debug when actually debugging
+  printf "[*]\nlog-level=info\n"                                 > "${RSESSION_PATH}/etc_rstudio/logging.conf"
 
   export TZ="US/Central"
 
@@ -71,7 +93,7 @@ chmod 700 "${RSESSION_WRAPPER_FILE}"
 # Set working directory to home directory
 cd "${HOME}"
 
-python -c 'from uuid import uuid4; print(uuid4())' > "${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
+python3 -c 'from uuid import uuid4; print(uuid4())' > "${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
 chmod 0600 "${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
 export SECURE_COOKIE_KEY="${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
 
@@ -85,7 +107,7 @@ singularity exec \
    --auth-encrypt-password 0 \
    --auth-none 0 \
    --auth-pam-helper-path "${RSTUDIO_AUTH}" \
-   --server-user=${USER} \
+   --server-user ${USER} \
    --www-port "${port}" \
    --secure-cookie-key-file "${SECURE_COOKIE_KEY}" \
    --rsession-path "${RSESSION_WRAPPER_FILE}"

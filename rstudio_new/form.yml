@@ -51,7 +51,9 @@ attributes:
           data-hide-cpuarch: true,
           data-hide-qos: true,
           data-set-cpuarch: "any",
-          data-hide-gpus-type-interactive: true
+          data-hide-gpus-type-interactive: true,
+          data-show-gpus-type: true,
+          data-show-numgpus: true
         ]
       - [ 'interactive (standard nodes, ready on-demand)', 'interactive',
           data-hide-gpus-type: true,
@@ -60,10 +62,13 @@ attributes:
         ]
       - [ 'interactive_gpu (GPU accelerated nodes, ready on-demand)', 'interactive_gpu',
           data-hide-gpus-type: true,
+          data-hide-gpus-type-interactive: false,
+          data-hide-numgpus: false,
           data-set-cpuarch: "any",
           data-hide-cpuarch: true
         ]
   qos:
+    widget: select
     label: "Quality of Service (QOS)"
     help: |
       QOS to associate with this job. Use the "slurm_resources" command to
@@ -71,6 +76,9 @@ attributes:
       your user has access to. Note that for the special "debug_int" (interactive)
       and "debug_iacc" QOS(s) your specified wall clock time will be ignored
       and your job limit will be set to 30 minutes.
+    options:
+      - [ "debug_int (interactive, 30-min limit)", "debug_int" ]
+      - [ "debug_iacc (interactive accelerated, 30-min limit)", "debug_iacc" ]
   bc_mem:
     label: "Maximum Memory (GB)"
     value: 4
