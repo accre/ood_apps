@@ -7,7 +7,7 @@ setup_env () {
 	accre_rversion=<%= context.version %>
 
 	if [ "${accre_rversion}" = "custom" ]; then
-		if [ -z "${context.custom_container}" ]; then
+		if [ -z "<%= content.custom_container %>" ]; then
 			echo "ERROR: Custom container path is required when 'custom' version is selected."
 			echo "Please provide a valid path to your Singularity container."
 			exit 1
