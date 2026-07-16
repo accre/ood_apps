@@ -1,7 +1,6 @@
 ---
 cluster: "accre"
 form:
-  - bc_queue
   - bc_num_hours
   - version
   - custom_container
@@ -25,7 +24,6 @@ attributes:
       run the "slurm_resources" command. Note that your specified account must
       have access the partition, and possibly qos and gpu resources specified
       below.
-  bc_queue: null
   bc_num_slots: null
   bc_num_hours:
     value: 48
