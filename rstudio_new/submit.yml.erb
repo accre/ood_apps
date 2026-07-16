@@ -46,7 +46,7 @@
         if partition == "interactive" || partition == "interactive_gpu"
           unless qos.to_s.strip.present?
             raise <<~MSG
-              QoS (Quality of Service) is required for the <%= partition %> partition.
+              QoS (Quality of Service) is required for the #{partition} partition.
   
               This is likely caused by using "Relaunch" on a previous session where
               the QoS value was dropped. Please instead go to Interactive Apps ->
