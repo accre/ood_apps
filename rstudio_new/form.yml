@@ -1,5 +1,5 @@
 ---
-cluster: "accre"
+cluster: "<%= OodCore::Cluster.id[:default] %>"
 form:
   - bc_num_hours
   - version
@@ -24,11 +24,18 @@ attributes:
       run the "slurm_resources" command. Note that your specified account must
       have access the partition, and possibly qos and gpu resources specified
       below.
-  bc_num_slots: null
+  bc_num_slots:
+    value: 1
+    max: 1
+    min: 1
+    hidden: true
   bc_num_hours:
-    value: 48
+    value: 1
+    min:   1
+    max:  96
   partition:
     widget: select
+    value: "batch"
     label: "Partition"
     help: |
       Batch is the default partition that all users have access to. For access
@@ -59,6 +66,8 @@ attributes:
           data-hide-gpus-type-interactive: true
         ]
       - [ 'interactive_gpu (GPU accelerated nodes, ready on-demand)', 'interactive_gpu',
+          data-hide-bc-mem: true,
+          data-hide-bc-num-cores: true,
           data-hide-gpus-type: true,
           data-hide-gpus-type-interactive: false,
           data-hide-numgpus: false,
@@ -68,6 +77,7 @@ attributes:
   qos:
     widget: select
     label: "Quality of Service (QOS)"
+    value: "debug_int"       # <-- ADD THIS LINE
     help: |
       QOS to associate with this job. Use the "slurm_resources" command to
       see a list of QOSs available to your user for each slurm account that
@@ -118,7 +128,7 @@ attributes:
     widget: select
     label: "GPU Type (Interactive)"
     help: |
-      Select your desired GPU type for **interactive GPU** jobs.~~
+      Select your desired GPU type for **interactive GPU** jobs.
       Please see the
       <a href='https://help.accre.vanderbilt.edu/index.php?title=GPUs_at_ACCRE'>help wiki GPU page</a>
       for a list of GPU types available and their corresponding Slurm GRES type.

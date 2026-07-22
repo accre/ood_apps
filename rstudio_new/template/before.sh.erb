@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
 # rstudio 1.4+ needs a csrf token
 csrf_token=<%= SecureRandom.uuid %>
 
@@ -5,11 +9,16 @@ csrf_token=<%= SecureRandom.uuid %>
 [[ $(type -t module) == "function" ]] && export -f module
 
 # Find available port to run server on
-port=$(find_port ${host})
+port=$(find_port ${host}) || { echo "ERROR: No available port found"; exit 1; }
 
 # Define a password and export it for RStudio authentication
-password="$(create_passwd 16)"
+password="$(create_passwd 16)" || { echo "ERROR: No password generated"; exit 1; }
 export RSTUDIO_PASSWORD="${password}"
 
-# Setup ACCRE_RUNTIME_DIR
-source /accre/usr/bin/setup_accre_runtime_dir
+# Set the ACCRE_RUNTIME_DIR environment variable, which is subsequently used in script.sh.erb
+if [[ -r /accre/usr/bin/setup_accre_runtime_dir ]]; then
+    source /accre/usr/bin/setup_accre_runtime_dir
+else
+    echo "ERROR: /accre/usr/bin/setup_accre_runtime_dir not found"
+    exit 1
+fi
