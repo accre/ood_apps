@@ -9,7 +9,6 @@ form:
   - qos
   - bc_mem
   - bc_num_cores
-  - bc_num_slots
   - cpuarch
   - gpus_type
   - gpus_type_interactive
@@ -24,19 +23,14 @@ attributes:
       run the "slurm_resources" command. Note that your specified account must
       have access the partition, and possibly qos and gpu resources specified
       below.
-  bc_num_slots:
-    value: 1
-    max: 1
-    min: 1
-    hidden: true
   bc_num_hours:
     value: 1
     min:   1
     max:  96
   partition:
     widget: select
-    value: "batch"
     label: "Partition"
+    value: "batch"
     help: |
       Batch is the default partition that all users have access to. For access
       to GPUs select the batch_gpu partition. To get a list of slurm accounts
@@ -48,13 +42,15 @@ attributes:
           data-hide-gpus-type: true,
           data-hide-gpus-type-interactive: true,
           data-hide-numgpus: true,
-          data-hide-qos: true
+          data-hide-qos: true,
+          data-set-qos: ""
         ]
       - [ 'batch_gpu (GPU accelerated nodes, high-throughput)', 'batch_gpu',
           data-hide-bc-mem: true,
           data-hide-bc-num-cores: true,
           data-hide-cpuarch: true,
           data-hide-qos: true,
+          data-set-qos: "",
           data-set-cpuarch: "any",
           data-hide-gpus-type-interactive: true,
           data-show-gpus-type: true,
@@ -63,14 +59,16 @@ attributes:
       - [ 'interactive (standard nodes, ready on-demand)', 'interactive',
           data-hide-gpus-type: true,
           data-hide-numgpus: true,
-          data-hide-gpus-type-interactive: true
+          data-hide-gpus-type-interactive: true,
+          data-hide-cpuarch: true,
+          data-set-cpuarch: "any"
         ]
       - [ 'interactive_gpu (GPU accelerated nodes, ready on-demand)', 'interactive_gpu',
           data-hide-bc-mem: true,
           data-hide-bc-num-cores: true,
           data-hide-gpus-type: true,
-          data-hide-gpus-type-interactive: false,
-          data-hide-numgpus: false,
+          data-show-gpus-type-interactive: true,
+          data-show-numgpus: true,
           data-set-cpuarch: "any",
           data-hide-cpuarch: true
         ]
@@ -111,6 +109,7 @@ attributes:
   gpus_type:
     widget: select
     label: "GPU Type"
+    value: "nvidia_rtx_a6000"
     help: |
       Select your desired GPU type Please see the
       <a href='https://help.accre.vanderbilt.edu/index.php?title=GPUs_at_ACCRE'>help wiki gpu page</a>

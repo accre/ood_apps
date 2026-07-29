@@ -62,8 +62,7 @@ batch_connect:
 
 script:
   native:
-  - "-N"
-  - "<%= bc_num_slots.blank? ? 1 : bc_num_slots.to_i %>"
+  - "-N 1"
   - "--time=<%= format('%d:00:00', bc_num_hours.blank? ? 48 : bc_num_hours.to_i) %>"
   <% if ! bc_account.to_s.strip.empty? %>
     - "--account=<%= bc_account.strip %>"
