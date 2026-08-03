@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # Load the required environment
 setup_env () {
 	module purge
@@ -7,7 +9,7 @@ setup_env () {
 	accre_rversion=<%= context.version %>
 
 	if [ "${accre_rversion}" = "custom" ]; then
-		if [ -z "<%= content.custom_container %>" ]; then
+		if [ -z "<%= context.custom_container %>" ]; then
 			echo "ERROR: Custom container path is required when 'custom' version is selected."
 			echo "Please provide a valid path to your Singularity container."
 			exit 1
@@ -50,6 +52,7 @@ mkdir -p "${RSESSION_PATH}/etc_rstudio"
 
 # PAM auth helper used by RStudio
 export RSTUDIO_AUTH="${RSESSION_PATH}/bin/auth"
+[[ -x "${RSTUDIO_AUTH}" ]] || chmod 700 "${RSTUDIO_AUTH}"
 
 # Generate an `rsession` wrapper script
 export RSESSION_WRAPPER_FILE="${RSESSION_PATH}/rsession.sh"
@@ -71,6 +74,7 @@ sed 's/^ \{2\}//' > "${RSESSION_WRAPPER_FILE}" << EOL
   printf 'server-user=%s\n' "${USER}"                            >  "${RSESSION_PATH}/etc_rstudio/rserver.conf"
   printf "rsession-which-r=/usr/local/bin/R\n"                   >> "${RSESSION_PATH}/etc_rstudio/rserver.conf"
   printf "rsession-ld-library-path=/usr/local/lib64/R/lib\n"     >> "${RSESSION_PATH}/etc_rstudio/rserver.conf"
+  # The following line is necessary for reverse proxying to work
   printf "www-enable-origin-check=0\n"                           >> "${RSESSION_PATH}/etc_rstudio/rserver.conf"
 
   # Construct local RStudio Server rsession.conf
@@ -80,11 +84,10 @@ sed 's/^ \{2\}//' > "${RSESSION_WRAPPER_FILE}" << EOL
 #  printf "[*]\nlog-level=debug\n"                               > "${RSESSION_PATH}/etc_rstudio/logging.conf"  # Only use debug when actually debugging
   printf "[*]\nlog-level=info\n"                                 > "${RSESSION_PATH}/etc_rstudio/logging.conf"
 
-  export TZ="US/Central"
+  export TZ="${TZ:-US/Central}"
 
   # Launch the original command
   echo "Launching rsession..."
-  set -x
   exec rsession --r-libs-user "${R_LIBS_USER}" "\${@}"
 EOL
 )
@@ -93,7 +96,8 @@ chmod 700 "${RSESSION_WRAPPER_FILE}"
 # Set working directory to home directory
 cd "${HOME}"
 
-python3 -c 'from uuid import uuid4; print(uuid4())' > "${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
+# Generate a random UUID to use in naming the working directory, to prevent overwriting files from other sessions
+cat /proc/sys/kernel/random/uuid > "${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
 chmod 0600 "${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
 export SECURE_COOKIE_KEY="${RSESSION_PATH}/etc_rstudio/secure-cookie-key"
 
@@ -101,13 +105,23 @@ set -x
 # Launch the RStudio Server
 echo "Starting up rserver at $(date) ..."
 
-singularity exec \
-   --bind ${RSESSION_PATH}/run:/run,${RSESSION_PATH}/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/data,/nobackup,/labs,/panfs,/v5000 \
+# Determine path to singularity/apptainer binary
+if command -v apptainer; then
+	SINGULARITY_BIN=$(which apptainer)
+elif command -v singularity; then
+	SINGULARITY_BIN=$(which singularity)
+else
+	echo "ERROR: Neither apptainer nor singularity found in PATH."
+	exit 1
+fi
+
+${SINGULARITY_BIN} exec \
+   --bind "${RSESSION_PATH}"/run:/run,"${RSESSION_PATH}"/var-lib-rstudio-server:/var/lib/rstudio-server,${RSESSION_PATH}/etc_rstudio:/etc/rstudio,${ACCRE_RUNTIME_DIR}:/tmp,/accre,/cvmfs,/data,/nobackup,/labs,/panfs,/v5000 \
    "${RSTUDIO_SERVER_IMAGE}" /usr/lib/rstudio-server/bin/rserver \
    --auth-encrypt-password 0 \
    --auth-none 0 \
    --auth-pam-helper-path "${RSTUDIO_AUTH}" \
-   --server-user ${USER} \
+   --server-user "${USER}" \
    --www-port "${port}" \
    --secure-cookie-key-file "${SECURE_COOKIE_KEY}" \
    --rsession-path "${RSESSION_WRAPPER_FILE}"

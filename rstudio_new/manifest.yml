@@ -1,5 +1,7 @@
 ---
+version: "0.7.0"
 name: "ACCRE Singularity RStudio Server"
+display_name: "ACCRE Singularity RStudio Server"
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect

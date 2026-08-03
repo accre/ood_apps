@@ -9,13 +9,13 @@ fi
 USERNAME="${1}"
 
 # Confirm password environment variable exists
-if [[ -z ${RSTUDIO_PASSWORD} ]]; then
+if [[ -z "${RSTUDIO_PASSWORD}" ]]; then
 	echo "The environment variable RSTUDIO_PASSWORD is not set"
 	exit 1
 fi
 
-# Read in the password from user
-read -s -p "Password: " PASSWORD
+# Read in the password from user.  Timeout after 30 seconds
+read -t 30 -s -p "Password: " PASSWORD || { echo "Invalid authentication"; exit 1; }
 echo ""
 
 if [[ "${USERNAME}" == "${USER}" && "${PASSWORD}" == "${RSTUDIO_PASSWORD}" ]]; then
