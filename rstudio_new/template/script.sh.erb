@@ -31,12 +31,7 @@ setup_env () {
 
 setup_env
 
-if [ -z "${RSTUDIO_SINGULARITY_HOST_MNT:-}" ]; then
-    echo "ERROR: RSTUDIO_SINGULARITY_HOST_MNT is not set."
-    echo "This variable must be provided by the cluster environment."
-    exit 1
-fi
-export RSESSION_PATH="${RSTUDIO_SINGULARITY_HOST_MNT}${PWD}"
+export RSESSION_PATH="${PWD}"
 
 # Note that we intentionally do not erase these folders when complete, as
 # each user job is spawned in a separate directory based on a UUID so there

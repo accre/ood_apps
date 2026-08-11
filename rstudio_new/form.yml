@@ -1,5 +1,5 @@
 ---
-cluster: "<%= OodCore::Cluster.id[:default] %>"
+cluster: "accre"
 form:
   - bc_num_hours
   - version
@@ -75,7 +75,7 @@ attributes:
   qos:
     widget: select
     label: "Quality of Service (QOS)"
-    value: "debug_int"       # <-- ADD THIS LINE
+    value: "debug_int"       # <-- This sets a default
     help: |
       QOS to associate with this job. Use the "slurm_resources" command to
       see a list of QOSs available to your user for each slurm account that

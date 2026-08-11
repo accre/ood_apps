@@ -1,59 +1,71 @@
 ---
-    <%
-      valid_partitions = %w[batch batch_gpu interactive interactive_gpu]
-      partition_val = partition.to_s.strip
-      unless valid_partitions.include?(partition_val)
-        raise <<~MSG
-          Partition value missing or invalid (received: #{partition.inspect}).
+<%
+  valid_partitions = %w[batch batch_gpu interactive interactive_gpu]
+  partition_val = partition.to_s.strip
 
-          This is almost always caused by using "Relaunch" on a previous session from
-          "My Interactive Sessions" where the form value was not preserved.
-          Please go to Interactive Apps -> ACCRE RStudio Server, fill out
-          the form fresh, and click Launch.
-        MSG
-      end
-    
-      # Validate GPU type for GPU partitions
-      if partition == "batch_gpu"
-        if gpus_type.to_s.strip.empty?
-          raise <<~MSG
-            GPU type is required for the batch_gpu partition.
-    
-            The batch_gpu partition requires a valid GPU type selection (gpus_type).
-            This is likely caused by using "Relaunch" on a previous session where
-            the GPU type value was dropped. Please instead go to Interactive Apps ->
-            ACCRE RStudio Server, fill out the form fresh with a GPU type selected,
-            and click Launch.
-          MSG
-        end
-      elsif partition == "interactive_gpu"
-        if gpus_type_interactive.to_s.strip.blank?
-          raise <<~MSG
-            GPU type is required for the interactive_gpu partition.
-    
-            The interactive_gpu partition requires a valid GPU type selection (gpus_type_interactive).
-            This is likely caused by using "Relaunch" on a previous session where
-            the GPU type value was dropped. Please instead go to Interactive Apps ->
-            ACCRE RStudio Server, fill out the form fresh with a GPU type selected,
-            and click Launch.
-          MSG
-        end
-      end
+  unless valid_partitions.include?(partition_val)
+    raise <<~MSG
+      Partition value missing or invalid (received: #{partition.inspect}).
 
-      # Validate QoS for interactive partitions
-        if partition == "interactive" || partition == "interactive_gpu"
-          if qos.to_s.strip.empty?
-            raise <<~MSG
-              QoS (Quality of Service) is required for the #{partition} partition.
-  
-              This is likely caused by using "Relaunch" on a previous session where
-              the QoS value was dropped. Please instead go to Interactive Apps ->
-              ACCRE RStudio Server, fill out the form fresh with a QoS selected,
-              and click Launch.
-            MSG
-          end
-        end
-    %>
+      This is almost always caused by using "Relaunch" on a previous session from
+      "My Interactive Sessions" where the form value was not preserved.
+      Please go to Interactive Apps -> ACCRE RStudio Server, fill out
+      the form fresh, and click Launch.
+    MSG
+  end
+
+  # Validate GPU type for GPU partitions
+  if partition == "batch_gpu"
+    if gpus_type.to_s.strip.empty?
+      raise <<~MSG
+        GPU type is required for the batch_gpu partition.
+
+        The batch_gpu partition requires a valid GPU type selection (gpus_type).
+        This is likely caused by using "Relaunch" on a previous session where
+        the GPU type value was dropped. Please instead go to Interactive Apps ->
+        ACCRE RStudio Server, fill out the form fresh with a GPU type selected,
+        and click Launch.
+      MSG
+    end
+  elsif partition == "interactive_gpu"
+    if gpus_type_interactive.to_s.strip.empty?
+      raise <<~MSG
+        GPU type is required for the interactive_gpu partition.
+
+        The interactive_gpu partition requires a valid GPU type selection
+        (gpus_type_interactive).
+        This is likely caused by using "Relaunch" on a previous session where
+        the GPU type value was dropped. Please instead go to Interactive Apps ->
+        ACCRE RStudio Server, fill out the form fresh with a GPU type selected,
+        and click Launch.
+      MSG
+    end
+  end
+
+  # Validate QoS for interactive partitions
+  if partition == "interactive" || partition == "interactive_gpu"
+    if qos.to_s.strip.empty?
+      raise <<~MSG
+        QoS (Quality of Service) is required for the #{partition} partition.
+
+        This is likely caused by using "Relaunch" on a previous session where
+        the QoS value was dropped. Please instead go to Interactive Apps ->
+        ACCRE RStudio Server, fill out the form fresh with a QoS selected,
+        and click Launch.
+      MSG
+    end
+  end
+
+  # Determine wall time.
+  #
+  # The debug QoS values have a fixed 30-minute limit. Otherwise use the
+  # wall time requested through the Batch Connect form.
+  if qos == "debug_int" || qos == "debug_iacc"
+    walltime = "00:30:00"
+  else
+    walltime = format('%d:00:00', bc_num_hours.blank? ? 48 : bc_num_hours.to_i)
+  end
+%>
 
 batch_connect:
   template: "basic"
@@ -62,79 +74,85 @@ batch_connect:
 
 script:
   native:
-  - "-N 1"
-  - "--time=<%= format('%d:00:00', bc_num_hours.blank? ? 48 : bc_num_hours.to_i) %>"
-  <% if ! bc_account.to_s.strip.empty? %>
+    - "-N 1"
+    - "--time=<%= walltime %>"
+<% unless bc_account.to_s.strip.empty? %>
     - "--account=<%= bc_account.strip %>"
-  <% end %>
-  <% if partition == "batch" %>
+<% end %>
+
+<% if partition == "batch" %>
     - "--partition=batch"
     - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
     - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
-    <% if cpuarch != "any" %>
-      - "--constraint=<%= cpuarch %>"
-    <% end %>
-  <% elsif partition == "interactive" %>
+<% if cpuarch != "any" %>
+    - "--constraint=<%= cpuarch %>"
+<% end %>
+
+<% elsif partition == "interactive" %>
     - "--partition=interactive"
     - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
     - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
     - "--qos=<%= qos %>"
-    <% if cpuarch != "any" %>
-      - "--constraint=<%= cpuarch %>"
-    <% end %>
-    <% if qos == "debug_int" %>
-      - "--time=00:30:00"
-    <% end %>
-  <% elsif partition == "interactive_gpu" %>
-     - "--partition=interactive_gpu"
-     - "--gres=gpu:<%= gpus_type_interactive %>:<%= numgpus.blank? ? 1 : numgpus.to_i %>"
-     - "--qos=<%= qos %>"
-     <%
-       # GPU resource ratios for interactive_gpu partition
-       interactive_gpu_config = {
-         "nvidia_rtx_a4000"          => { mem: 30, cores: 4 },
-         "nvidia_rtx_a6000"          => { mem: 124, cores: 16 },
-         "nvidia_geforce_rtx_3090"   => { mem: 30, cores: 4 },
-         "nvidia_a100-sxm4-40gb"     => { mem: 374, cores: 32 },
-         "nvidia_a100-sxm4-80gb"     => { mem: 374, cores: 32 },
-       }
+<% if cpuarch != "any" %>
+    - "--constraint=<%= cpuarch %>"
+<% end %>
 
-       unless interactive_gpu_config.key?(gpus_type_interactive)
-         raise "Unsupported GPU type for interactive_gpu: #{gpus_type_interactive}. Supported: #{interactive_gpu_config.keys.join(', ')}"
-       end
+<% elsif partition == "interactive_gpu" %>
+    - "--partition=interactive_gpu"
+    - "--gres=gpu:<%= gpus_type_interactive %>:<%= numgpus.blank? ? 1 : numgpus.to_i %>"
+    - "--qos=<%= qos %>"
+<%
+  # GPU resource ratios for interactive_gpu partition
+  interactive_gpu_config = {
+    "nvidia_rtx_a4000"        => { mem: 30,  cores: 4 },
+    "nvidia_rtx_a6000"        => { mem: 124, cores: 16 },
+    "nvidia_geforce_rtx_3090" => { mem: 30,  cores: 4 },
+    "nvidia_a100-sxm4-40gb"   => { mem: 374, cores: 32 },
+    "nvidia_a100-sxm4-80gb"   => { mem: 374, cores: 32 }
+  }
 
-       gpu_mem = interactive_gpu_config[gpus_type_interactive][:mem]
-       gpu_cores = interactive_gpu_config[gpus_type_interactive][:cores]
-       num_gpus = numgpus.blank? ? 1 : numgpus.to_i
-     %>
-     - "--mem=<%= gpu_mem * num_gpus %>G"
-     - "--cpus-per-task=<%= gpu_cores * num_gpus %>"
-     <% if qos == "debug_iacc" %>
-       - "--time=00:30:00"
-     <% end %>
-  <% elsif partition == "batch_gpu" %>
-    - "--partition=batch_gpu"
-    - "--gres=gpu:<%= gpus_type %>:<%= numgpus.blank? ? 1 : numgpus.to_i %>"
-    <%
-      # GPU resource ratios - VERIFY THESE MATCH ACCRE CLUSTER CONFIGURATION
-      # Source: sinfo -p batch_gpu -o "%G %D %C" or run 'slurm_resources' on gateway
-      gpu_config = {
-        "nvidia_rtx_a6000"  => { mem: 124, cores: 16 },  # RTX A6000: 48GB VRAM, node has 256GB RAM / 32 cores
-        "nvidia_rtx_a4000"  => { mem: 30, cores: 4 },    # RTX A4000: 48GB VRAM, node has 128GB RAM / 16 cores
-        "nvidia_h100_nvl"   => { mem: 561, cores: 32 },  # H100 NVL: 96GB VRAM, node has 1.5TB RAM / 128 cores
-        "nvidia_h200"       => { mem: 280, cores: 28 },  # H200: 141GB VRAM, node has 1TB RAM / 64 cores
-        "nvidia_a100_80gb"  => { mem: 374, cores: 32 },  # A100 80GB: 80GB VRAM, node has 1.5TB RAM / 128 cores
-        "nvidia_l40s"       => { mem: 187, cores: 8 }    # L40S: 48GB VRAM, node has 768GB RAM / 64 cores
-      }
-      
-      unless gpu_config.key?(gpus_type)
-        raise "Unsupported GPU type: #{gpus_type}. Supported types: #{gpu_config.keys.join(', ')}"
-      end
-      
-      gpu_mem = gpu_config[gpus_type][:mem]
-      gpu_cores = gpu_config[gpus_type][:cores]
-      num_gpus = numgpus.blank? ? 1 : numgpus.to_i
-    %>
+  unless interactive_gpu_config.key?(gpus_type_interactive)
+    raise "Unsupported GPU type for interactive_gpu: #{gpus_type_interactive}. " \
+          "Supported: #{interactive_gpu_config.keys.join(', ')}"
+  end
+
+  gpu_mem = interactive_gpu_config[gpus_type_interactive][:mem]
+  gpu_cores = interactive_gpu_config[gpus_type_interactive][:cores]
+  num_gpus = numgpus.blank? ? 1 : numgpus.to_i
+%>
     - "--mem=<%= gpu_mem * num_gpus %>G"
     - "--cpus-per-task=<%= gpu_cores * num_gpus %>"
-  <% end %>
+
+<% elsif partition == "batch_gpu" %>
+    - "--partition=batch_gpu"
+    - "--gres=gpu:<%= gpus_type %>:<%= numgpus.blank? ? 1 : numgpus.to_i %>"
+<%
+  # GPU resource ratios
+  #
+  # VERIFY THESE MATCH ACCRE CLUSTER CONFIGURATION.
+  # Source:
+  #   sinfo -p batch_gpu -o "%G %D %C"
+  # or run:
+  #   slurm_resources
+  # on the gateway.
+  gpu_config = {
+    "nvidia_rtx_a6000" => { mem: 124, cores: 16 },
+    "nvidia_rtx_a4000" => { mem: 30,  cores: 4 },
+    "nvidia_h100_nvl"  => { mem: 561, cores: 32 },
+    "nvidia_h200"      => { mem: 280, cores: 28 },
+    "nvidia_a100_80gb" => { mem: 374, cores: 32 },
+    "nvidia_l40s"      => { mem: 187, cores: 8 }
+  }
+
+  unless gpu_config.key?(gpus_type)
+    raise "Unsupported GPU type: #{gpus_type}. " \
+          "Supported types: #{gpu_config.keys.join(', ')}"
+  end
+
+  gpu_mem = gpu_config[gpus_type][:mem]
+  gpu_cores = gpu_config[gpus_type][:cores]
+  num_gpus = numgpus.blank? ? 1 : numgpus.to_i
+%>
+    - "--mem=<%= gpu_mem * num_gpus %>G"
+    - "--cpus-per-task=<%= gpu_cores * num_gpus %>"
+<% end %>
