@@ -1,8 +1,8 @@
 ---
-name: VS Code
+name: Visual Studio Code
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
 description: |
-  This app will launch a VS Code server on an ACCRE compute node
+  This app will launch a Visual Studio Code instance on an ACCRE compute node
   using code-server.
