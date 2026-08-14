@@ -9,7 +9,7 @@ mkdir -p "${CODE_SERVER_DATAROOT}/extensions"
 
 export SESSION_PATH="${PWD}"
 
-printf 'password: %s\n' ${password} >> "${SESSION_PATH}/code-config.yml"
+printf 'password: %s\n' "${password}" >> "${SESSION_PATH}/code-config.yml"
 
 echo "$(date): Running on compute node $(hostname):$port"
 
@@ -39,6 +39,13 @@ if [[ -f "${CPP_FILE}" ]]; then
     mv "${CPP_FILE}".new "${CPP_FILE}"
 fi
 
+cleanup() {
+    kill -TERM -$$ 2>/dev/null
+    wait
+    exit 0
+}
+trap cleanup SIGTERM SIGINT SIGQUIT
+
 echo "$(date): Starting code-server"
 
 code-server \
@@ -50,4 +57,6 @@ code-server \
     --user-data-dir="${CODE_SERVER_DATAROOT}" \
     --log warn \
     --app-name="Microsoft VSCode Server @ ACCRE" \
-    "<%= working_dir.to_s %>"
+    "<%= working_dir.to_s %>" &
+
+wait
