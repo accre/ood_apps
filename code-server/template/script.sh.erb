@@ -40,6 +40,7 @@ if [[ -f "${CPP_FILE}" ]]; then
 fi
 
 cleanup() {
+    trap '' SIGTERM SIGINT SIGQUIT
     kill -TERM -$$ 2>/dev/null
     wait
     exit 0
