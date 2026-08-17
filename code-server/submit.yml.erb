@@ -23,8 +23,8 @@ script:
   native:
     - "-N"
     - "1"
-    <% if ! bc_account.strip.empty? %>
-    - "--account=<%= bc_account.strip %>"
+    <% if ! bc_account.to_s.strip.empty? %>
+    - "--account=<%= bc_account.to_s.strip %>"
     <% end %>
     - "--partition=<%= partition %>"
     - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
