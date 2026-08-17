@@ -29,9 +29,9 @@ script:
     - "--partition=<%= partition %>"
     - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
     - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
-    <% if partition == "interactive" %>
-    - "--qos=<%= qos %>"
-      <% if qos == "debug_int" %>
+    <% if partition == "interactive" && !qos.to_s.strip.empty? %>
+    - "--qos=<%= qos.to_s.strip %>"
+      <% if qos.to_s.strip == "debug_int" %>
     - "--time=00:30:00"
       <% end %>
     <% end %>
