@@ -1,5 +1,37 @@
 ---
+<%
+  valid_partitions = %w[batch interactive]
+  unless valid_partitions.include?(partition.to_s.strip)
+    raise <<~MSG
+      Partition value missing or invalid (received: #{partition.inspect}).
+
+      This is almost always caused by using "Relaunch" on a previous session from
+      "My Interactive Sessions". A known OnDemand issue drops the partition value
+      on Relaunch for apps with advanced form widgets, which produces a job with
+      no --partition / --mem / --cpus-per-task flags and will fail to start.
+
+      Please instead: go to Interactive Apps -> ACCRE VS Code Server, fill out
+      the form fresh, and click Launch.
+    MSG
+  end
+%>
+
 batch_connect:
   template: "basic"
-  conn_params:
-    - code_server_version
+
+script:
+  native:
+    - "-N"
+    - "1"
+    <% if ! bc_account.to_s.strip.empty? %>
+    - "--account=<%= bc_account.to_s.strip %>"
+    <% end %>
+    - "--partition=<%= partition %>"
+    - "--mem=<%= bc_mem.blank? ? 4 : bc_mem.to_i %>G"
+    - "--cpus-per-task=<%= bc_num_cores.blank? ? 1 : bc_num_cores.to_i %>"
+    <% if partition == "interactive" && !qos.to_s.strip.empty? %>
+    - "--qos=<%= qos.to_s.strip %>"
+      <% if qos.to_s.strip == "debug_int" %>
+    - "--time=00:30:00"
+      <% end %>
+    <% end %>

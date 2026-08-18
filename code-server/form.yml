@@ -1,22 +1,55 @@
 ---
-cluster: 
-  - "accre"
-form:
-  - auto_accounts
-  - bc_num_hours
-  - working_dir
-  - version
+cluster: "accre"
 
 attributes:
-  version:
-    widget: "select"
-    label: "Codeserver Version"
+  bc_account:
+    label: "ACCRE Slurm Account"
+    help: |
+      Leave blank to use your default slurm account.
+      To get a list of slurm accounts
+      and resources that your user has access to, connect to a gateway node and
+      run the "slurm_resources" command.
+  bc_num_hours:
+    value: 48
+  partition:
+    widget: select
+    label: "Partition"
+    help: |
+      Batch is the default partition that all users have access to.
+      To get a list of slurm accounts and resources that your user has
+      access to, connect to a gateway node and run the "slurm_resources" command.
     options:
-      - ["4.92.2", "4.92.2"]
-
+      - [
+          'batch (standard nodes, high-throughput)', 'batch',
+          data-hide-qos: true
+        ]
+      - [ 'interactive (standard nodes, ready on-demand)', 'interactive' ]
+  qos:
+    label: "Quality of Service (QOS)"
+    help: |
+      QOS to associate with this job. Use the "slurm_resources" command to
+      see a list of QOSs available to your user for each slurm account that
+      your user has access to. Note that for the special "debug_int" (interactive)
+      QOS your specified wall clock time will be ignored
+      and your job limit will be set to 30 minutes.
+  bc_mem:
+    label: "Maximum Memory (GB)"
+    value: 4
+  bc_num_cores:
+    label: "Number of CPU Cores"
+    value: 1
   working_dir:
     widget: "path_selector"
     label: "Working Directory"
-    data-target-file-type: dirs  # Valid values are: files, dirs, or both
+    data-target-file-type: dirs
     readonly: false
     help: "Select your project directory; defaults to $HOME"
+
+form:
+  - bc_num_hours
+  - bc_account
+  - partition
+  - qos
+  - bc_mem
+  - bc_num_cores
+  - working_dir
